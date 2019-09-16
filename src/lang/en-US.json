@@ -1,0 +1,154 @@
+{
+  "languageTag": "en-US",
+  "fileDescription": "Strings for Spine Plugin",
+  "text": {
+    "plugins": {
+      "gritsenko_spine": {
+        "name": "Spine",
+        "description": "Spine plugin",
+        "help-url": "http://gritsenko.biz",
+        "properties": {
+          "json": {
+            "name": ".json path",
+            "desc": "path to json file i.e. \"character.json\""
+          },
+          "atlas": {
+            "name": ".atlas path",
+            "desc": "path to atlas file i.e. \"character.atlas\""
+          },
+          "png": {
+            "name": ".png path",
+            "desc": "path to png file i.e. \"character.png\""
+          },
+          "skin": {
+            "name": "Skin",
+            "desc": "Active skin name"
+          },
+          "animation": {
+            "name": "Animation",
+            "desc": "Active animation name"
+          }
+        },
+        "aceCategories": {
+          "spine": "Spine"
+        },
+        "conditions": {
+          "on-skeleton-loaded": {
+            "list-name": "On skeleton loaded",
+            "display-text": "On skeleton loaded",
+            "description": "Triggered skeleton was loaded."
+          }
+        },
+        "actions": {
+          "set-skin": {
+            "list-name": "Set skin",
+            "display-text": "Set skin {0}",
+            "description": "Set skin by name.",
+            "params": {
+              "skin-name": {
+                "name": "Skin name",
+                "desc": "Skin name"
+              }
+            }
+          },
+          "flip": {
+            "list-name": "flip",
+            "display-text": "flip {0}",
+            "description": "flip.",
+            "params": {
+              "is-flipped": {
+                "name": "Is Flipped",
+                "desc": "Is Flipped"
+              }
+            }
+          },
+          "set-animation": {
+            "list-name": "Set animation",
+            "display-text": "Set animation {0} (loop: {1})",
+            "description": "Set animation by name.",
+            "params": {
+              "animation-name": {
+                "name": "Animation name",
+                "desc": "Animation name"
+              },
+              "loop": {
+                "name": "Loop",
+                "desc": "Loop animation"
+              }
+            }
+          },
+          "play": {
+            "list-name": "Play spine animation",
+            "display-text": "Play spine animation",
+            "description": "Play current spine animation",
+            "params": { }
+          },
+          "stop": {
+            "list-name": "Stop current spine animation",
+            "display-text": "Stop current spine animation",
+            "description": "Stop current spine animation",
+            "params": { }
+          },
+          "update-bounds": {
+            "list-name": "Update spine Bounds",
+            "display-text": "Update spine Bounds",
+            "description": "Fit spine model to bounds if c3 object",
+            "params": { }
+          }
+        },
+        "expressions": {
+          "skins": {
+            "description": "Get list of skins. separated by new lines",
+            "translated-name": "Skins",
+            "params": {}
+          },
+          "current-skin": {
+            "description": "Get current skin name",
+            "translated-name": "CurrentSkin",
+            "params": {}
+          },
+          "current-animation": {
+            "description": "Get current animation name",
+            "translated-name": "CurrentAnimation",
+            "params": {}
+          },
+          "animations": {
+            "description": "Get list of animations. separated by new lines",
+            "translated-name": "Animations",
+            "params": {}
+          },
+          "skins-count": {
+            "description": "Get amount of skins.",
+            "translated-name": "SkinsCount",
+            "params": {}
+          },
+          "animations-count": {
+            "description": "Get amount of animations.",
+            "translated-name": "AnimationsCount",
+            "params": {}
+          },
+          "skin-name": {
+            "description": "Get skins name by index.",
+            "translated-name": "SkinName",
+            "params": {
+              "index": {
+                "name": "Index",
+                "desc": "Skin index"
+              }
+            }
+          },
+          "animation-name": {
+            "description": "Get animation name by index.",
+            "translated-name": "AnimationName",
+            "params": {
+              "index": {
+                "name": "Index",
+                "desc": "Animation index"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

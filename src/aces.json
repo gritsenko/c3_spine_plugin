@@ -1,0 +1,144 @@
+{
+  "spine": {
+    "conditions": [
+      {
+        "id": "on-skeleton-loaded",
+        "scriptName": "OnSkeletonLoaded",
+        "isTrigger": true
+      }
+    ],
+    "actions": [
+      {
+        "id": "set-skin",
+        "scriptName": "SetSkin",
+        "highlight": true,
+        "params": [
+          {
+            "id": "skin-name",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "flip",
+        "scriptName": "Flip",
+        "highlight": true,
+        "params": [
+          {
+            "id": "is-flipped",
+            "type": "boolean"
+          }
+        ]
+      },
+      {
+        "id": "set-animation",
+        "scriptName": "SetAnimation",
+        "highlight": true,
+        "params": [
+          {
+            "id": "animation-name",
+            "type": "string"
+          },
+          {
+            "id": "loop",
+            "type": "boolean"
+          }
+        ]
+      },
+      {
+        "id": "play",
+        "scriptName": "Play",
+        "highlight": true,
+        "params": []
+      },
+      {
+        "id": "stop",
+        "scriptName": "Stop",
+        "highlight": true,
+        "params": []
+      },
+      {
+        "id": "update-bounds",
+        "scriptName": "UpdateBounds",
+        "highlight": true,
+        "params": []
+      }
+    ],
+    "expressions": [
+      {
+        "id": "skins",
+        "expressionName": "Skins",
+        "scriptName": "Skins",
+        "highlight": true,
+        "returnType": "string",
+        "params": []
+      },
+      {
+        "id": "current-skin",
+        "expressionName": "CurrentSkin",
+        "scriptName": "CurrentSkin",
+        "highlight": true,
+        "returnType": "string",
+        "params": []
+      },
+      {
+        "id": "current-animation",
+        "expressionName": "CurrentAnimation",
+        "scriptName": "CurrentAnimation",
+        "highlight": true,
+        "returnType": "string",
+        "params": []
+      },
+      {
+        "id": "animations",
+        "expressionName": "Animations",
+        "scriptName": "Animations",
+        "highlight": true,
+        "returnType": "string",
+        "params": []
+      },
+      {
+        "id": "skins-count",
+        "expressionName": "SkinsCount",
+        "scriptName": "SkinsCount",
+        "highlight": true,
+        "returnType": "number",
+        "params": []
+      },
+      {
+        "id": "animations-count",
+        "expressionName": "AnimationsCount",
+        "scriptName": "AnimationsCount",
+        "highlight": true,
+        "returnType": "number",
+        "params": []
+      },
+      {
+        "id": "skin-name",
+        "expressionName": "SkinName",
+        "scriptName": "SkinName",
+        "highlight": true,
+        "returnType": "string",
+        "params": [
+          {
+            "id": "index",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "animation-name",
+        "expressionName": "AnimationName",
+        "scriptName": "AnimationName",
+        "highlight": true,
+        "returnType": "string",
+        "params": [
+          {
+            "id": "index",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}
