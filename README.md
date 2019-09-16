@@ -7,4 +7,4 @@ Add-on based on **Mikal's** sample from this thread:
 For now it uses **additional canvases** for each spine skeleton, which are used as textures in C3 rendering process. I found this method not really fast on mobile browsers. But I haven't succeed in direct drawing into c3 WebGL context yet.
 
 ## LIVE DEMO
-https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html
+[https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html](https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html)
