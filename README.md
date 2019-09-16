@@ -9,6 +9,7 @@ For now it uses **additional canvases** for each spine skeleton, which are used 
 ## Download
 
 [Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/v1/Spine-v1.0.0.c3addon)
+
 [Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/v1/SpinePluginTest.c3p)
 
 ## LIVE DEMO
