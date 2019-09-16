@@ -6,6 +6,13 @@ Add-on based on **Mikal's** sample from this thread:
 
 For now it uses **additional canvases** for each spine skeleton, which are used as textures in C3 rendering process. I found this method not really fast on mobile browsers. But I haven't succeed in direct drawing into c3 WebGL context yet.
 
+## Warning
+
+To use this add-on you must uncheck "Project/Advanced/Use worker" option:
+
+![warn](docs/images/warn.jpg "Uncheck use worker")
+
+
 ## Download
 
 [Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/v1/Spine-v1.0.0.c3addon)
