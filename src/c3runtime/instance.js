@@ -29,6 +29,8 @@
                 this.pngPath = properties[2];
                 this.skinName = properties[3];
                 this.animationName = properties[4];
+                this.skeletonName = properties[5];
+                this.premultipliedAlpha = properties[6];
             }
 
             this.isMirrored = false;
@@ -41,19 +43,12 @@
             this.pngURI = ""
             this.atlasURI = ""
             this.jsonURI = ""
-            this.toggleFPS = 0
             this.c3renderer = null
-            this.c3gl = globalThis.c3_runtimeInterface._localRuntime.GetCanvasManager().GetWebGLRenderer()._gl
             this.c3wgl = globalThis.c3_runtimeInterface._localRuntime.GetCanvasManager().GetWebGLRenderer()
-            console.log(this.c3wgl)
+            this.canvas = globalThis.c3_runtimeInterface.GetCanvas() // C3 canvas 
             this.spineFB = null
-            // Control render frame rate 0 = full rate, 1 = 1/2 rate, etc.
-            var countFPS = 0;
 
-            //this.canvas = this.CreateElement();
             this._StartTicking();
-
-            console.log(this);
 
         }
 
@@ -64,84 +59,41 @@
             this._elementId = "SpineCanvas_" + uid;
             this.DEMO_NAME = this._elementId;
 
-            this.assetManager = new spine.SharedAssetManager();
-            this.hackAssetManager();
+            // Get C3 canvas gl context
+            // Context already exists and we want to use (for render to texture)
+            // XXX Can't change existing context attributes (though we may want to for PMA)
+            // var config = { alpha: false };
+            var config = {}
+            this.gl = this.canvas.getContext("webgl2", config) || this.canvas.getContext("webgl", config) || canvas.getContext("experimental-webgl", config);
+            var gl = this.gl
+            if (!gl) {
+                alert('WebGL is unavailable.');
+                return;
+            }
 
-            this.bgColor = new spine.Color(0.0, 0.0, 0.0, 0.0);
+            // Init Spine elements
             this.mvp = new spine.webgl.Matrix4();
+            this.shader = spine.webgl.Shader.newTwoColoredTextured(gl);
+            this.batcher = new spine.webgl.PolygonBatcher(gl);
+            this.mvp.ortho2d(0, 0, 0, 0); // XXX Render to texture size unknown until skeleton loaded.
+            this.renderer = new spine.webgl.SkeletonRenderer(gl);
+            this.shapes = new spine.webgl.ShapeRenderer(gl);
+            this.assetManager = new spine.SharedAssetManager();
+            this.bgColor = new spine.Color(0.0, 0.0, 0.0, 0.0);
 
-            // XXX Redundant, remove? (C3 canvas dimension is used to create texture size for now, should change this)
-            const canvas = this.CreateCanvas(this._elementId);
-            this.canvas = canvas;
-
-            // Get C3 canvas and add Spine
-            this.canvas = globalThis.c3_runtimeInterface.GetCanvas() // Change to C3 canvas
-            this.canvas.ctx = new spine.webgl.ManagedWebGLRenderingContext(this.canvas, { alpha: true });
-            console.log(this.canvas.ctx)
-            console.log(this._runtime);
+            console.log(gl)
 
             this.pngURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.pngPath);
             this.atlasURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.atlasPath);
             this.jsonURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.jsonPath);
-
-            // Use C3 canvas gl instead of a new canvas
-            const gl = this.canvas.ctx.gl;
-            this.gl = gl;
 
             console.log("LOADING SPINE STUFF");
             var textureLoader = function(img) { return new spine.webgl.GLTexture(gl, img); };
             this.assetManager.loadJson(this.DEMO_NAME, this.jsonURI);
             this.assetManager.loadTexture(this.DEMO_NAME, textureLoader, this.pngURI);
             this.assetManager.loadText(this.DEMO_NAME, this.atlasURI);
-            this.renderer = new spine.webgl.SceneRenderer(this.canvas, gl);
             this.isSpineInitialized = true;
             console.log("Spine renderer initialized");
-        }
-
-        hackAssetManager() {
-            spine.SharedAssetManager.prototype.loadText = function(clientId, path) {
-                var _this = this;
-                path = this.pathPrefix + path;
-                if (!this.queueAsset(clientId, null, path))
-                    return;
-
-                fetch(path)
-                    .then(function(response) {
-                        if (!response.ok) {
-                            throw Error(response.statusText);
-                        }
-                        return response.text();
-                    })
-                    .then(function(rawText) {
-                        console.log("Text asset loaded");
-                        _this.rawAssets[path] = rawText;
-                    })
-                    .catch(function(error) {
-                        console.log('Looks like there was a problem: \n', error);
-                    });
-            };
-
-            spine.SharedAssetManager.prototype.loadJson = function(clientId, path) {
-                var _this = this;
-                path = this.pathPrefix + path;
-                if (!this.queueAsset(clientId, null, path))
-                    return;
-
-                fetch(path)
-                    .then(function(response) {
-                        if (!response.ok) {
-                            throw Error(response.statusText);
-                        }
-                        return response.json();
-                    })
-                    .then(function(responseAsJson) {
-                        console.log("Spin json loaded");
-                        _this.rawAssets[path] = responseAsJson;
-                    })
-                    .catch(function(error) {
-                        console.log('Looks like there was a problem: \n', error);
-                    });
-            };
         }
 
         resize() {
@@ -158,45 +110,18 @@
             var height = (bounds.size.y) * scale;
 
             this.mvp.ortho2d(centerX - width / 2, centerY - height / 2, width, height);
-            // XXX will resize c3 canvas 
+            // XXX will resize c3 canvas, if FB bound to C3 canvas 
             // this.gl.viewport(0, 0, bounds.size.x, bounds.size.y);
-            // What do we need to do here? what issues does this cause?
-        }
-
-        CreateCanvas(elementId) {
-            // XXX no longer using this canvas for render, remove?
-            // XXX const scale = this._runtime.GetDisplayScale() * 2;
-            const scale = 1;
-
-            var wi = this.GetWorldInfo();
-            // Create test canvas with transparency for Spine render to, add more canvases for more animations
-            var canvasNew = document.createElement('canvas');
-            canvasNew.id = elementId;
-            canvasNew.width = wi.GetWidth() * scale;
-            canvasNew.height = wi.GetHeight() * scale;
-            canvasNew.style.zIndex = -9990;
-            canvasNew.style.position = "absolute";
-            canvasNew.style.border = "0px solid";
-            canvasNew.style.top = 0;
-            canvasNew.style.left = 0;
-            canvasNew.background = "Green";
-            canvasNew.style.opacity = 99.0;
-            // XXX no longer using canvas do not add spine context
-            // canvasNew.ctx = new spine.webgl.ManagedWebGLRenderingContext(canvasNew, { alpha: true });
-
-            var body = document.getElementsByTagName("body")[0];
-            body.appendChild(canvasNew);
-
-            return canvasNew;
+            // only do in render function where it can be restored
         }
 
         loadSkeletons() {
             console.log("Loading skeleton");
 
-            this.skeletonInfo = this.loadSkeleton("hero_human_female", this.animationName);
+            // this.skeletonInfo = this.loadSkeleton("hero_human_female", this.animationName);
             // XXX hack to allow different skeletons loaded by oveloading skinName
             // debugger
-            this.skeletonInfo = this.loadSkeleton(this.skinName, this.animationName);
+            this.skeletonInfo = this.loadSkeleton(this.skeletonName, this.animationName);
 
             const skins = this.skeletonInfo.skeleton.data.skins;
             this.skinNames = skins.map(x => x.name);
@@ -212,6 +137,7 @@
             // XXX Do not resize C3 canvas
             // XXX May need to delete and resize texture buffer that is created instead?
             this.resize();
+            console.log(this.skeletonInfo)
 
             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnSkeletonLoaded);
         }
@@ -238,9 +164,14 @@
 
             console.log("Reading skeleton data");
 
-            var skeletonData = skeletonJson.readSkeletonData(assetManager.get(this.DEMO_NAME, this.jsonURI) /*[name]*/ );
-            // XXX for general case
-            // var skeletonData = skeletonJson.readSkeletonData(assetManager.get(this.DEMO_NAME, this.jsonURI) [name] );
+            // XXX JSON file with one skeleton, no name? 
+            if (this.skeletonName == "")
+            {
+                var skeletonData = skeletonJson.readSkeletonData(assetManager.get(this.DEMO_NAME, this.jsonURI) /*[name]*/ );
+            } else
+            {
+                var skeletonData = skeletonJson.readSkeletonData(assetManager.get(this.DEMO_NAME, this.jsonURI) [name] );
+            }
 
             console.log("creating skeleton");
 
@@ -357,15 +288,21 @@
         }
 
         render() {
-            this.c3wgl.EndBatch(); 
             const gl = this.gl;
-            // render to our targetTexture by binding the framebuffer
+            const bounds = this.skeletonInfo.bounds;
+
+
+            // End C3 Batch
+            this.c3wgl.EndBatch(); 
+            
+            // Render to our targetTexture by binding the framebuffer to the SpineFB texture
             gl.bindFramebuffer(gl.FRAMEBUFFER, this.spineFB);
 
             // Save C3 webgl context, may be able to reduce some
             // Create VAO for Spine to use. May need to change this for non-webgl2
             if(!this.myVAO)
             {
+                // XXX webgl2 only, need to check what gl context is available
                 this.myVAO = gl.createVertexArray();
             }
             var oldVAO = gl.createVertexArray();
@@ -379,35 +316,43 @@
             var oldElement = gl.getParameter(gl.ELEMENT_ARRAY_BUFFER_BINDING);
             var oldClearColor = gl.getParameter(gl.COLOR_CLEAR_VALUE);
             var oldViewport = gl.getParameter(gl.VIEWPORT);
+
+            // Set viewport?
+            gl.viewport(0, 0, bounds.size.x, bounds.size.y);
+
+            // Set proper webgl blend for Spine render
             gl.enable(gl.BLEND);
             gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
             // Some random appearing alpha / pma issue may be related to blend func
             // XXX gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
             gl.bindTexture(gl.TEXTURE_2D, null);        
             gl.bindBuffer(gl.ARRAY_BUFFER, null);
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
+            // Bind the shader and set the texture and model-view-projection matrix.
+	        this.shader.bind();
+	        this.shader.setUniformi(spine.webgl.Shader.SAMPLER, 0);
+            this.shader.setUniform4x4f(spine.webgl.Shader.MVP_MATRIX, this.mvp.values);
+            
+            // Start the batch and tell the SkeletonRenderer to render the active skeleton.
+            this.batcher.begin(this.shader);
+            
+            // Apply vertex effect
+            this.renderer.vertexEffect = null;
 
-            const renderer = this.renderer;
-
-            var active = this.skeletonInfo;
-            var skeleton = active.skeleton;
-            var offset = active.bounds.offset;
-            var size = active.bounds.size;
-
-            renderer.camera.position.x = offset.x + size.x / 2;
-            renderer.camera.position.y = offset.y + size.y / 2 + 20;
-            renderer.camera.viewportWidth = size.x * 1.5;
-            renderer.camera.viewportHeight = size.y * 1.5;
             gl.clearColor(0, 0, 0, 0);
             gl.clear(gl.COLOR_BUFFER_BIT);
 
-            // Resize in Spine-TS has been change to use texture size instead
-            renderer.resize(spine.webgl.ResizeMode.Fit);
-            renderer.begin();
-            renderer.drawSkeleton(skeleton, true);
-            renderer.end();
+            // Resize 
+            this.resize();
+            // Render
+            this.renderer.premultipliedAlpha = this.premultipliedAlpha;
+            this.renderer.draw(this.batcher, this.skeletonInfo.skeleton);
+            this.batcher.end();
+            this.shader.unbind();
 
+            // Change back to C3 canvas FB
             gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
             // Restore C3 webgl state
@@ -478,8 +423,6 @@
 
                 var bounds = this.skeletonInfo.bounds;
                 this._elementTexture = renderer.CreateDynamicTexture(bounds.size.x, bounds.size.y, { mipMap: false });
-                this.canvas.ctx.c3TextureX = bounds.size.x
-                this.canvas.ctx.c3TextureY = bounds.size.y
 
                 // Create FB and bind texture to spineFB
                 this.spineFB = gl.createFramebuffer();

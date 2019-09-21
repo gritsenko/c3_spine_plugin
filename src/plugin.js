@@ -51,7 +51,9 @@
                 new SDK.PluginProperty("text", "atlas", ""),
                 new SDK.PluginProperty("text", "png", ""),
                 new SDK.PluginProperty("text", "skin", "default"),
-                new SDK.PluginProperty("text", "animation", "idle")
+                new SDK.PluginProperty("text", "animation", "idle"),
+                new SDK.PluginProperty("text", "skeleton", ""),
+                new SDK.PluginProperty("check", "pre-mult-alpha", false)
             ]);
             SDK.Lang.PopContext(); //.properties
             SDK.Lang.PopContext();
