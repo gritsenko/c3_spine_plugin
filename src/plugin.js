@@ -2,7 +2,7 @@
 {
 
     const PLUGIN_ID = "Gritsenko_Spine";
-    const PLUGIN_VERSION = "1.0.0.0";
+    const PLUGIN_VERSION = "1.1.0.0";
     const PLUGIN_CATEGORY = "general";
 
     const PLUGIN_CLASS = SDK.Plugins.Gritsenko_Spine = class SpinePlugin extends SDK.IPluginBase {
@@ -27,6 +27,7 @@
             this._info.AddCommonAngleACEs();
             this._info.AddCommonAppearanceACEs();
             this._info.AddCommonZOrderACEs();
+            this._info.AddCommonSizeACEs();
             this._info.SetIsTiled(false);
             this._info.SetIsSingleGlobal(false);
             this._info.SetIsDeprecated(false);
