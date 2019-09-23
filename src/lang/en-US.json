@@ -27,6 +27,14 @@
           "animation": {
             "name": "Animation",
             "desc": "Active animation name"
+          },
+          "skeleton": {
+            "name": "Skeleton",
+            "desc": "Active Skeleton name"
+          },
+          "pre-mult-alpha": {
+            "name": "PreMultiplyAlpha",
+            "desc": "Pre Multiply Alpha Texture"
           }
         },
         "aceCategories": {
