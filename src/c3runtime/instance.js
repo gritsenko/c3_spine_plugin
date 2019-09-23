@@ -88,11 +88,20 @@
             this.jsonURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.jsonPath);
 
             console.log("LOADING SPINE STUFF");
+            // Change PMA format to load spine texture
+            gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
+            console.log("update:gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL:"+gl.getParameter(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL));            
+            
             var textureLoader = function(img) { return new spine.webgl.GLTexture(gl, img); };
             this.assetManager.loadJson(this.DEMO_NAME, this.jsonURI);
             this.assetManager.loadTexture(this.DEMO_NAME, textureLoader, this.pngURI);
             this.assetManager.loadText(this.DEMO_NAME, this.atlasURI);
             this.isSpineInitialized = true;
+
+            // Restore PMA format to C3 state
+            // XXX Can not be reset here, causes PMA texture load to be incorrect
+            // gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,true);
+ 
             console.log("Spine renderer initialized");
         }
 
@@ -120,7 +129,6 @@
 
             // this.skeletonInfo = this.loadSkeleton("hero_human_female", this.animationName);
             // XXX hack to allow different skeletons loaded by oveloading skinName
-            // debugger
             this.skeletonInfo = this.loadSkeleton(this.skeletonName, this.animationName);
 
             const skins = this.skeletonInfo.skeleton.data.skins;
@@ -293,8 +301,9 @@
 
 
             // End C3 Batch
-            this.c3wgl.EndBatch(); 
-            
+            // this.c3wgl.EndBatch(); 
+
+            var oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
             // Render to our targetTexture by binding the framebuffer to the SpineFB texture
             gl.bindFramebuffer(gl.FRAMEBUFFER, this.spineFB);
 
@@ -307,8 +316,6 @@
             }
             var oldVAO = gl.createVertexArray();
             oldVAO = gl.getParameter(gl.VERTEX_ARRAY_BINDING);
-            // Bind to private VAO so Spine use does not impact C3 VAO
-            gl.bindVertexArray(this.myVAO);
             var oldProgram = gl.getParameter(gl.CURRENT_PROGRAM);        
             var oldActive = gl.getParameter(gl.ACTIVE_TEXTURE);            
             var oldTex = gl.getParameter(gl.TEXTURE_BINDING_2D);        
@@ -316,6 +323,8 @@
             var oldElement = gl.getParameter(gl.ELEMENT_ARRAY_BUFFER_BINDING);
             var oldClearColor = gl.getParameter(gl.COLOR_CLEAR_VALUE);
             var oldViewport = gl.getParameter(gl.VIEWPORT);
+            // Bind to private VAO so Spine use does not impact C3 VAO
+            gl.bindVertexArray(this.myVAO);
 
             // Set viewport?
             gl.viewport(0, 0, bounds.size.x, bounds.size.y);
@@ -352,11 +361,12 @@
             this.batcher.end();
             this.shader.unbind();
 
-            // Change back to C3 canvas FB
-            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+            // Change back to C3 FB last used
+            gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
 
             // Restore C3 webgl state
             gl.useProgram(oldProgram);                    
+            gl.bindVertexArray(oldVAO);
             gl.activeTexture(oldActive);                
             gl.bindTexture(gl.TEXTURE_2D, oldTex);        
             gl.bindBuffer(gl.ARRAY_BUFFER, oldBinding);
@@ -364,7 +374,6 @@
             gl.clearColor(oldClearColor[0],oldClearColor[1],oldClearColor[2],oldClearColor[3])
             gl.enable(gl.BLEND);
             gl.blendFuncSeparate(gl.DST_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.DST_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-            gl.bindVertexArray(oldVAO);
             gl.viewport(oldViewport[0],oldViewport[1],oldViewport[2],oldViewport[3]);
         }
 
@@ -390,7 +399,6 @@
                 state.update(delta);
                 state.apply(active.skeleton);
                 active.skeleton.updateWorldTransform();
-                this._runtime.UpdateRender();
             }
         }
 
@@ -424,6 +432,7 @@
                 var bounds = this.skeletonInfo.bounds;
                 this._elementTexture = renderer.CreateDynamicTexture(bounds.size.x, bounds.size.y, { mipMap: false });
 
+                var oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
                 // Create FB and bind texture to spineFB
                 this.spineFB = gl.createFramebuffer();
                 gl.bindFramebuffer(gl.FRAMEBUFFER, this.spineFB);
@@ -432,11 +441,11 @@
                 gl.framebufferTexture2D(gl.FRAMEBUFFER, attachmentPoint, gl.TEXTURE_2D, this._elementTexture._texture, 0);
                 console.log("this.spineFB created:"+this.spineFB)
                 // Restore render to the canvas
-                gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-
+                gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
                 console.log("Created dynamic texture for spine:" + this._elementId);
             }
 
+            // Render skeleton
             if (this.isSkeletonLoaded && this._elementTexture !== null) {
                 this.render();
             }
