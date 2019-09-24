@@ -331,7 +331,7 @@
 
             // Set proper webgl blend for Spine render
             gl.enable(gl.BLEND);
-            gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
+            gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
             // Some random appearing alpha / pma issue may be related to blend func
             // XXX gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
@@ -373,7 +373,11 @@
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, oldElement);
             gl.clearColor(oldClearColor[0],oldClearColor[1],oldClearColor[2],oldClearColor[3])
             gl.enable(gl.BLEND);
-            gl.blendFuncSeparate(gl.DST_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.DST_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+            // XXX seems redundant, but C3 set blendFunc twice with different values (may be at end and start?)
+            // gl.blendFunc(gl.ONE, gl.ZERO)
+            gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+            // XXX incorrect blend, causes first effect to not be drawn (drawn to another FB)
+            // gl.blendFuncSeparate(gl.DST_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.DST_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
             gl.viewport(oldViewport[0],oldViewport[1],oldViewport[2],oldViewport[3]);
         }
 
