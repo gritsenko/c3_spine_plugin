@@ -3,11 +3,11 @@
   "type": "plugin",
   "name": "Spine",
   "id": "Gritsenko_Spine",
-  "version": "1.0.0.0",
+  "version": "1.2.0.0",
   "author": "Igor Gritsenko",
   "website": "https://www.gritsenko.biz",
   "documentation": "https://www.construct.net",
-  "description": "Unofficial spine addon",
+  "description": "Unofficial spine addon - render to texture",
   "editor-scripts": [
     "plugin.js",
     "type.js",
