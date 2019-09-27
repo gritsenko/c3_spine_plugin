@@ -71,6 +71,21 @@
                 return;
             }
 
+            var version = 0;
+            this.isWebGL2 = false;
+            var glVersion = gl.getParameter( gl.VERSION );
+        
+            if ( glVersion.indexOf( 'WebGL' ) !== - 1 )
+            {
+               version = parseFloat( /^WebGL\ ([0-9])/.exec( glVersion )[ 1 ] );
+               this.isWebGL2 = ( version >= 2.0 );
+            } else if ( glVersion.indexOf( 'OpenGL ES' ) !== - 1 )
+            {
+        
+               version = parseFloat( /^OpenGL\ ES\ ([0-9])/.exec( glVersion )[ 1 ] );
+               this.isWebGL2 = ( version >= 3.0 );
+            }
+
             // Init Spine elements
             this.mvp = new spine.webgl.Matrix4();
             this.shader = spine.webgl.Shader.newTwoColoredTextured(gl);
@@ -309,13 +324,41 @@
 
             // Save C3 webgl context, may be able to reduce some
             // Create VAO for Spine to use. May need to change this for non-webgl2
+            // Handle webgl1 and webgl2
+            if (!this.isWebGL2)
+            {
+                var extOESVAO = gl.getExtension("OES_vertex_array_object");
+                if (!extOESVAO)
+                {
+                    alert("Spine plugin error: webGL1 with no OES_vertex_array_object support");  // tell user they don't have the required extension or work around it
+                    return;
+                }
+    
+            }
+
+            // XXX Should move to spine init
             if(!this.myVAO)
             {
-                // XXX webgl2 only, need to check what gl context is available
-                this.myVAO = gl.createVertexArray();
+                if (this.isWebGL2)
+                {
+                    this.myVAO = gl.createVertexArray();
+                } else
+                {
+                    this.myVAO = extOESVAO.createVertexArrayOES();
+                }
+
             }
-            var oldVAO = gl.createVertexArray();
-            oldVAO = gl.getParameter(gl.VERTEX_ARRAY_BINDING);
+
+            if (this.isWebGL2)
+            {
+                var oldVAO = gl.createVertexArray();
+                oldVAO = gl.getParameter(gl.VERTEX_ARRAY_BINDING);
+            } else
+            {
+                var oldVAO = extOESVAO.createVertexArrayOES(); 
+                oldVAO = gl.getParameter(extOESVAO.VERTEX_ARRAY_BINDING_OES);
+            }
+
             var oldProgram = gl.getParameter(gl.CURRENT_PROGRAM);        
             var oldActive = gl.getParameter(gl.ACTIVE_TEXTURE);            
             var oldTex = gl.getParameter(gl.TEXTURE_BINDING_2D);        
@@ -324,7 +367,14 @@
             var oldClearColor = gl.getParameter(gl.COLOR_CLEAR_VALUE);
             var oldViewport = gl.getParameter(gl.VIEWPORT);
             // Bind to private VAO so Spine use does not impact C3 VAO
-            gl.bindVertexArray(this.myVAO);
+
+            if (this.isWebGL2)
+            {
+                gl.bindVertexArray(this.myVAO);
+            } else
+            {
+                extOESVAO.bindVertexArrayOES(this.myVAO); 
+            }
 
             // Set viewport?
             gl.viewport(0, 0, bounds.size.x, bounds.size.y);
@@ -365,8 +415,14 @@
             gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
 
             // Restore C3 webgl state
-            gl.useProgram(oldProgram);                    
-            gl.bindVertexArray(oldVAO);
+            gl.useProgram(oldProgram);
+            if (this.isWebGL2)
+            {
+                gl.bindVertexArray(oldVAO);
+            } else
+            {
+                extOESVAO.bindVertexArrayOES(oldVAO); 
+            }                    
             gl.activeTexture(oldActive);                
             gl.bindTexture(gl.TEXTURE_2D, oldTex);        
             gl.bindBuffer(gl.ARRAY_BUFFER, oldBinding);
