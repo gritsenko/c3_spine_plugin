@@ -2,7 +2,7 @@
 {
 
     const PLUGIN_ID = "Gritsenko_Spine";
-    const PLUGIN_VERSION = "1.3.0.0";
+    const PLUGIN_VERSION = "1.4.0.0";
     const PLUGIN_CATEGORY = "general";
 
     const PLUGIN_CLASS = SDK.Plugins.Gritsenko_Spine = class SpinePlugin extends SDK.IPluginBase {
@@ -53,6 +53,7 @@
                 new SDK.PluginProperty("text", "skin", "default"),
                 new SDK.PluginProperty("text", "animation", "idle"),
                 new SDK.PluginProperty("text", "skeleton", ""),
+                new SDK.PluginProperty("float", "scale", 1),
                 new SDK.PluginProperty("check", "pre-mult-alpha", false)
             ]);
             SDK.Lang.PopContext(); //.properties

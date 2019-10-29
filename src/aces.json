@@ -5,6 +5,33 @@
         "id": "on-skeleton-loaded",
         "scriptName": "OnSkeletonLoaded",
         "isTrigger": true
+      },
+      {
+        "id": "on-animation-finished",
+        "scriptName": "OnAnimationFinished",
+        "isTrigger": true,
+        "params": [
+          {
+            "id": "animation-name",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "on-any-animation-finished",
+        "scriptName": "OnAnyAnimationFinished",
+        "isTrigger": true
+      },
+      {
+        "id": "is-animation-playing",
+        "scriptName": "IsAnimationPlaying",
+        "isTrigger": false,
+        "params": [
+          {
+            "id": "animation-name",
+            "type": "string"
+          }
+        ]
       }
     ],
     "actions": [

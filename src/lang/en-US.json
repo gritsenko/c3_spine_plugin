@@ -32,6 +32,10 @@
             "name": "Skeleton",
             "desc": "Active Skeleton name"
           },
+          "scale": {
+            "name": "Scale",
+            "desc": "Set scale of skeleton inside object frame"
+          },
           "pre-mult-alpha": {
             "name": "PreMultiplyAlpha",
             "desc": "Pre Multiply Alpha Texture"
@@ -45,6 +49,34 @@
             "list-name": "On skeleton loaded",
             "display-text": "On skeleton loaded",
             "description": "Triggered skeleton was loaded."
+          },
+          "on-animation-finished": {
+            "list-name": "On animation finished",
+            "display-text": "On animation {0} finished",
+            "description": "Triggered when specified animation finished.",
+            "params": {
+              "animation-name": {
+                "name": "Animation name",
+                "desc": "Animation name"
+              }
+            }
+
+          },
+          "on-any-animation-finished": {
+            "list-name": "On any animation finished",
+            "display-text": "On any animation finished",
+            "description": "Triggered on any animation were finished."
+          },
+          "is-animation-playing": {
+            "list-name": "Is animation playing",
+            "display-text": "Is animation {0} playing",
+            "description": "Is animation playing.",
+            "params": {
+              "animation-name": {
+                "name": "Animation name",
+                "desc": "Animation name"
+              }
+            }
           }
         },
         "actions": {

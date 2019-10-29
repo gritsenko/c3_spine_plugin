@@ -30,7 +30,8 @@
                 this.skinName = properties[3];
                 this.animationName = properties[4];
                 this.skeletonName = properties[5];
-                this.premultipliedAlpha = properties[6];
+                this.skeletonScale = properties[6];
+                this.premultipliedAlpha = properties[7];
             }
 
             this.isMirrored = false;
@@ -128,7 +129,7 @@
             var centerY = bounds.offset.y + (bounds.size.y) / 2;
             var scaleX = bounds.size.x / (bounds.size.x);
             var scaleY = bounds.size.y / (bounds.size.y);
-            var scale = Math.max(scaleX, scaleY) * 1.2;
+            var scale = Math.max(scaleX, scaleY) * (1/this.skeletonScale);
             if (scale < 1) scale = 1;
             var width = (bounds.size.x) * scale;
             var height = (bounds.size.y) * scale;
@@ -272,6 +273,14 @@
                 const state = this.skeletonInfo.state;
                 const skeleton = this.skeletonInfo.skeleton;
                 state.setAnimation(0, this.animationName, loop);
+
+                state.tracks[0].listener = {
+                    complete: (trackEntry, count) => {
+                        this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
+                        this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
+                    }
+                };
+
                 state.apply(skeleton);
             } catch (ex) {
                 console.error(ex);
@@ -459,6 +468,7 @@
                 state.update(delta);
                 state.apply(active.skeleton);
                 active.skeleton.updateWorldTransform();
+                this._runtime.UpdateRender();
             }
         }
 
