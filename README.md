@@ -15,9 +15,9 @@ To use this add-on you must uncheck "Project/Advanced/Use worker" option:
 
 ## Download
 
-[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/v1/Spine-v1.4.0.c3addon)
+[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/v1.0.4/Spine-v1.4.0.c3addon)
 
-[Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/v1.4.0/SpinePluginTest.c3p)
+[Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/v1.0.4/SpinePluginTest.c3p)
 
 ## LIVE DEMO
 [https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html](https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html)
