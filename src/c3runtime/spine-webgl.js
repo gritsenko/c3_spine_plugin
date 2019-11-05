@@ -8252,10 +8252,9 @@ var spine;
 				if (!this.texture) {
 					this.texture = this.context.gl.createTexture();
 				}
-                this.bind();
-                console.log("***update3:gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL:"+gl.getParameter(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL));            
-                gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
-                console.log("***update4:gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL:"+gl.getParameter(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL));    
+				this.bind();
+				if (GLTexture.DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL)
+					gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
 				gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this._image);
 				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, useMipMaps ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR);
@@ -8285,6 +8284,7 @@ var spine;
 				var gl = this.context.gl;
 				gl.deleteTexture(this.texture);
 			};
+			GLTexture.DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL = false;
 			return GLTexture;
 		}(spine.Texture));
 		webgl.GLTexture = GLTexture;

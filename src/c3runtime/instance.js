@@ -88,6 +88,8 @@
             }
 
             // Init Spine elements
+            // Disable PMA when loading Spine textures
+            spine.webgl.GLTexture.DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL = true;
             this.mvp = new spine.webgl.Matrix4();
             this.shader = spine.webgl.Shader.newTwoColoredTextured(gl);
             this.batcher = new spine.webgl.PolygonBatcher(gl);
@@ -104,9 +106,6 @@
             this.jsonURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.jsonPath);
 
             console.log("LOADING SPINE STUFF");
-            // Change PMA format to load spine texture
-            gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
-            console.log("update:gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL:"+gl.getParameter(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL));            
             
             var textureLoader = function(img) { return new spine.webgl.GLTexture(gl, img); };
             this.assetManager.loadJson(this.DEMO_NAME, this.jsonURI);
