@@ -32,6 +32,7 @@
                 this.skeletonName = properties[5];
                 this.skeletonScale = properties[6];
                 this.premultipliedAlpha = properties[7];
+                this.collisionsEnabled = properties[8];
             }
 
             this.isMirrored = false;
@@ -488,6 +489,9 @@
 
             // Create texture if it does not exist (could this be done in constructor?)
             if (this._elementTexture === null || this._newElementId) {
+
+                // Enable collisions based on property, add ACEs if needed
+                wi.SetCollisionEnabled(this.collisionsEnabled);
 
                 if (this._elementTexture !== null) {
                     renderer.DeleteTexture(this._elementTexture);

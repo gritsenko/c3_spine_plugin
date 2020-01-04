@@ -39,6 +39,10 @@
           "pre-mult-alpha": {
             "name": "PreMultiplyAlpha",
             "desc": "Pre Multiply Alpha Texture"
+          },
+          "collisions": {
+            "name": "Enable collisions",
+            "desc": "Whether the object will register collision events or not."
           }
         },
         "aceCategories": {
