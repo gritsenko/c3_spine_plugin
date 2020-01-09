@@ -509,6 +509,7 @@
                 this._newElementId = false;
 
                 var bounds = this.skeletonInfo.bounds;
+                console.log("creating dynamic texture with size: " + bounds.size.x + " x " + bounds.size.y);
                 this._elementTexture = renderer.CreateDynamicTexture(bounds.size.x, bounds.size.y, { mipMap: false });
 
                 var oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);

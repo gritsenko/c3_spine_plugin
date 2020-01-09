@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+    <title>Spine add-on for Construct 3 | c3_spine_plugin</title>
+    <meta property="og:title" content="Spine add-on for Construct 3" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="description" content="Spine plugin for construct 3" />
+    <meta property="og:description" content="Spine plugin for construct 3" />
+    <link rel="canonical" href="https://gritsenko.github.io/c3_spine_plugin/" />
+    <meta property="og:url" content="https://gritsenko.github.io/c3_spine_plugin/" />
+    <meta property="og:site_name" content="c3_spine_plugin" />
+
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+
+<body>
+
+    <h1>Spine JSON export 3.3 to 3.8 format patcher</h1>
+
+    <table>
+        <tr>
+            <td>
+                <h2>Old json</h2>
+                <textarea id="old_json" style="width: 300px; height: 300px;">
+                Loading...
+                </textarea>
+            </td>
+            <td>
+                <h2>New json</h2>
+                <textarea id="new_json" style="width: 300px; height: 300px;">
+                </textarea>
+            </td>
+        </tr>
+    </table>
+
+    <div>
+        <button onclick="convert();">Convert!</button>
+    </div>
+
+
+
+    <script>
+        $("#old_json").load("old.json");
+
+        function convert() {
+            $("#new_json").val("Converting....");
+
+            const json = $("#old_json").val();
+            const spine = JSON.parse(json);
+            console.log(spine);
+
+            let oldSkins = spine.skins;
+
+            console.log(oldSkins);
+
+            spine.skins = [];
+
+            for (const key in oldSkins) {
+                if (oldSkins.hasOwnProperty(key)) {
+                    const element = oldSkins[key];
+
+                    spine.skins.push(
+                        {
+                            "name": key,
+                            "attachments" : element
+                        }
+                    )
+                }
+            }
+            $("#new_json").val(JSON.stringify(spine));
+
+        }
+    </script>
+
+
+</body>
+
+</html>
