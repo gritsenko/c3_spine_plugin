@@ -26,9 +26,8 @@
         <tr>
             <td>
                 <h2>Old json</h2>
-                <textarea id="old_json" style="width: 300px; height: 300px;">
-                Loading...
-                </textarea>
+                <textarea id="old_json" style="width: 300px; height: 300px;"
+                placeholder="Paste old formatted spine json here..."></textarea>
             </td>
             <td>
                 <h2>New json</h2>
@@ -45,7 +44,7 @@
 
 
     <script>
-        $("#old_json").load("old.json");
+        //$("#old_json").load("old.json");
 
         function convert() {
             $("#new_json").val("Converting....");
