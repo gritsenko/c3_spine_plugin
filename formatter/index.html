@@ -27,7 +27,7 @@
             <td>
                 <h2>Old json</h2>
                 <textarea id="old_json" style="width: 300px; height: 300px;"
-                placeholder="Paste old formatted spine json here..."></textarea>
+                    placeholder="Paste old formatted spine json here..."></textarea>
             </td>
             <td>
                 <h2>New json</h2>
@@ -44,7 +44,6 @@
 
 
     <script>
-        //$("#old_json").load("old.json");
 
         function convert() {
             $("#new_json").val("Converting....");
@@ -66,14 +65,95 @@
                     spine.skins.push(
                         {
                             "name": key,
-                            "attachments" : element
+                            "attachments": element
                         }
                     )
                 }
             }
+
+            function fixProp(key, prop) {
+                console.log("Fixing property: " + key);
+                prop.forEach(item => {
+                    console.log(item);
+                    if (item.curve !== undefined && Array.isArray(item.curve)) {
+                        console.log("fixing curve: " + item.curve);
+                        var oldCurve = item.curve;
+                        item.curve = oldCurve[0];
+                        if (oldCurve[1] !== 0)
+                            item.c2 = oldCurve[1];
+                        if (oldCurve[2] !== 1)
+                            item.c3 = oldCurve[2];
+                        if (oldCurve[3] !== 1)
+                            item.c4 = oldCurve[3];
+                    }
+
+                    if(item.time === 0){
+                        console.log("fixing time: " + item.time);
+                        delete item.time;
+                    }
+                });
+            }
+
+            function processPropertyAnimations(part) {
+                for (const key in part) {
+                    if (part.hasOwnProperty(key)) {
+                        const prop = part[key];
+
+                        console.log("Processing animation property: " + key);
+                        console.log(prop);
+
+                        if (Array.isArray(prop)) {
+                            fixProp(key, prop);
+                        } else {
+                            for (const propKey in prop) {
+                                if (prop.hasOwnProperty(propKey)) {
+                                    const subProp = prop[propKey];
+                                    fixProp(key + "/" + propKey, subProp);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            function processParts(group) {
+                for (const key in group) {
+                    if (group.hasOwnProperty(key)) {
+                        const part = group[key];
+                        console.log("Processing part: " + key);
+                        processPropertyAnimations(part);
+                    }
+                }
+            }
+
+            for (const key in spine.animations) {
+                if (spine.animations.hasOwnProperty(key)) {
+                    const anim = spine.animations[key];
+
+                    console.log("Processing animation: " + key);
+                    console.log(anim);
+
+                    //process groups
+                    for (const animPartKey in anim) {
+                        if (anim.hasOwnProperty(animPartKey)) {
+                            console.log("Processing group: " + animPartKey);
+                            processParts(anim[animPartKey]);
+                        }
+                    }
+                }
+            }
+
+
+
+
             $("#new_json").val(JSON.stringify(spine));
 
         }
+
+        $("#old_json").load("old_meshes.json", () => {
+            convert();
+        });
+
     </script>
 
 
