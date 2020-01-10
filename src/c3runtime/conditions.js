@@ -7,7 +7,7 @@
         },
 
         OnAnimationFinished(animationName) {
-            return this.animationName == animationName;
+            return this.completeAnimationName == animationName;
         },
 
         OnAnyAnimationFinished() {
