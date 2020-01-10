@@ -50,6 +50,7 @@
             this.canvas = globalThis.c3_runtimeInterface.GetCanvas() // C3 canvas 
             this.spineFB = null
             this.initSpineInProgress = false;
+            this.completeAnimationName = ""
 
             const wi = this.GetWorldInfo();
             // Enable collisions based on property, add ACEs if needed
@@ -282,6 +283,7 @@
 
                 state.tracks[0].listener = {
                     complete: (trackEntry, count) => {
+                        this.completeAnimationName = this.animationName;
                         this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
                         this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
                     }
@@ -509,7 +511,6 @@
                 this._newElementId = false;
 
                 var bounds = this.skeletonInfo.bounds;
-                console.log("creating dynamic texture with size: " + bounds.size.x + " x " + bounds.size.y);
                 this._elementTexture = renderer.CreateDynamicTexture(bounds.size.x, bounds.size.y, { mipMap: false });
 
                 var oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
