@@ -1,5 +1,7 @@
 # Spine add-on for Construct 3
 
+Requires Spine version 3.8+ JSON files. See Spine Formatter below to upgrade older JSON files.
+
 Add-on based on **Mikal's** sample from this thread: 
 
 [https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940 ](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
@@ -19,3 +21,6 @@ To use this add-on you must uncheck "Project/Advanced/Use worker" option:
 
 ## LIVE DEMO
 [https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html](https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html)
+
+## Spine Formatter (3.3+ to 3.8 JSON Format)
+[https://gritsenko.github.io/c3_spine_plugin/formatter/index.html](https://gritsenko.github.io/c3_spine_plugin/formatter/index.html)
