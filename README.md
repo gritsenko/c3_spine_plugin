@@ -26,5 +26,6 @@ To use this add-on you must uncheck "Project/Advanced/Use worker" option:
 ## LIVE DEMO
 [https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html](https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html)
 
-## Spine Formatter (3.3+ to 3.8 JSON Format) Useful for Dragon Bones Spine JSON export and earlier Spine versions.
+## Spine Formatter (3.3+ to 3.8 JSON Format)
+Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 [https://gritsenko.github.io/c3_spine_plugin/formatter/index.html](https://gritsenko.github.io/c3_spine_plugin/formatter/index.html)
