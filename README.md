@@ -4,6 +4,8 @@
 - Requires Spine version 3.8+ JSON files. See Spine Formatter below to upgrade older JSON files.
 - In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear. 
 
+![warn](docs/images/SpineExportSettings.png "Use Runtime Filter* as Linear")
+
 Add-on based on **Mikal's** sample from this thread: 
 
 [https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940 ](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
