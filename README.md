@@ -1,6 +1,8 @@
 # Spine add-on for Construct 3
 
-Requires Spine version 3.8+ JSON files. See Spine Formatter below to upgrade older JSON files.
+## Important notes for Spine export files:
+- Requires Spine version 3.8+ JSON files. See Spine Formatter below to upgrade older JSON files.
+- In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear. 
 
 Add-on based on **Mikal's** sample from this thread: 
 
