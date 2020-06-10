@@ -2,7 +2,8 @@
 
 ## Important notes for Spine export files:
 - Requires Spine version 3.8+ JSON files. See Spine Formatter below to upgrade older JSON files.
-- In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear. 
+- In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear.
+- Max texture size, limited to one sheet of 4096x4096. Multiple texture sheets not supported.
 
 ![warn](docs/images/SpineExportSettings.png "Use Runtime Filter* as Linear")
 
@@ -29,3 +30,15 @@ To use this add-on you must uncheck "Project/Advanced/Use worker" option:
 ## Spine Formatter (3.3+ to 3.8 JSON Format)
 Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 [https://gritsenko.github.io/c3_spine_plugin/formatter/index.html](https://gritsenko.github.io/c3_spine_plugin/formatter/index.html)
+
+Current supported features:
+
+Load Spine json, atlas and pngs.
+Select starting skin, skeleton, animation
+Dynamically set existing skin define in JSON
+Mesh Deformation
+Animation set, play, pause, trigger on animation complete.
+
+Wishlist or Roadmap
+Mixing for blending Animation
+Events
