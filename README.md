@@ -31,14 +31,13 @@ To use this add-on you must uncheck "Project/Advanced/Use worker" option:
 Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 [https://gritsenko.github.io/c3_spine_plugin/formatter/index.html](https://gritsenko.github.io/c3_spine_plugin/formatter/index.html)
 
-Current supported features:
+## Current supported features
+- Load Spine json, atlas and pngs.
+- Select starting skin, skeleton, animation
+- Dynamically set existing skin define in JSON
+- Mesh Deformation
+- Animation set, play, pause, trigger on animation complete.
 
-Load Spine json, atlas and pngs.
-Select starting skin, skeleton, animation
-Dynamically set existing skin define in JSON
-Mesh Deformation
-Animation set, play, pause, trigger on animation complete.
-
-Wishlist or Roadmap
-Mixing for blending Animation
-Events
+## Wishlist
+- Mixing for blending Animation
+- Events
