@@ -32,6 +32,11 @@
             "type": "string"
           }
         ]
+      },
+      {
+        "id": "on-error",
+        "scriptName": "OnError",
+        "isTrigger": true
       }
     ],
     "actions": [
@@ -89,6 +94,18 @@
         "scriptName": "UpdateBounds",
         "highlight": true,
         "params": []
+      },
+      {
+        "id": "set-animation-speed",
+        "scriptName": "SetAnimationSpeed",
+        "highlight": true,
+        "params": [
+          {
+            "id": "speed",
+            "type": "number",
+            "initialValue": 1.0
+          }
+        ]
       }
     ],
     "expressions": [
@@ -165,6 +182,14 @@
             "type": "number"
           }
         ]
+      },
+      {
+        "id": "spine-error",
+        "expressionName": "Error",
+        "scriptName": "Error",
+        "highlight": false,
+        "returnType": "string",
+        "params": []
       }
     ]
   }

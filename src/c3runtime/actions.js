@@ -28,6 +28,9 @@
 
         UpdateBounds() {
             this.updateBounds();
-        }
+        },
+        SetAnimationSpeed(speed){
+            this.animationSpeed = speed;
+        },
     };
 }

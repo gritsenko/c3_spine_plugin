@@ -37,6 +37,10 @@
 
         AnimationName(index){
             return this.animationNames[index];
+        },
+        
+        Error(){
+            return this.spineError;
         }
 
 

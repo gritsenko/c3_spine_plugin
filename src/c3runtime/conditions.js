@@ -16,6 +16,9 @@
 
         IsAnimationPlaying(animationName) {
             return this.animationName == animationName;
+        },
+        OnError() {
+            return true;
         }
 
     };

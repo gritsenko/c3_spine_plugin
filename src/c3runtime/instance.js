@@ -33,6 +33,7 @@
                 this.skeletonScale = properties[6];
                 this.premultipliedAlpha = properties[7];
                 this.collisionsEnabled = properties[8];
+                this.defaultMix = properties[9];
             }
 
             this.isMirrored = false;
@@ -51,6 +52,8 @@
             this.spineFB = null
             this.initSpineInProgress = false;
             this.completeAnimationName = ""
+            this.spineError = null
+            this.animationSpeed = 1.0
 
             const wi = this.GetWorldInfo();
             // Enable collisions based on property, add ACEs if needed
@@ -215,9 +218,12 @@
 
             skeleton.setSkin(subskin);
 
-            console.log("Loading state");
+            if (this.debug) console.log("Loading state");
 
-            var state = new spine.AnimationState(new spine.AnimationStateData(skeletonData));
+            let stateData = new spine.AnimationStateData(skeletonData);
+            stateData.defaultMix = this.defaultMix;
+
+            var state = new spine.AnimationState(stateData);
             state.setAnimation(0, animationName, true);
             state.apply(skeleton);
             skeleton.updateWorldTransform();
@@ -293,6 +299,8 @@
             } catch (ex) {
                 console.error(ex);
                 alert(ex + "\n\n available animations: \n" + this.animationNames.join("\n"));
+                this.spineError = ex + "\n\n available animations: \n" + this.animationNames.join("\n");
+                this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnError);
             }
         }
 
@@ -466,7 +474,7 @@
                 if (!this.IsSpineReady()) {
                 return;
             }
-            const delta = this._runtime.GetDt();
+            const delta = this._runtime.GetDt() * this.animationSpeed;
             var active = this.skeletonInfo;
             const state = this.skeletonInfo.state;
 

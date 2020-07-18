@@ -34,10 +34,14 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 ## Current supported features
 - Load Spine json, atlas and pngs.
 - Select starting skin, skeleton, animation
-- Dynamically set existing skin define in JSON
-- Mesh Deformation
+- Dynamically set existing skin defined in JSON
+- Mesh Deformations
 - Animation set, play, pause, trigger on animation complete.
+- Animation finished, animation playing conditions.
+- Default mix interval for blending animations.
+- Dynamic animation speed control.
 
 ## Wishlist
-- Mixing for blending Animation
-- Events
+- Dynamic attachment changing for skin attachments.
+- Events to trigger C3 triggers.
+- Mixing for indiviual animation pairs.

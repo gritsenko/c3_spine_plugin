@@ -43,6 +43,10 @@
           "collisions": {
             "name": "Enable collisions",
             "desc": "Whether the object will register collision events or not."
+          },
+          "default-mix": {
+            "name": "Default mix",
+            "desc": "Set default mix time between animations (s)"
           }
         },
         "aceCategories": {
@@ -81,6 +85,11 @@
                 "desc": "Animation name"
               }
             }
+          },
+          "on-error": {
+            "list-name": "On error",
+            "display-text": "On error",
+            "description": "Triggered on any spine error, error message in error expression."
           }
         },
         "actions": {
@@ -138,6 +147,17 @@
             "display-text": "Update spine Bounds",
             "description": "Fit spine model to bounds if c3 object",
             "params": { }
+          },
+          "set-animation-speed": {
+            "list-name": "Set animation speed",
+            "display-text": "Set animation speed {0}x",
+            "description": "Set animation speed. 1 = 1x speed, 2 = 2x speed, 0.5 = 1/2x speed.",
+            "params": {
+              "speed": {
+                "name": "Speed",
+                "desc": "Scaling animation speed."
+              }
+            }
           }
         },
         "expressions": {
@@ -190,6 +210,11 @@
                 "desc": "Animation index"
               }
             }
+          },
+          "spine-error": {
+            "description": "Error message for on error trigger.",
+            "translated-name": "Error",
+            "params": {}
           }
         }
       }
