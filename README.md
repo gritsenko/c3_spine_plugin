@@ -4,6 +4,13 @@
 - Requires Spine version 3.8+ JSON files. See Spine Formatter below to upgrade older JSON files.
 - In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear.
 - Max texture size, limited to one sheet of 4096x4096. Multiple texture sheets not supported.
+## Additional Spine project guidelines:
+- For jumping or large movments, animate Spine character 'in place', don't do large translations in the Spine project.
+- Use C3 events and movement to do the large translations in the C3 project instead (e.g. a long jump.)
+- If animation is clipping against the bounds of the C3 object, you can use the scale property to make the Spine render smaller
+- Alternatively create a large transparent image in the Spine project behind your Spine character, this will can be used to set the bounding box size fot the C3 spine render.
+## Share your C3 and Spine plugin work!
+- Tweet your work @kindeyegames , @pix2d and #construct3, we'd be happy to see your work!
 
 ![warn](docs/images/SpineExportSettings.png "Use Runtime Filter* as Linear")
 
@@ -13,7 +20,7 @@ Add-on based on **Mikal's** sample from this thread:
 
 ## Warning
 
-To use this add-on you must uncheck "Project/Advanced/Use worker" option:
+To use this add-on you must uncheck "Project/Advanced/Use worker" option. If this is a big concern, leave a comment in the github issues
 
 ![warn](docs/images/warn.jpg "Uncheck use worker")
 
