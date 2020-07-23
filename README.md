@@ -27,7 +27,7 @@ To use this add-on you must uncheck "Project/Advanced/Use worker" option. If thi
 
 ## Download
 
-[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.5.0/Spine-v1.5.0.c3addon)
+[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.6.0/Spine-v1.6.0.c3addon)
 
 [Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.5.0/SpinePluginTest.c3p)
 
@@ -47,8 +47,11 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Animation finished, animation playing conditions.
 - Default mix interval for blending animations.
 - Dynamic animation speed control.
+- Dynamic region changing for current skin attachments.
 
 ## Wishlist
-- Dynamic attachment changing for skin attachments.
 - Events to trigger C3 triggers.
 - Mixing for indiviual animation pairs.
+
+## Release notes
+- 1.6.0: Add Set region action (change region(texture) of an attachment in a slot on the current skin. Useful for character customization.
