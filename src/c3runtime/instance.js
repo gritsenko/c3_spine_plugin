@@ -110,13 +110,13 @@
             this.assetManager = new spine.SharedAssetManager();
             this.bgColor = new spine.Color(0.0, 0.0, 0.0, 0.0);
 
-            console.log(gl)
+            // console.log(gl)
 
             this.pngURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.pngPath);
             this.atlasURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.atlasPath);
             this.jsonURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.jsonPath);
 
-            console.log("LOADING SPINE STUFF");
+            // console.log("LOADING SPINE STUFF");
             
             var textureLoader = function(img) { return new spine.webgl.GLTexture(gl, img); };
             this.assetManager.loadJson(this.DEMO_NAME, this.jsonURI);
@@ -128,7 +128,7 @@
             // XXX Can not be reset here, causes PMA texture load to be incorrect
             // gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,true);
  
-            console.log("Spine renderer initialized");
+            // console.log("Spine renderer initialized");
         }
 
         resize() {
@@ -151,7 +151,7 @@
         }
 
         loadSkeletons() {
-            console.log("Loading skeleton");
+            // console.log("Loading skeleton");
 
             // this.skeletonInfo = this.loadSkeleton("hero_human_female", this.animationName);
             // XXX hack to allow different skeletons loaded by oveloading skinName
@@ -166,12 +166,12 @@
             this.isSkeletonLoaded = true;
             this.isSkeletonLoading = false;
 
-            console.log("Skeleton loaded");
+            // console.log("Skeleton loaded");
 
             // XXX Do not resize C3 canvas
             // XXX May need to delete and resize texture buffer that is created instead?
             this.resize();
-            console.log(this.skeletonInfo)
+            // console.log(this.skeletonInfo)
 
             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnSkeletonLoaded);
         }
@@ -182,21 +182,21 @@
             const self = this;
             const atlasURI = assetManager.get(this.DEMO_NAME, this.atlasURI);
 
-            console.log("Loading atlas");
+            // console.log("Loading atlas");
 
             var atlas = new spine.TextureAtlas(atlasURI, function(path) {
-                console.log(`Loading png atlas ${path} replaced with ${self.pngURI}`);
+                // console.log(`Loading png atlas ${path} replaced with ${self.pngURI}`);
                 return assetManager.get(self.DEMO_NAME, self.pngURI);
             });
 
 
             var atlasLoader = new spine.AtlasAttachmentLoader(atlas);
 
-            console.log("Loading json");
+            // console.log("Loading json");
 
             var skeletonJson = new spine.SkeletonJson(atlasLoader);
 
-            console.log("Reading skeleton data");
+            // console.log("Reading skeleton data");
 
             // XXX JSON file with one skeleton, no name? 
             if (this.skeletonName == "")
@@ -207,7 +207,7 @@
                 var skeletonData = skeletonJson.readSkeletonData(assetManager.get(this.DEMO_NAME, this.jsonURI) [name] );
             }
 
-            console.log("creating skeleton");
+            // console.log("creating skeleton");
 
             var skeleton = new spine.Skeleton(skeletonData);
             //skeleton.setSkinByName(this.skinName);
@@ -239,7 +239,8 @@
                 bounds: {
                     offset: offset,
                     size: size
-                }
+                },
+                atlasLoader : atlasLoader
             };
         }
 
@@ -247,7 +248,7 @@
 
             const state = this.skeletonInfo.state;
             const skeleton = this.skeletonInfo.skeleton;
-            console.log(skeleton);
+            // console.log(skeleton);
             let skins = [];
             if (this.skinName.indexOf(",") > -1) {
                 skins = this.skinName.split(",");
@@ -513,9 +514,9 @@
                     renderer.DeleteTexture(this._elementTexture);
                 }
                 this.c3renderer = renderer
-                console.log(this.c3renderer)
-                console.log("BatchState:")
-                console.log(renderer._batchState.currentShader._shaderProgram)
+                // console.log(this.c3renderer)
+                // console.log("BatchState:")
+                // console.log(renderer._batchState.currentShader._shaderProgram)
                 this._newElementId = false;
 
                 var bounds = this.skeletonInfo.bounds;
@@ -528,10 +529,10 @@
                 // attach the texture as the first color attachment
                 const attachmentPoint = gl.COLOR_ATTACHMENT0;
                 gl.framebufferTexture2D(gl.FRAMEBUFFER, attachmentPoint, gl.TEXTURE_2D, this._elementTexture._texture, 0);
-                console.log("this.spineFB created:"+this.spineFB)
+                // console.log("this.spineFB created:"+this.spineFB)
                 // Restore render to the canvas
                 gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
-                console.log("Created dynamic texture for spine:" + this._elementId);
+                // console.log("Created dynamic texture for spine:" + this._elementId);
             }
 
             // Render skeleton

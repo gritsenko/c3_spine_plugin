@@ -105,13 +105,13 @@
             }
           },
           "flip": {
-            "list-name": "flip",
-            "display-text": "flip {0}",
-            "description": "flip.",
+            "list-name": "Flip",
+            "display-text": "Flip {0}",
+            "description": "Flip render (e.g. mirror).",
             "params": {
               "is-flipped": {
-                "name": "Is Flipped",
-                "desc": "Is Flipped"
+                "name": "Is flipped",
+                "desc": "Is flipped"
               }
             }
           },
@@ -133,19 +133,19 @@
           "play": {
             "list-name": "Play spine animation",
             "display-text": "Play spine animation",
-            "description": "Play current spine animation",
+            "description": "Play current spine animation.",
             "params": { }
           },
           "stop": {
             "list-name": "Stop current spine animation",
             "display-text": "Stop current spine animation",
-            "description": "Stop current spine animation",
+            "description": "Stop current spine animation.",
             "params": { }
           },
           "update-bounds": {
-            "list-name": "Update spine Bounds",
-            "display-text": "Update spine Bounds",
-            "description": "Fit spine model to bounds if c3 object",
+            "list-name": "Update spine bounds",
+            "display-text": "Update spine bounds",
+            "description": "Fit spine model to bounds of c3 object.",
             "params": { }
           },
           "set-animation-speed": {
@@ -156,6 +156,40 @@
               "speed": {
                 "name": "Speed",
                 "desc": "Scaling animation speed."
+              }
+            }
+          },
+          "set-attachment": {
+            "list-name": "Set attachment",
+            "display-text": "Set slot {0} to attachment {1}",
+            "description": "Set attachment to slot by name.",
+            "params": {
+              "slot-name": {
+                "name": "Slot name",
+                "desc": "Slot name"
+              },
+              "attachment-name": {
+                "name": "Attachment name",
+                "desc": "Attachment name"
+              }
+            }
+          },
+          "set-region": {
+            "list-name": "Set region",
+            "display-text": "Set (slot {0}, attachment {1}) region to {2}",
+            "description": "Set region of attachment by name of current skin (e.g. set texture).",
+            "params": {
+              "slot-name": {
+                "name": "Slot name",
+                "desc": "Slot name"
+              },
+              "attachment-name": {
+                "name": "Attachment name",
+                "desc": "Attachment name (placeholder name)."
+              },
+              "region-name": {
+                "name": "Region name",
+                "desc": "Region name"
               }
             }
           }

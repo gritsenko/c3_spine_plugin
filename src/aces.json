@@ -43,7 +43,7 @@
       {
         "id": "set-skin",
         "scriptName": "SetSkin",
-        "highlight": true,
+        "highlight": false,
         "params": [
           {
             "id": "skin-name",
@@ -54,7 +54,7 @@
       {
         "id": "flip",
         "scriptName": "Flip",
-        "highlight": true,
+        "highlight": false,
         "params": [
           {
             "id": "is-flipped",
@@ -80,30 +80,65 @@
       {
         "id": "play",
         "scriptName": "Play",
-        "highlight": true,
+        "highlight": false,
         "params": []
       },
       {
         "id": "stop",
         "scriptName": "Stop",
-        "highlight": true,
+        "highlight": false,
         "params": []
       },
       {
         "id": "update-bounds",
         "scriptName": "UpdateBounds",
-        "highlight": true,
+        "highlight": false,
         "params": []
       },
       {
         "id": "set-animation-speed",
         "scriptName": "SetAnimationSpeed",
-        "highlight": true,
+        "highlight": false,
         "params": [
           {
             "id": "speed",
             "type": "number",
             "initialValue": 1.0
+          }
+        ]
+      },
+      {
+        "id": "set-attachment",
+        "isDeprecated" : false,
+        "scriptName": "SetAttachment",
+        "highlight": false,
+        "params": [
+          {
+            "id": "slot-name",
+            "type": "string"
+          },
+          {
+            "id": "attachment-name",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "set-region",
+        "scriptName": "SetRegion",
+        "highlight": false,
+        "params": [
+          {
+            "id": "slot-name",
+            "type": "string"
+          },
+          {
+            "id": "attachment-name",
+            "type": "string"
+          },
+          {
+            "id": "region-name",
+            "type": "string"
           }
         ]
       }
