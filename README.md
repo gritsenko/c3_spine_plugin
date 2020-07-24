@@ -20,14 +20,13 @@ Add-on based on **Mikal's** sample from this thread:
 
 ## Warning
 
-To use this add-on you must uncheck "Project/Advanced/Use worker" option. If this is a big concern, leave a comment in the github issues
+To use this add-on you must uncheck "Project/Advanced/Use worker" option. If this is a big concern, leave a comment in the github issues (in general C3 worker mode currently changes to non-worker mode for C3 mobile projects.)
 
 ![warn](docs/images/warn.jpg "Uncheck use worker")
 
+## Downloads
 
-## Download
-
-[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.6.0/Spine-v1.6.0.c3addon)
+[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.7.0/Spine-v1.7.0.c3addon)
 
 [Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.5.0/SpinePluginTest.c3p)
 
@@ -48,10 +47,11 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Default mix interval for blending animations.
 - Dynamic animation speed control.
 - Dynamic region changing for current skin attachments.
+- Events to trigger C3 triggers.
 
 ## Wishlist
-- Events to trigger C3 triggers.
-- Mixing for indiviual animation pairs.
+- SkeletonData single type instance and multiple skeleton instances per Spine object / instances (save texture memory for mutiple instances of one skeleton.)
 
 ## Release notes
+- 1.7.0: Add event trigger ACE (trigger when animation event occurs.)
 - 1.6.0: Add Set region action (change region(texture) of an attachment in a slot on the current skin. Useful for character customization.
