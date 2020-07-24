@@ -90,6 +90,17 @@
             "list-name": "On error",
             "display-text": "On error",
             "description": "Triggered on any spine error, error message in error expression."
+          },
+          "on-event": {
+            "list-name": "On animation event",
+            "display-text": "On event {0}",
+            "description": "Triggered on specified animation event.",
+            "params": {
+              "event-name": {
+                "name": "Event name",
+                "desc": "Event name"
+              }
+            }
           }
         },
         "actions": {

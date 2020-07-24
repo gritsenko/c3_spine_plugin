@@ -54,6 +54,7 @@
             this.completeAnimationName = ""
             this.spineError = null
             this.animationSpeed = 1.0
+            this.completeEventName = ""
 
             const wi = this.GetWorldInfo();
             // Enable collisions based on property, add ACEs if needed
@@ -293,6 +294,10 @@
                         this.completeAnimationName = this.animationName;
                         this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
                         this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
+                    },
+                    event: (trackIndex, event) => {
+                        this.completeEventName = event.data.name;
+                        this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
                     }
                 };
 
@@ -469,6 +474,44 @@
 
         Release() {
             super.Release();
+            this.DEMO_NAME = null;
+            this.canvas = null;
+            this.bgColor = null;
+            this.isPlaying = null;
+            this.assetManager = null;
+            this.isSkeletonLoaded = null;
+            this.isSkeletonLoading = null;
+            this.isSpineInitialized = null;
+            this.skeletonInfo = null;
+            this.renderer = null;
+            this.gl = null;
+            this.atlasPath = null;
+            this.jsonPath = null;
+            this.atlasPath = null;
+            this.pngPath = null;
+            this.skinName = null;
+            this.animationName = null;
+            this.skeletonName = null;
+            this.skeletonScale = null;
+            this.premultipliedAlpha = null;
+            this.collisionsEnabled = null;
+            this.defaultMix = null;
+            this.isMirrored = null;
+            this._elementId = null;
+            this._elementTexture = null
+            this._newElementId = fnull;
+            this.pngURI = null;
+            this.atlasURI = null;
+            this.jsonURI = null;
+            this.c3renderer = null;
+            this.c3wgl = null;
+            this.canvas = null;
+            this.spineFB = null
+            this.initSpineInProgress = null;
+            this.completeAnimationName = null;
+            this.spineError = null
+            this.animationSpeed = null;
+            this.completeEventName = null;
         }
 
         Tick() {

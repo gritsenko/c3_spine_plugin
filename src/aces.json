@@ -37,6 +37,17 @@
         "id": "on-error",
         "scriptName": "OnError",
         "isTrigger": true
+      },
+      {
+        "id": "on-event",
+        "scriptName": "OnEvent",
+        "isTrigger": true,
+        "params": [
+          {
+            "id": "event-name",
+            "type": "string"
+          }
+        ]
       }
     ],
     "actions": [

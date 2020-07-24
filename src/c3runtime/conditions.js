@@ -19,7 +19,9 @@
         },
         OnError() {
             return true;
+        },
+        OnEvent(eventName) {
+            return this.completeEventName == eventName;
         }
-
     };
 }
