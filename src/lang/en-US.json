@@ -50,7 +50,7 @@
           },
           "render-quality": {
             "name": "Render quality",
-            "desc": "Render quality (1.0 to 0.0), downsamples the skeleton render from original size."
+            "desc": "Render quality (1.0 is normal), upsamples (above 1.0) or downsamples (below 1.0) the skeleton render from the original size."
           }
         },
         "aceCategories": {
