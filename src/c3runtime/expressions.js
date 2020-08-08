@@ -41,8 +41,13 @@
         
         Error(){
             return this.spineError;
-        }
-
+        },
+        TextureHeight(){
+            return this.textureHeight;
+        },
+        TextureWidth(){
+            return this.textureWidth;
+        },
 
     };
 }

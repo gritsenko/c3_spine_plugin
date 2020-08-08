@@ -236,6 +236,22 @@
         "highlight": false,
         "returnType": "string",
         "params": []
+      },
+      {
+        "id": "texture-width",
+        "expressionName": "TextureWidth",
+        "scriptName": "TextureWidth",
+        "highlight": false,
+        "returnType": "number",
+        "params": []
+      },
+      {
+        "id": "texture-height",
+        "expressionName": "TextureHeight",
+        "scriptName": "TextureHeight",
+        "highlight": false,
+        "returnType": "number",
+        "params": []
       }
     ]
   }

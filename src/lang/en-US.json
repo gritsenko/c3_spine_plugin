@@ -47,6 +47,10 @@
           "default-mix": {
             "name": "Default mix",
             "desc": "Set default mix time between animations (s)"
+          },
+          "render-quality": {
+            "name": "Render quality",
+            "desc": "Render quality (1.0 is normal), upsamples (above 1.0) or downsamples (below 1.0) the skeleton render from the original size."
           }
         },
         "aceCategories": {
@@ -255,6 +259,16 @@
                 "desc": "Animation index"
               }
             }
+          },
+          "texture-width": {
+            "description": "Spine rendered texture width.",
+            "translated-name": "TextureWidth",
+            "params": {}
+          },
+          "texture-height": {
+            "description": "Spine rendered texture height.",
+            "translated-name": "TextureHeight",
+            "params": {}
           },
           "spine-error": {
             "description": "Error message for on error trigger.",
