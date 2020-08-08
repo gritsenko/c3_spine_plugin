@@ -9,6 +9,12 @@
 - Use C3 events and movement to do the large translations in the C3 project instead (e.g. a long jump.)
 - If animation is clipping against the bounds of the C3 object, you can use the scale property to make the Spine render smaller
 - Alternatively create a large transparent image in the Spine project behind your Spine character, this will can be used to set the bounding box size fot the C3 spine render.
+## Multiple instances of a C3 Spine Object
+- Each C3 Spine Object (not instance), should load one skeleton, one atlas.
+- Other instances of the Spine Object must use the same skeleton and atlas, but can use different skins.
+- This new change reduces the size of the texture memory required for multiple instances of the same skeleton.
+## Set region action
+- This action changes the current region texture on the skeleton/slot/placeholder of the current skin of the skeleton to a new region in the loaded atlas. All other instances of the same skeleton/skin will also change. This can be useful for customizing skins.
 ## Share your C3 and Spine plugin work!
 - Tweet your work @kindeyegames , @pix2d and #construct3, we'd be happy to see your work!
 
@@ -26,7 +32,7 @@ To use this add-on you must uncheck "Project/Advanced/Use worker" option. If thi
 
 ## Downloads
 
-[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.7.0/Spine-v1.7.0.c3addon)
+[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.8.0/Spine-v1.8.0.c3addon)
 
 [Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.5.0/SpinePluginTest.c3p)
 
@@ -48,10 +54,13 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Dynamic animation speed control.
 - Dynamic region changing for current skin attachments.
 - Events to trigger C3 triggers.
+- Render Quality property (upsample, downsample rendered image, improve quality vs save on GPU performance and texture memory.)
+- Add expressions TextureWidth, TextureHeight (texture size used to display Spine), based on original Spine bounds and RenderQuality setting.
+- Multiple skeleton instances (w/ variable skin) per Spine object (save on atlas texture memory usage and faster to spawn new instances.)
 
 ## Wishlist
-- SkeletonData single type instance and multiple skeleton instances per Spine object / instances (save texture memory for mutiple instances of one skeleton.)
 
 ## Release notes
+- 1.8.0: Instances of a spine object whill use the original objects skelton info, reducing texture requirements and faster creation of an instance. Add render quality property. Add TextureHeight and TextureWidth ACEs.
 - 1.7.0: Add event trigger ACE (trigger when animation event occurs.)
 - 1.6.0: Add Set region action (change region(texture) of an attachment in a slot on the current skin. Useful for character customization.
