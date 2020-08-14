@@ -5,6 +5,8 @@
 - In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear.
 - Max texture size, limited to one sheet of 4096x4096. Multiple texture sheets not supported.
 ## Additional Spine project guidelines:
+- Do not use minify on export of C3 project.
+- Do not use worker mode for C3 (see below for details.)
 - For jumping or large movments, animate Spine character 'in place', don't do large translations in the Spine project.
 - Use C3 events and movement to do the large translations in the C3 project instead (e.g. a long jump.)
 - If animation is clipping against the bounds of the C3 object, you can use the scale property to make the Spine render smaller
@@ -61,6 +63,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 ## Wishlist
 
 ## Release notes
-- 1.8.0: Instances of a spine object whill use the original objects skelton info, reducing texture requirements and faster creation of an instance. Add render quality property. Add TextureHeight and TextureWidth ACEs.
+- 1.9.0: Change spine-webgl.js to external script rather than including in C3 DOM script on export.
+- 1.8.0: Instances of a spine object will use the original objects skelton info, reducing texture requirements and faster creation of an instance. Add render quality property. Add TextureHeight and TextureWidth ACEs.
 - 1.7.0: Add event trigger ACE (trigger when animation event occurs.)
 - 1.6.0: Add Set region action (change region(texture) of an attachment in a slot on the current skin. Useful for character customization.
