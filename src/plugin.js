@@ -2,7 +2,7 @@
 {
 
     const PLUGIN_ID = "Gritsenko_Spine";
-    const PLUGIN_VERSION = "1.8.0";
+    const PLUGIN_VERSION = "1.9.0";
     const PLUGIN_CATEGORY = "general";
 
     const PLUGIN_CLASS = SDK.Plugins.Gritsenko_Spine = class SpinePlugin extends SDK.IPluginBase {
@@ -34,12 +34,12 @@
             this._info.SetCanBeBundled(true);
 
 
-            // this._info.AddFileDependency({
-            //     filename: "c3runtime/spine-webgl.js",
-            //     type: "external-dom-script"
-            // });
+            this._info.AddFileDependency({
+                 filename: "c3runtime/spine-webgl.js",
+                 type: "external-runtime-script"
+            });
 
-            this._info.SetDOMSideScripts(["c3runtime/spine-webgl.js"]);
+            // this._info.SetDOMSideScripts(["c3runtime/spine-webgl.js"]);
 
 
             this._info.SetSupportedRuntimes(["c3"]);
