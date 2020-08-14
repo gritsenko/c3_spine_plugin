@@ -32,7 +32,7 @@ To use this add-on you must uncheck "Project/Advanced/Use worker" option. If thi
 
 ## Downloads
 
-[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.8.0/Spine-v1.8.0.c3addon)
+[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.9.0/Spine-v1.9.0.c3addon)
 
 [Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.5.0/SpinePluginTest.c3p)
 
