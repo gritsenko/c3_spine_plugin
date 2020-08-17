@@ -57,7 +57,8 @@
                 new SDK.PluginProperty("check", "pre-mult-alpha", false),
                 new SDK.PluginProperty("check", "collisions", true),
                 new SDK.PluginProperty("float", "default-mix", 0.0),
-                new SDK.PluginProperty("float", "render-quality", 1.0)
+                new SDK.PluginProperty("float", "render-quality", 1.0),
+                new SDK.PluginProperty("check", "keep-aspect-ratio", false)
             ]);
             SDK.Lang.PopContext(); //.properties
             SDK.Lang.PopContext();

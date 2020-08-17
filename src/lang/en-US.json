@@ -6,7 +6,7 @@
       "gritsenko_spine": {
         "name": "Spine",
         "description": "Spine plugin",
-        "help-url": "http://gritsenko.biz",
+        "help-url": "https://gritsenko.github.io/c3_spine_plugin/",
         "properties": {
           "json": {
             "name": ".json path",
@@ -51,6 +51,10 @@
           "render-quality": {
             "name": "Render quality",
             "desc": "Render quality (1.0 is normal), upsamples (above 1.0) or downsamples (below 1.0) the skeleton render from the original size."
+          },
+          "keep-aspect-ratio": {
+            "name": "Keep aspect",
+            "desc": "Keep aspect ratio of the character or stretch it to object bounding box"
           }
         },
         "aceCategories": {

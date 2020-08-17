@@ -35,6 +35,7 @@
                 this.collisionsEnabled = properties[8];
                 this.defaultMix = properties[9];
                 this.skeletonRenderQuality = properties[10];
+                this.keepAspectRatio = properties[11];
             }
 
             this.isMirrored = false;
@@ -219,6 +220,12 @@
             var offset = new spine.Vector2();
             var size = new spine.Vector2();
             skeleton.getBounds(offset, size, []);
+
+            if(this.keepAspectRatio){
+                var wi = this.GetWorldInfo();
+                offset = {x : offset.x - wi._w/2, y: offset.y};
+                size = {x : wi._w, y: wi._h};
+            }
 
             return {
                 atlas: this._sdkType._atlas,
