@@ -34,7 +34,7 @@ To use this add-on you must uncheck "Project/Advanced/Use worker" option. If thi
 
 ## Downloads
 
-[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.9.0/Spine-v1.9.0.c3addon)
+[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.10.0/Spine-v1.10.0.c3addon)
 
 [Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.5.0/SpinePluginTest.c3p)
 
@@ -63,6 +63,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 ## Wishlist
 
 ## Release notes
+- 1.10.0: Add Keep Aspect Ratio checkbox
 - 1.9.0: Change spine-webgl.js to external script rather than including in C3 DOM script on export.
 - 1.8.0: Instances of a spine object will use the original objects skelton info, reducing texture requirements and faster creation of an instance. Add render quality property. Add TextureHeight and TextureWidth ACEs.
 - 1.7.0: Add event trigger ACE (trigger when animation event occurs.)
