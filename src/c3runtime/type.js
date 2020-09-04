@@ -16,6 +16,9 @@
         {
             this.GetImageInfo().LoadAsset(this._runtime);
             this._skeletonData = {'notInitialized' : true}
+            // Skeleton instances to render
+            this._skeletonInstances = {};
+            this._rendered = false;
         }
 
         LoadTextures(renderer)

@@ -11,6 +11,7 @@
             this.canvas = null;
             this.bgColor = null;
             this.isPlaying = true;
+            this.instance = inst;
 
             this.assetManager = null;
             this.isSkeletonLoaded = false;
@@ -19,6 +20,7 @@
             this.skeletonInfo = null;
             this.renderer = null;
             this.gl = null;
+            this._sdkType._skeletonInstances[this.GetInstance().GetUID()] = {'initialized' : false};
             // super(inst, DOM_COMPONENT_ID);
 
             this.atlasPath = "";
@@ -103,6 +105,30 @@
                this.isWebGL2 = ( version >= 3.0 );
             }
 
+            // Create VAO per instance
+            if (!this.isWebGL2)
+            {
+                var extOESVAO = gl.getExtension("OES_vertex_array_object");
+                if (!extOESVAO)
+                {
+                    alert("Spine plugin error: webGL1 with no OES_vertex_array_object support");  // tell user they don't have the required extension or work around it
+                    return;
+                }
+    
+            }
+            if(!this.myVAO)
+            {
+                if (this.isWebGL2)
+                {
+                    this.myVAO = gl.createVertexArray();
+                } else
+                {
+                    this.myVAO = extOESVAO.createVertexArrayOES();
+                }
+                this._sdkType._skeletonInstances[this.GetInstance().GetUID()]['myVAO'] = this.myVAO;
+
+            }
+
             // Init Spine elements
             this.mvp = new spine.webgl.Matrix4();
             this.shader = spine.webgl.Shader.newTwoColoredTextured(gl);
@@ -169,6 +195,8 @@
             // console.log(this.skeletonInfo)
 
             // this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnSkeletonLoaded);
+            this._sdkType._skeletonInstances[this.GetInstance().GetUID()]['skeletonInfo'] = this.skeletonInfo;
+            console.log(this._sdkType._skeletonInstances);
         }
 
         loadSkeleton(name, animationName, sequenceSlots) {
@@ -198,7 +226,6 @@
                     this._sdkType._skeletonData = skeletonJson.readSkeletonData(assetManager.get(this.DEMO_NAME, this.jsonURI) [name] );
                 }
             }
-            // console.log("creating skeleton");
 
             var skeleton = new spine.Skeleton(this._sdkType._skeletonData);
             let subskin = skeleton.data.findSkin(this.skinName);
@@ -341,15 +368,14 @@
 
         render() {
             const gl = this.gl;
-            const bounds = this.skeletonInfo.bounds;
-
+            const skeletonInstances = this._sdkType._skeletonInstances;
 
             // End C3 Batch
             // this.c3wgl.EndBatch(); 
 
             var oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
             // Render to our targetTexture by binding the framebuffer to the SpineFB texture
-            gl.bindFramebuffer(gl.FRAMEBUFFER, this.spineFB);
+            // gl.bindFramebuffer(gl.FRAMEBUFFER, this.spineFB);
 
             // Save C3 webgl context, may be able to reduce some
             // Create VAO for Spine to use. May need to change this for non-webgl2
@@ -363,19 +389,6 @@
                     return;
                 }
     
-            }
-
-            // XXX Should move to spine init
-            if(!this.myVAO)
-            {
-                if (this.isWebGL2)
-                {
-                    this.myVAO = gl.createVertexArray();
-                } else
-                {
-                    this.myVAO = extOESVAO.createVertexArrayOES();
-                }
-
             }
 
             if (this.isWebGL2)
@@ -397,48 +410,62 @@
             var oldViewport = gl.getParameter(gl.VIEWPORT);
             // Bind to private VAO so Spine use does not impact C3 VAO
 
-            if (this.isWebGL2)
+            // Per instance render
+
+            for (const uid in skeletonInstances)
             {
-                gl.bindVertexArray(this.myVAO);
-            } else
-            {
-                extOESVAO.bindVertexArrayOES(this.myVAO); 
+                const skeletonInstance = skeletonInstances[uid];
+                if (skeletonInstance.initialized)
+                {
+                    const bounds = skeletonInstance.skeletonInfo.bounds;
+                    // Render to our targetTexture by binding the framebuffer to the SpineFB texture
+                    gl.bindFramebuffer(gl.FRAMEBUFFER, skeletonInstance.spineFB);
+
+                    if (this.isWebGL2)
+                    {
+                        gl.bindVertexArray(skeletonInstance.myVAO);
+                    } else
+                    {
+                        extOESVAO.bindVertexArrayOES(skeletonInstance.myVAO); 
+                    }
+
+                    // Set viewport?
+                    gl.viewport(0, 0, bounds.size.x, bounds.size.y);
+
+                    // Set proper webgl blend for Spine render
+                    gl.enable(gl.BLEND);
+                    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+                    // Some random appearing alpha / pma issue may be related to blend func
+                    // XXX gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+                    gl.bindTexture(gl.TEXTURE_2D, null);        
+                    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+                    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+                    // Bind the shader and set the texture and model-view-projection matrix.
+                    this.shader.bind();
+                    this.shader.setUniformi(spine.webgl.Shader.SAMPLER, 0);
+                    this.shader.setUniform4x4f(spine.webgl.Shader.MVP_MATRIX, this.mvp.values);
+                    
+                    // Start the batch and tell the SkeletonRenderer to render the active skeleton.
+                    this.batcher.begin(this.shader);
+                    
+                    // Apply vertex effect
+                    this.renderer.vertexEffect = null;
+
+                    gl.clearColor(0, 0, 0, 0);
+                    gl.clear(gl.COLOR_BUFFER_BIT);
+
+                    // Resize 
+                    this.resize();
+                    // Render
+                    this.renderer.premultipliedAlpha = this.premultipliedAlpha;
+                    this.renderer.draw(this.batcher, skeletonInstance.skeletonInfo.skeleton);
+                    this.batcher.end();
+                    this.shader.unbind();
+                }
             }
-
-            // Set viewport?
-            gl.viewport(0, 0, bounds.size.x, bounds.size.y);
-
-            // Set proper webgl blend for Spine render
-            gl.enable(gl.BLEND);
-            gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-            // Some random appearing alpha / pma issue may be related to blend func
-            // XXX gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-            gl.bindTexture(gl.TEXTURE_2D, null);        
-            gl.bindBuffer(gl.ARRAY_BUFFER, null);
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-
-            // Bind the shader and set the texture and model-view-projection matrix.
-	        this.shader.bind();
-	        this.shader.setUniformi(spine.webgl.Shader.SAMPLER, 0);
-            this.shader.setUniform4x4f(spine.webgl.Shader.MVP_MATRIX, this.mvp.values);
-            
-            // Start the batch and tell the SkeletonRenderer to render the active skeleton.
-            this.batcher.begin(this.shader);
-            
-            // Apply vertex effect
-            this.renderer.vertexEffect = null;
-
-            gl.clearColor(0, 0, 0, 0);
-            gl.clear(gl.COLOR_BUFFER_BIT);
-
-            // Resize 
-            this.resize();
-            // Render
-            this.renderer.premultipliedAlpha = this.premultipliedAlpha;
-            this.renderer.draw(this.batcher, this.skeletonInfo.skeleton);
-            this.batcher.end();
-            this.shader.unbind();
+            this._sdkType._skeletonInstances.rendered = true;
 
             // Change back to C3 FB last used
             gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
@@ -521,6 +548,7 @@
             var active = this.skeletonInfo;
             const state = this.skeletonInfo.state;
 
+            this._sdkType._skeletonInstances.rendered = false;
             if (this.isPlaying) {
 
                 var animationDuration = state.getCurrent(0).animation.duration;
@@ -556,9 +584,6 @@
                     renderer.DeleteTexture(this._elementTexture);
                 }
                 this.c3renderer = renderer
-                // console.log(this.c3renderer)
-                // console.log("BatchState:")
-                // console.log(renderer._batchState.currentShader._shaderProgram)
                 this._newElementId = false;
 
                 var bounds = this.skeletonInfo.bounds;
@@ -578,13 +603,21 @@
                 // Restore render to the canvas
                 gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
                 // console.log("Created dynamic texture for spine:" + this._elementId);
+                this._sdkType._skeletonInstances[this.GetInstance().GetUID()]['spineFB'] = this.spineFB;
+                this._sdkType._skeletonInstances[this.GetInstance().GetUID()]['initialized'] = true;
                 this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnSkeletonLoaded);
             }
 
             // Render skeleton
-            if (this.isSkeletonLoaded && this._elementTexture !== null) {
+            // if (this.isSkeletonLoaded && this._elementTexture !== null) {
+            //    this.render();
+            // }
+
+            if (!this._sdkType._skeletonInstances.rendered)
+            {
                 this.render();
             }
+
             let x0 = 0;
             let x1 = 1;
             if (this.isMirrored) {
