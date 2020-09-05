@@ -94,6 +94,7 @@ class SpineBatch {
         this._skeletonInstances[uid].initialized = false
         this._skeletonInstances[uid].skeletonScale = skeletonScale
     }
+
     removeInstance(uid)
     {
         this._skeletonInstances[uid].skeletonInfo = null
@@ -131,8 +132,6 @@ class SpineBatch {
         // this.c3wgl.EndBatch();
 
         var oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
-        // Render to our targetTexture by binding the framebuffer to the SpineFB texture
-        // gl.bindFramebuffer(gl.FRAMEBUFFER, this.spineFB);
 
         // Save C3 webgl context, may be able to reduce some
         // Save VAO to restore
@@ -179,8 +178,6 @@ class SpineBatch {
                 // Set proper webgl blend for Spine render
                 gl.enable(gl.BLEND);
                 gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-                // Some random appearing alpha / pma issue may be related to blend func
-                // XXX gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
                 gl.bindTexture(gl.TEXTURE_2D, null);        
                 gl.bindBuffer(gl.ARRAY_BUFFER, null);
@@ -230,15 +227,10 @@ class SpineBatch {
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, oldElement);
         gl.clearColor(oldClearColor[0],oldClearColor[1],oldClearColor[2],oldClearColor[3])
         gl.enable(gl.BLEND);
-        // XXX seems redundant, but C3 set blendFunc twice with different values (may be at end and start?)
-        // gl.blendFunc(gl.ONE, gl.ZERO)
         gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-        // XXX incorrect blend, causes first effect to not be drawn (drawn to another FB)
-        // gl.blendFuncSeparate(gl.DST_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.DST_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         gl.viewport(oldViewport[0],oldViewport[1],oldViewport[2],oldViewport[3]);
     }
 
   }
 
-console.log('[SpineDraw] start')
 let spineBatcher = new SpineBatch()
