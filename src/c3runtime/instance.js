@@ -20,7 +20,7 @@
             this.skeletonInfo = null;
             this.renderer = null;
             this.gl = null;
-            this._sdkType._skeletonInstances[this.GetInstance().GetUID()] = {'initialized' : false};
+            // this._sdkType._skeletonInstances[this.GetInstance().GetUID()] = {'initialized' : false};
             // super(inst, DOM_COMPONENT_ID);
 
             this.atlasPath = "";
@@ -105,6 +105,7 @@
                this.isWebGL2 = ( version >= 3.0 );
             }
 
+            /*
             // Create VAO per instance
             if (!this.isWebGL2)
             {
@@ -128,6 +129,7 @@
                 this._sdkType._skeletonInstances[this.GetInstance().GetUID()]['myVAO'] = this.myVAO;
 
             }
+            */
 
             // Init Spine elements
             this.mvp = new spine.webgl.Matrix4();
@@ -195,8 +197,8 @@
             // console.log(this.skeletonInfo)
 
             // this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnSkeletonLoaded);
-            this._sdkType._skeletonInstances[this.GetInstance().GetUID()]['skeletonInfo'] = this.skeletonInfo;
-            console.log(this._sdkType._skeletonInstances);
+            spineBatcher.addInstance(this.skeletonInfo, this.skeletonScale, this.GetInstance().GetUID())
+            // this._sdkType._skeletonInstances[this.GetInstance().GetUID()]['skeletonInfo'] = this.skeletonInfo;
         }
 
         loadSkeleton(name, animationName, sequenceSlots) {
@@ -371,7 +373,7 @@
             const skeletonInstances = this._sdkType._skeletonInstances;
 
             // End C3 Batch
-            // this.c3wgl.EndBatch(); 
+            this.c3wgl.EndBatch(); 
 
             var oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
             // Render to our targetTexture by binding the framebuffer to the SpineFB texture
@@ -495,6 +497,7 @@
 
 
         Release() {
+            let uid = this.GetInstance().GetUID()
             super.Release();
             if (this.c3renderer && this._elementTexture) this.c3renderer.DeleteTexture(this._elementTexture);
             this.DEMO_NAME = null;
@@ -538,6 +541,8 @@
             this.skeletonRenderQuality = null;
             this.textureWidth = null;
             this.textureHeight = null;
+            spineBatcher.removeInstance(uid)
+
         }
 
         Tick() {
@@ -548,7 +553,6 @@
             var active = this.skeletonInfo;
             const state = this.skeletonInfo.state;
 
-            this._sdkType._skeletonInstances.rendered = false;
             if (this.isPlaying) {
 
                 var animationDuration = state.getCurrent(0).animation.duration;
@@ -603,8 +607,8 @@
                 // Restore render to the canvas
                 gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
                 // console.log("Created dynamic texture for spine:" + this._elementId);
-                this._sdkType._skeletonInstances[this.GetInstance().GetUID()]['spineFB'] = this.spineFB;
-                this._sdkType._skeletonInstances[this.GetInstance().GetUID()]['initialized'] = true;
+                spineBatcher.setInstanceFB(this.spineFB, this.GetInstance().GetUID())
+                spineBatcher.setInstanceInitialized(this.GetInstance().GetUID());
                 this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnSkeletonLoaded);
             }
 
@@ -613,9 +617,12 @@
             //    this.render();
             // }
 
-            if (!this._sdkType._skeletonInstances.rendered)
+
+            // Only call render once per tick for all instances
+            if (spineBatcher.tickCount != this._runtime.GetTickCount())
             {
-                this.render();
+                spineBatcher.tickCount = this._runtime.GetTickCount()
+                spineBatcher.drawBatch();
             }
 
             let x0 = 0;

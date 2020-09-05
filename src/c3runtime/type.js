@@ -14,11 +14,13 @@
 
         OnCreate()
         {
+            spineBatcher.init(this._runtime)
             this.GetImageInfo().LoadAsset(this._runtime);
             this._skeletonData = {'notInitialized' : true}
             // Skeleton instances to render
             this._skeletonInstances = {};
             this._rendered = false;
+            this._tickCount = -1;
         }
 
         LoadTextures(renderer)
