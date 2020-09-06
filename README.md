@@ -36,7 +36,7 @@ To use this add-on you must uncheck "Project/Advanced/Use worker" option. If thi
 
 ## Downloads
 
-[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.11.1/Spine-v1.11.1.c3addon)
+[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.11.2/Spine-v1.11.2.c3addon)
 
 [Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.5.0/SpinePluginTest.c3p)
 
@@ -66,6 +66,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 ## Wishlist
 - Preview Spine render in editor.
 ## Release notes
+- 1.11.2 Move spineBatcher.init() to prevent race condition (seen on iOS)
 - 1.11.1 Remove spine instance from batcher when C3 Spine instance calls Release() (e.g. C3 object destroyed.)
 - 1.11.0 Implement batch render for improved performance with multiple Spine objects and instances.
 - 1.10.0: Add Keep Aspect Ratio checkbox
