@@ -97,7 +97,7 @@ class SpineBatch {
 
     removeInstance(uid)
     {
-        this._skeletonInstances[uid].skeletonInfo = null
+        delete this._skeletonInstances[uid]
     }
 
     setInstanceInitialized(uid)

@@ -337,6 +337,7 @@
         }
 
         Release() {
+            spineBatcher.removeInstance(this.GetInstance().GetUID());
             super.Release();
             if (this.c3renderer && this._elementTexture) this.c3renderer.DeleteTexture(this._elementTexture);
             this.DEMO_NAME = null;
