@@ -90,6 +90,9 @@
                 return;
             }
 
+            // Init spineBatcher (only initializes once), add here after canvas, etc. are ready, adding inside type.js OnCreate() was too early for iOS (canvas not ready)
+            spineBatcher.init(this.canvas, this.gl)
+
             let version = 0;
             this.isWebGL2 = false;
             let glVersion = gl.getParameter( gl.VERSION );

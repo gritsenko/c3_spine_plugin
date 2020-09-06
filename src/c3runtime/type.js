@@ -14,7 +14,6 @@
 
         OnCreate()
         {
-            spineBatcher.init(this._runtime)
             this.GetImageInfo().LoadAsset(this._runtime);
             this._skeletonData = {'notInitialized' : true}
             // Skeleton instances to render
