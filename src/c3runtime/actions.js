@@ -62,8 +62,9 @@
 
         SetAttachment(slotName, attachmentName)
         {
-            // XXX Not implemented
-            return;
+            const skeleton = this.skeletonInfo.skeleton;
+
+            skeleton.setAttachment(slotName,attachmentName);
         }
     };
 }
