@@ -120,16 +120,35 @@
 
             if (this._sdkType._skeletonData.notInitialized)
             {
-                // console.log("[Spine] Loading textures, json, atlas");
+                console.log(this.GetInstance().GetUID(),'[Spine] Loading skeleton, textures, json, atlas');
                 // Only load textures once for creation of skeletonData, not for each instance
                 // Disable PMA when loading Spine textures
                 spine.webgl.GLTexture.DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL = true;
-                this.pngURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.pngPath);
+                // this.pngURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.pngPath);
+                // this._sdkType._assetPaths[this.pngPath] = this.pngURI;
+                // Path translation for json and atlast (1:1)
+
                 this.atlasURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.atlasPath);
+                this._sdkType._assetPaths[this.atlasURI] = this.atlasURI;
+                this._sdkType._assetPaths[this.atlasPath] = this.atlasURI;
                 this.jsonURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.jsonPath);
-                let textureLoader = function(img) { return new spine.webgl.GLTexture(gl, img); };
+                this._sdkType._assetPaths[this.jsonURI] = this.jsonURI;
+                this._sdkType._assetPaths[this.jsonPath] = this.jsonURI;
+
                 this.assetManager.loadJson(this.DEMO_NAME, this.jsonURI);
-                this.assetManager.loadTexture(this.DEMO_NAME, textureLoader, this.pngURI);
+
+                let textureLoader = function(img) { return new spine.webgl.GLTexture(gl, img); };
+
+                // Load multiple textures and set up path translation (for C3 preview with 'blob' URIs)
+                let assetPaths = this.pngPath.split(" ");
+                for(let i=0;i<assetPaths.length;i++)
+                {
+                    this.pngURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(assetPaths[i]);
+                    this._sdkType._assetPaths[assetPaths[i]] = this.pngURI;
+                    this.assetManager.loadTexture(this.DEMO_NAME, textureLoader, this.pngURI);
+                }
+                console.log('[SpineInit] paths',this._sdkType._assetPaths)
+
                 this.assetManager.loadText(this.DEMO_NAME, this.atlasURI);
             }
             this.isSpineInitialized = true;
@@ -185,7 +204,7 @@
                 const atlasURI = assetManager.get(this.DEMO_NAME, this.atlasURI);
                 this._sdkType._atlas = new spine.TextureAtlas(atlasURI, function(path) {
                     // console.log(`Loading png atlas ${path} replaced with ${self.pngURI}`);
-                    return assetManager.get(self.DEMO_NAME, self.pngURI);
+                    return assetManager.get(self.DEMO_NAME, self._sdkType._assetPaths[path]);
                 });
                 this._sdkType._atlasLoader = new spine.AtlasAttachmentLoader(this._sdkType._atlas);
                 let skeletonJson = new spine.SkeletonJson(this._sdkType._atlasLoader);

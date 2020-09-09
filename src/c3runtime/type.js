@@ -20,6 +20,7 @@
             this._skeletonInstances = {};
             this._rendered = false;
             this._tickCount = -1;
+            this._assetPaths = {};
         }
 
         LoadTextures(renderer)
