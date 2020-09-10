@@ -59,22 +59,17 @@ class SpineBatch {
            this.isWebGL2 = ( version >= 3.0 );
         }
 
-        // Create VAO for SpineDraw
-        if (!this.isWebGL2)
-        {
-            var extOESVAO = gl.getExtension("OES_vertex_array_object");
-            if (!extOESVAO)
-            {
-                alert("Spine plugin error: webGL1 with no OES_vertex_array_object support");  // tell user they don't have the required extension or work around it
-                return;
-            }
-
-        }
         if (this.isWebGL2)
         {
             this.myVAO = gl.createVertexArray();
         } else
         {
+            let extOESVAO = gl.getExtension("OES_vertex_array_object");
+            if (!extOESVAO)
+            {
+                alert("Spine plugin error: webGL1 with no OES_vertex_array_object support");  // tell user they don't have the required extension or work around it
+                return;
+            }
             this.myVAO = extOESVAO.createVertexArrayOES();
         }
 
@@ -135,6 +130,12 @@ class SpineBatch {
 
         // Save C3 webgl context, may be able to reduce some
         // Save VAO to restore
+
+        if (!this.isWebGL2)
+        {
+            var extOESVAO = gl.getExtension("OES_vertex_array_object");
+        }
+
         if (this.isWebGL2)
         {
             var oldVAO = gl.createVertexArray();
