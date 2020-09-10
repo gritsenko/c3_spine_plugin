@@ -75,48 +75,28 @@
         async initSpine() {
             this.initSpineInProgress = true;
             var uid = this.GetInstance().GetUID()
-            this._elementId = "SpineCanvas_" + uid;
+            this._elementId = uid;
             this.DEMO_NAME = this._elementId;
 
             // Get C3 canvas gl context
             // Context already exists and we want to use (for render to texture)
-            // XXX Can't change existing context attributes (though we may want to for PMA)
-            // var config = { alpha: false };
+            this.canvas = globalThis.c3_runtimeInterface.GetCanvas() // C3 canvas
             let config = {}
             this.gl = this.canvas.getContext("webgl2", config) || this.canvas.getContext("webgl", config) || canvas.getContext("experimental-webgl", config);
             let gl = this.gl
-            if (!gl) {
-                alert('WebGL is unavailable.');
-                return;
-            }
 
             // Init spineBatcher (only initializes once), add here after canvas, etc. are ready, adding inside type.js OnCreate() was too early for iOS (canvas not ready)
-            spineBatcher.init(this.canvas, this.gl)
-
-            let version = 0;
-            this.isWebGL2 = false;
-            let glVersion = gl.getParameter( gl.VERSION );
-        
-            if ( glVersion.indexOf( 'WebGL' ) !== - 1 )
-            {
-               version = parseFloat( /^WebGL\ ([0-9])/.exec( glVersion )[ 1 ] );
-               this.isWebGL2 = ( version >= 2.0 );
-            } else if ( glVersion.indexOf( 'OpenGL ES' ) !== - 1 )
-            {
-        
-               version = parseFloat( /^OpenGL\ ES\ ([0-9])/.exec( glVersion )[ 1 ] );
-               this.isWebGL2 = ( version >= 3.0 );
-            }
+            spineBatcher.init()
 
             // Init Spine elements
             this.mvp = new spine.webgl.Matrix4();
-            this.shader = spine.webgl.Shader.newTwoColoredTextured(gl);
-            this.batcher = new spine.webgl.PolygonBatcher(gl);
+            // this.shader = spine.webgl.Shader.newTwoColoredTextured(gl);
+            // this.batcher = new spine.webgl.PolygonBatcher(gl);
             this.mvp.ortho2d(0, 0, 0, 0); // XXX Render to texture size unknown until skeleton loaded.
-            this.renderer = new spine.webgl.SkeletonRenderer(gl);
-            this.shapes = new spine.webgl.ShapeRenderer(gl);
+            // this.renderer = new spine.webgl.SkeletonRenderer(gl);
+            // this.shapes = new spine.webgl.ShapeRenderer(gl);
             this.assetManager = new spine.SharedAssetManager();
-            this.bgColor = new spine.Color(0.0, 0.0, 0.0, 0.0);
+            // this.bgColor = new spine.Color(0.0, 0.0, 0.0, 0.0);
 
             if (this._sdkType._skeletonData.notInitialized)
             {

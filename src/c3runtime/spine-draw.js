@@ -28,20 +28,16 @@ class SpineBatch {
         this._tickCount = tick
     }
 
-    init(canvas,gl)
+    init()
     {
         if (this._initialized) return 
 
-        this.gl = gl
-        this.canvas = canvas
-
         // Get C3 canvas gl context
         // Context already exists and we want to use (for render to texture)
-        // let config = {}
-        // this.canvas = globalThis.c3_runtimeInterface.GetCanvas() // C3 canvas
-
-        // this.gl = this.canvas.getContext("webgl2", config) || this.canvas.getContext("webgl", config) || canvas.getContext("experimental-webgl", config);
-        // let gl = this.gl
+        this.canvas = globalThis.c3_runtimeInterface.GetCanvas() // C3 canvas
+        let config = {}
+        this.gl = this.canvas.getContext("webgl2", config) || this.canvas.getContext("webgl", config) || canvas.getContext("experimental-webgl", config);
+        let gl = this.gl
 
         if (!gl) {
             alert('WebGL is unavailable.');
@@ -88,7 +84,7 @@ class SpineBatch {
         this.renderer = new spine.webgl.SkeletonRenderer(gl);
         this.shapes = new spine.webgl.ShapeRenderer(gl);
 
-        this._initialized = true
+        this._initialized = true;
     }
 
     addInstance(instance, skeletonScale, uid)
