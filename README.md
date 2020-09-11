@@ -3,7 +3,7 @@
 ## Important notes for Spine export files:
 - Requires Spine version 3.8+ JSON files. See Spine Formatter below to upgrade older JSON files.
 - In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear.
-- Max texture size, limited to one sheet of 4096x4096. Multiple texture sheets not supported.
+- Max texture size, 4096x4096. multiple texture sheets supported (use space separated list on C3 spine object's png path property).
 ## Additional Spine project guidelines:
 - Do not use minify on export of C3 project.
 - Do not use worker mode for C3 (see below for details.)
