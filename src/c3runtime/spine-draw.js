@@ -28,20 +28,16 @@ class SpineBatch {
         this._tickCount = tick
     }
 
-    init(canvas,gl)
+    init()
     {
         if (this._initialized) return 
 
-        this.gl = gl
-        this.canvas = canvas
-
         // Get C3 canvas gl context
         // Context already exists and we want to use (for render to texture)
-        // let config = {}
-        // this.canvas = globalThis.c3_runtimeInterface.GetCanvas() // C3 canvas
-
-        // this.gl = this.canvas.getContext("webgl2", config) || this.canvas.getContext("webgl", config) || canvas.getContext("experimental-webgl", config);
-        // let gl = this.gl
+        this.canvas = globalThis.c3_runtimeInterface.GetCanvas() // C3 canvas
+        let config = {}
+        this.gl = this.canvas.getContext("webgl2", config) || this.canvas.getContext("webgl", config) || canvas.getContext("experimental-webgl", config);
+        let gl = this.gl
 
         if (!gl) {
             alert('WebGL is unavailable.');
@@ -63,22 +59,17 @@ class SpineBatch {
            this.isWebGL2 = ( version >= 3.0 );
         }
 
-        // Create VAO for SpineDraw
-        if (!this.isWebGL2)
-        {
-            var extOESVAO = gl.getExtension("OES_vertex_array_object");
-            if (!extOESVAO)
-            {
-                alert("Spine plugin error: webGL1 with no OES_vertex_array_object support");  // tell user they don't have the required extension or work around it
-                return;
-            }
-
-        }
         if (this.isWebGL2)
         {
             this.myVAO = gl.createVertexArray();
         } else
         {
+            let extOESVAO = gl.getExtension("OES_vertex_array_object");
+            if (!extOESVAO)
+            {
+                alert("Spine plugin error: webGL1 with no OES_vertex_array_object support");  // tell user they don't have the required extension or work around it
+                return;
+            }
             this.myVAO = extOESVAO.createVertexArrayOES();
         }
 
@@ -88,7 +79,7 @@ class SpineBatch {
         this.renderer = new spine.webgl.SkeletonRenderer(gl);
         this.shapes = new spine.webgl.ShapeRenderer(gl);
 
-        this._initialized = true
+        this._initialized = true;
     }
 
     addInstance(instance, skeletonScale, uid)
@@ -139,6 +130,12 @@ class SpineBatch {
 
         // Save C3 webgl context, may be able to reduce some
         // Save VAO to restore
+
+        if (!this.isWebGL2)
+        {
+            var extOESVAO = gl.getExtension("OES_vertex_array_object");
+        }
+
         if (this.isWebGL2)
         {
             var oldVAO = gl.createVertexArray();

@@ -17,8 +17,8 @@
             "desc": "path to atlas file i.e. \"character.atlas\""
           },
           "png": {
-            "name": ".png path",
-            "desc": "path to png file i.e. \"character.png\""
+            "name": ".png path(s)",
+            "desc": "path to png file(s) i.e. \"character.png\" or \"character.png character2.png\""
           },
           "skin": {
             "name": "Skin",
