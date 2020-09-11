@@ -2,7 +2,7 @@
 {
 
     const PLUGIN_ID = "Gritsenko_Spine";
-    const PLUGIN_VERSION = "1.12.0";
+    const PLUGIN_VERSION = "1.12.1";
     const PLUGIN_CATEGORY = "general";
 
     const PLUGIN_CLASS = SDK.Plugins.Gritsenko_Spine = class SpinePlugin extends SDK.IPluginBase {
@@ -15,7 +15,7 @@
             this._info.SetDescription(lang(".description"));
             this._info.SetVersion(PLUGIN_VERSION);
             this._info.SetCategory(PLUGIN_CATEGORY);
-            this._info.SetAuthor("Gritsenko");
+            this._info.SetAuthor("Gritsenko and Mikal");
             this._info.SetHelpUrl(lang(".help-url"));
             this._info.SetPluginType("world"); // mark as world plugin, which can draw
             this._info.SetIsResizable(true); // allow to be resized

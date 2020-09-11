@@ -120,7 +120,7 @@
                 let textureLoader = function(img) { return new spine.webgl.GLTexture(gl, img); };
 
                 // Load multiple textures and set up path translation (for C3 preview with 'blob' URIs)
-                let assetPaths = this.pngPath.split(" ");
+                let assetPaths = this.pngPath.split(",");
                 for(let i=0;i<assetPaths.length;i++)
                 {
                     this.pngURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(assetPaths[i]);

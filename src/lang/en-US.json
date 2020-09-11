@@ -18,11 +18,11 @@
           },
           "png": {
             "name": ".png path(s)",
-            "desc": "path to png file(s) i.e. \"character.png\" or \"character.png character2.png\""
+            "desc": "path to png file(s) i.e. \"character.png\" or \"character.png,character2.png\""
           },
           "skin": {
             "name": "Skin",
-            "desc": "Active skin name"
+            "desc": "Active skin name(s) i.e. \"fighter\" or \"fighter,sword-large\""
           },
           "animation": {
             "name": "Animation",
