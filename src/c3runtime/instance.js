@@ -20,8 +20,8 @@
             this.skeletonInfo = null;
             this.renderer = null;
             this.gl = null;
-            // this._sdkType._skeletonInstances[this.GetInstance().GetUID()] = {'initialized' : false};
-            // super(inst, DOM_COMPONENT_ID);
+            this.uid = this.GetInstance().GetUID();
+            this.customSkins = {};
 
             this.atlasPath = "";
 
@@ -383,6 +383,8 @@
             this.skeletonRenderQuality = null;
             this.textureWidth = null;
             this.textureHeight = null;
+            this.uid = null;
+            this.customSkins = null;
         }
 
         Tick() {
