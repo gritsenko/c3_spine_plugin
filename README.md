@@ -36,9 +36,10 @@ To use this add-on you must uncheck "Project/Advanced/Use worker" option. If thi
 
 ## Downloads
 
-[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.12.1/Spine-v1.12.1.c3addon)
+[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.13.0/Spine-v1.13.0.c3addon)
 
 [Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.5.0/SpinePluginTest.c3p)
+[MixAndMax project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.13.0/SpineMixandMatch.c3p)
 
 ## LIVE DEMO
 [https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html](https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html)
@@ -66,6 +67,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 ## Wishlist
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 ## Release notes
+- 1.13.0 Add runtime create skin and add skin ACEs and MixandMatch example project.
 - 1.12.1 Change path separator to comma instead of space to match existing skin paths separator.
 - 1.12.0 Add support for Atlas pages (multiple png, space separated), finish implmention of Set Attachment action, fix webgl1 support (revealed on iOS w/o weblg2 enabled.)
 - 1.11.2 Move spineBatcher.init() to prevent race condition (seen on iOS)
