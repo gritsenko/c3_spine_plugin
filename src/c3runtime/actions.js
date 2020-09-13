@@ -65,6 +65,35 @@
             const skeleton = this.skeletonInfo.skeleton;
 
             skeleton.setAttachment(slotName,attachmentName);
+        },
+
+        CreateCustomSkin(skinName)
+        {
+            const skeleton = this.skeletonInfo.skeleton;
+            
+            this.customSkins[skinName] = new spine.Skin(skinName);
+        },
+
+        AddCustomSkin(skinName,addSkinName)
+        {
+            const skeleton = this.skeletonInfo.skeleton;
+            
+            if (this.customSkins[skinName])
+            {
+                this.customSkins[skinName].addSkin(skeleton.data.findSkin(addSkinName));
+            } else
+            {
+                console.log('[Spine] AddCustomSkin, error - custom skin does not exist',skinName);
+            }
+        },
+
+        SetCustomSkin(skinName)
+        {
+            this.skinName = skinName
+            const skeleton = this.skeletonInfo.skeleton;
+            this.customSkins[this.skinName]
+            skeleton.setSkin(this.customSkins[this.skinName]);
+            skeleton.setSlotsToSetupPose();
         }
     };
 }

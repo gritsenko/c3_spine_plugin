@@ -211,6 +211,43 @@
                 "desc": "Region name"
               }
             }
+          },
+          "create-custom-skin": {
+            "list-name": "Create custom skin",
+            "display-text": "Create custom skin {0}",
+            "description": "Create custom skin.",
+            "params": {
+              "skin-name": {
+                "name": "Skin name",
+                "desc": "Skin name"
+              }
+            }
+          },
+          "add-custom-skin": {
+            "list-name": "Add custom skin",
+            "display-text": "Add skin {1} to custom skin {0}",
+            "description": "Add skin to custom skin.",
+            "params": {
+              "skin-name": {
+                "name": "Custom skin name",
+                "desc": "Custom skin name"
+              },
+              "add-skin-name": {
+                "name": "Add skin name",
+                "desc": "Skin name to add to custom skin."
+              }
+            }
+          },
+          "set-custom-skin": {
+            "list-name": "Set custom skin",
+            "display-text": "Set custom skin {0}",
+            "description": "Set custom skin.",
+            "params": {
+              "skin-name": {
+                "name": "Skin name",
+                "desc": "Skin name"
+              }
+            }
           }
         },
         "expressions": {
