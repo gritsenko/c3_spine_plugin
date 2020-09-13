@@ -39,7 +39,8 @@ To use this add-on you must uncheck "Project/Advanced/Use worker" option. If thi
 [Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.13.0/Spine-v1.13.0.c3addon)
 
 [Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.5.0/SpinePluginTest.c3p)
-[MixAndMax project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.13.0/SpineMixandMatch.c3p)
+
+[MixandMax project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.13.0/SpineMixandMatch.c3p)
 
 ## LIVE DEMO
 [https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html](https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html)
