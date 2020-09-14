@@ -51,8 +51,9 @@
             this.atlasURI = ""
             this.jsonURI = ""
             this.c3renderer = null
-            this.c3wgl = globalThis.c3_runtimeInterface._localRuntime.GetCanvasManager().GetWebGLRenderer()
-            this.canvas = globalThis.c3_runtimeInterface.GetCanvas() // C3 canvas 
+            this.runtime = inst.GetRuntime();
+            this.c3wgl = this.runtime.GetCanvasManager().GetWebGLRenderer();
+            this.canvas = this.c3wgl._gl.canvas; // C3 canvas 
             this.spineFB = null
             this.initSpineInProgress = false;
             this.completeAnimationName = ""
@@ -80,13 +81,13 @@
 
             // Get C3 canvas gl context
             // Context already exists and we want to use (for render to texture)
-            this.canvas = globalThis.c3_runtimeInterface.GetCanvas() // C3 canvas
+            this.canvas = this.c3wgl._gl.canvas;
             let config = {}
             this.gl = this.canvas.getContext("webgl2", config) || this.canvas.getContext("webgl", config) || canvas.getContext("experimental-webgl", config);
             let gl = this.gl
 
             // Init spineBatcher (only initializes once), add here after canvas, etc. are ready, adding inside type.js OnCreate() was too early for iOS (canvas not ready)
-            spineBatcher.init()
+            spineBatcher.init(this.canvas)
 
             // Init Spine elements
             this.mvp = new spine.webgl.Matrix4();
@@ -104,14 +105,12 @@
                 // Only load textures once for creation of skeletonData, not for each instance
                 // Disable PMA when loading Spine textures
                 spine.webgl.GLTexture.DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL = true;
-                // this.pngURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.pngPath);
-                // this._sdkType._assetPaths[this.pngPath] = this.pngURI;
+                
                 // Path translation for json and atlast (1:1)
-
-                this.atlasURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.atlasPath);
+                this.atlasURI = await this.runtime._assetManager.GetProjectFileUrl(this.atlasPath);
                 this._sdkType._assetPaths[this.atlasURI] = this.atlasURI;
                 this._sdkType._assetPaths[this.atlasPath] = this.atlasURI;
-                this.jsonURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.jsonPath);
+                this.jsonURI = await this.runtime._assetManager.GetProjectFileUrl(this.jsonPath);
                 this._sdkType._assetPaths[this.jsonURI] = this.jsonURI;
                 this._sdkType._assetPaths[this.jsonPath] = this.jsonURI;
 
@@ -123,7 +122,7 @@
                 let assetPaths = this.pngPath.split(",");
                 for(let i=0;i<assetPaths.length;i++)
                 {
-                    this.pngURI = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(assetPaths[i]);
+                    this.pngURI = await this.runtime._assetManager.GetProjectFileUrl(assetPaths[i]);
                     this._sdkType._assetPaths[assetPaths[i]] = this.pngURI;
                     this.assetManager.loadTexture(this.DEMO_NAME, textureLoader, this.pngURI);
                 }
@@ -391,7 +390,7 @@
                 if (!this.IsSpineReady()) {
                 return;
             }
-            const delta = this._runtime.GetDt() * this.animationSpeed;
+            const delta = this.runtime.GetDt() * this.animationSpeed;
             var active = this.skeletonInfo;
             const state = this.skeletonInfo.state;
 
@@ -404,7 +403,7 @@
                 state.update(delta);
                 state.apply(active.skeleton);
                 active.skeleton.updateWorldTransform();
-                this._runtime.UpdateRender();
+                this.runtime.UpdateRender();
             }
         }
 
@@ -455,9 +454,9 @@
             }
 
             // Only call render once per tick for all instances
-            if (spineBatcher.tickCount != this._runtime.GetTickCount())
+            if (spineBatcher.tickCount != this.runtime.GetTickCount())
             {
-                spineBatcher.tickCount = this._runtime.GetTickCount()
+                spineBatcher.tickCount = this.runtime.GetTickCount()
                 spineBatcher.drawBatch();
             }
 
@@ -473,7 +472,7 @@
 
             renderer.SetTexture(this._elementTexture);
     
-            if (this._runtime.IsPixelRoundingEnabled()) {
+            if (this.runtime.IsPixelRoundingEnabled()) {
                 const ox = Math.round(wi.GetX()) - wi.GetX();
                 const oy = Math.round(wi.GetY()) - wi.GetY();
                 tempQuad.copy(quad);
