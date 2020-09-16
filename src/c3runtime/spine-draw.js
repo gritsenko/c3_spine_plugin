@@ -171,6 +171,8 @@ class SpineBatch {
             if (skeletonInstance.initialized)
             {
                 const bounds = skeletonInstance.skeletonInfo.bounds;
+                const premultipliedAlpha = skeletonInstance.skeletonInfo.premultipliedAlpha;
+
                 // Render to our targetTexture by binding the framebuffer to the SpineFB texture
                 gl.bindFramebuffer(gl.FRAMEBUFFER, skeletonInstance.spineFB);
 
@@ -202,7 +204,7 @@ class SpineBatch {
                 gl.clear(gl.COLOR_BUFFER_BIT);
 
                 // Render
-                this.renderer.premultipliedAlpha = this.premultipliedAlpha;
+                this.renderer.premultipliedAlpha = premultipliedAlpha;
                 this.renderer.draw(this.batcher, skeletonInstance.skeletonInfo.skeleton);
                 this.batcher.end();
                 this.shader.unbind();

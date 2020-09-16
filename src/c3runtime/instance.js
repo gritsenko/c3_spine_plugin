@@ -126,7 +126,6 @@
                     this._sdkType._assetPaths[assetPaths[i]] = this.pngURI;
                     this.assetManager.loadTexture(this.DEMO_NAME, textureLoader, this.pngURI);
                 }
-                console.log('[SpineInit] paths',this._sdkType._assetPaths)
 
                 this.assetManager.loadText(this.DEMO_NAME, this.atlasURI);
             }
@@ -156,6 +155,7 @@
             // console.log("Loading skeleton");
 
             this.skeletonInfo = this.loadSkeleton(this.skeletonName, this.animationName);
+            this.skeletonInfo.premultipliedAlpha = this.premultipliedAlpha;
 
             const skins = this.skeletonInfo.skeleton.data.skins;
             this.skinNames = skins.map(x => x.name);
@@ -182,7 +182,7 @@
                 this._sdkType._skeletonData.notInitialized = false;
                 const atlasURI = assetManager.get(this.DEMO_NAME, this.atlasURI);
                 this._sdkType._atlas = new spine.TextureAtlas(atlasURI, function(path) {
-                    // console.log(`Loading png atlas ${path} replaced with ${self.pngURI}`);
+                    // console.log(`Loading png atlas ${path} replaced with ${self._sdkType._assetPaths[path]}`);
                     return assetManager.get(self.DEMO_NAME, self._sdkType._assetPaths[path]);
                 });
                 this._sdkType._atlasLoader = new spine.AtlasAttachmentLoader(this._sdkType._atlas);
@@ -409,10 +409,6 @@
 
         Draw(renderer) {
 
-            // if (!this.loggedRenderer) {
-            //     this.loggedRenderer = true;
-            //     console.log(renderer);
-            // }
             var  gl  =  renderer._gl
 
             if (this._elementId == "" || !this.isSkeletonLoaded) return; // elementID not set, can't draw the element
