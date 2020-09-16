@@ -28,12 +28,6 @@ Add-on based on **Mikal's** sample from this thread:
 
 [https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940 ](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
-## Warning
-
-To use this add-on you must uncheck "Project/Advanced/Use worker" option. If this is a big concern, leave a comment in the github issues (in general C3 worker mode currently changes to non-worker mode for C3 mobile projects.)
-
-![warn](docs/images/warn.jpg "Uncheck use worker")
-
 ## Downloads
 
 [Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.14.0/Spine-v1.14.0.c3addon)
