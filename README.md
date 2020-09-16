@@ -36,7 +36,7 @@ To use this add-on you must uncheck "Project/Advanced/Use worker" option. If thi
 
 ## Downloads
 
-[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.13.0/Spine-v1.13.0.c3addon)
+[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.14.0/Spine-v1.14.0.c3addon)
 
 [Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.5.0/SpinePluginTest.c3p)
 
@@ -64,10 +64,14 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Add expressions TextureWidth, TextureHeight (texture size used to display Spine), based on original Spine bounds and RenderQuality setting.
 - Multiple skeleton instances (w/ variable skin) per Spine object (save on atlas texture memory usage and faster to spawn new instances.)
 - Batch render for improved performance with multiple Spine instances and objects.
+- Multiple atlas pages (multiple pngs).
+- Mix and Match skins, custom runtime skins.
+- C3 worker mode support.
 
 ## Wishlist
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 ## Release notes
+- 1.14.0 Add C3 worker mode support.
 - 1.13.0 Add runtime create skin and add skin ACEs and MixandMatch example project.
 - 1.12.1 Change path separator to comma instead of space to match existing skin paths separator.
 - 1.12.0 Add support for Atlas pages (multiple png, space separated), finish implmention of Set Attachment action, fix webgl1 support (revealed on iOS w/o weblg2 enabled.)
