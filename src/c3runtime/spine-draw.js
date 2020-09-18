@@ -235,6 +235,71 @@ class SpineBatch {
         gl.viewport(oldViewport[0],oldViewport[1],oldViewport[2],oldViewport[3]);
     }
 
+    static getRValue(rgb)
+    {
+        const ALPHAEX_SHIFT = 1024;
+        const ALPHAEX_MAX = 1023;
+        const RGBEX_SHIFT = 16384;
+        const RGBEX_MAX = 8191;
+        const RGBEX_MIN = -8192;
+        if (rgb >= 0) return (rgb & 255) / 255;
+        else {
+            let v = Math.floor(-rgb / (RGBEX_SHIFT * RGBEX_SHIFT * ALPHAEX_SHIFT));
+            if (v > RGBEX_MAX) v -= RGBEX_SHIFT;
+            return v / 1024;
+        }
+    };
+
+    static getGValue(rgb)
+    {
+        const ALPHAEX_SHIFT = 1024;
+        const ALPHAEX_MAX = 1023;
+        const RGBEX_SHIFT = 16384;
+        const RGBEX_MAX = 8191;
+        const RGBEX_MIN = -8192;
+        if (rgb >= 0) return ((rgb & 65280) >> 8) / 255;
+        else {
+        let v = Math.floor(
+            (-rgb % (RGBEX_SHIFT * RGBEX_SHIFT * ALPHAEX_SHIFT)) /
+            (RGBEX_SHIFT * ALPHAEX_SHIFT)
+        );
+        if (v > RGBEX_MAX) v -= RGBEX_SHIFT;
+        return v / 1024;
+        }
+    };
+
+    static getBValue(rgb)
+    {
+        const ALPHAEX_SHIFT = 1024;
+        const ALPHAEX_MAX = 1023;
+        const RGBEX_SHIFT = 16384;
+        const RGBEX_MAX = 8191;
+        const RGBEX_MIN = -8192;
+        if (rgb >= 0) return ((rgb & 16711680) >> 16) / 255;
+        else {
+        let v = Math.floor(
+            (-rgb % (RGBEX_SHIFT * ALPHAEX_SHIFT)) / ALPHAEX_SHIFT
+        );
+        if (v > RGBEX_MAX) v -= RGBEX_SHIFT;
+        return v / 1024;
+        }
+    };
+
+    static getAValue(rgb)
+    {
+        const ALPHAEX_SHIFT = 1024;
+        const ALPHAEX_MAX = 1023;
+        const RGBEX_SHIFT = 16384;
+        const RGBEX_MAX = 8191;
+        const RGBEX_MIN = -8192;
+        if (rgb === 0 && 1 / rgb < 0) return 0;
+        else if (rgb >= 0) return 1;
+        else {
+            const v = Math.floor(-rgb % ALPHAEX_SHIFT);
+            return v / ALPHAEX_MAX;
+        }
+    };
+
   }
 
 let spineBatcher = new SpineBatch()

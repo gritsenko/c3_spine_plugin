@@ -248,6 +248,44 @@
                 "desc": "Skin name"
               }
             }
+          },
+          "set-custom-attachment-color": {
+            "list-name": "Set custom skin attachment color",
+            "display-text": "Set (skin {0}, slot{1}, attachment {2}) color to {3}",
+            "description": "Set color of attachment by name in the custom skin and set skin.",
+            "params": {
+              "skin-name": {
+                "name": "Skin name",
+                "desc": "Custom skin name"
+              },
+              "slot-name": {
+                "name": "Slot name",
+                "desc": "Slot name"
+              },
+              "attachment-name": {
+                "name": "Attachment name",
+                "desc": "Attachment name (placeholder name)."
+              },
+              "color": {
+                "name": "Color",
+                "desc": "Color (use rgba())."
+              }
+            }
+          },
+          "set-slot-color": {
+            "list-name": "Set slot color",
+            "display-text": "Set (slot{0}) color to {1}",
+            "description": "Temporarily set color of slot of current skin, until Set (Custom) Skin.",
+            "params": {
+              "slot-name": {
+                "name": "Slot name",
+                "desc": "Slot name"
+              },
+              "color": {
+                "name": "Color",
+                "desc": "Color (use rgba())."
+              }
+            }
           }
         },
         "expressions": {

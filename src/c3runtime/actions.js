@@ -94,6 +94,41 @@
             this.customSkins[this.skinName]
             skeleton.setSkin(this.customSkins[this.skinName]);
             skeleton.setSlotsToSetupPose();
+        },
+
+        SetCustomAttachmentColor(skinName, slotName, attachmentName, color)
+        {
+            const skeleton = this.skeletonInfo.skeleton;
+            let skin = this.customSkins[skinName];
+            let slotIndex = skeleton.data.findSlot(slotName).index;
+            let slot = skeleton.findSlot(slotName);
+            let attachment = skin.getAttachment(slotIndex, attachmentName);
+            let newAttachment = attachment.copy();
+
+            let tint = new spine.Color(
+                SpineBatch.getRValue(color),
+                SpineBatch.getGValue(color),
+                SpineBatch.getBValue(color),
+                SpineBatch.getAValue(color));
+            
+            newAttachment.color = tint;
+            skin.setAttachment(slotIndex, attachmentName, newAttachment);
+            skeleton.setSkin(this.customSkins[skinName]);
+            skeleton.setSlotsToSetupPose();
+        },
+
+        SetSlotColor(slotName, color)
+        {
+            const skeleton = this.skeletonInfo.skeleton;
+            let slot = skeleton.findSlot(slotName);
+
+            let tint = new spine.Color(
+                SpineBatch.getRValue(color),
+                SpineBatch.getGValue(color),
+                SpineBatch.getBValue(color),
+                SpineBatch.getAValue(color));            
+            slot.color = tint;
         }
+
     };
 }

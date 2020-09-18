@@ -154,6 +154,29 @@
         ]
       },
       {
+        "id": "set-custom-attachment-color",
+        "scriptName": "SetCustomAttachmentColor",
+        "highlight": false,
+        "params": [
+          {
+            "id": "skin-name",
+            "type": "string"
+          },
+          {
+            "id": "slot-name",
+            "type": "string"
+          },
+          {
+            "id": "attachment-name",
+            "type": "string"
+          },
+          {
+            "id": "color",
+            "type": "number"
+          }
+        ]
+      },
+      {
         "id": "create-custom-skin",
         "scriptName": "CreateCustomSkin",
         "highlight": false,
@@ -187,6 +210,21 @@
           {
             "id": "skin-name",
             "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "set-slot-color",
+        "scriptName": "SetSlotColor",
+        "highlight": false,
+        "params": [
+          {
+            "id": "slot-name",
+            "type": "string"
+          },
+          {
+            "id": "color",
+            "type": "number"
           }
         ]
       }

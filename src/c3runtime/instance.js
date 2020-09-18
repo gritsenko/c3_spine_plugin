@@ -398,8 +398,11 @@
 
                 var animationDuration = state.getCurrent(0).animation.duration;
                 active.playTime += delta;
-                while (active.playTime >= animationDuration)
-                    active.playTime -= animationDuration;
+                if (animationDuration > 0)
+                {
+                    while (active.playTime >= animationDuration)
+                        active.playTime -= animationDuration;
+                }
                 state.update(delta);
                 state.apply(active.skeleton);
                 active.skeleton.updateWorldTransform();
