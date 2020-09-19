@@ -472,6 +472,7 @@
             renderer.SetTexture(this._elementTexture);
     
             if (this.runtime.IsPixelRoundingEnabled()) {
+                let tempQuad = new C3.Quad();
                 const ox = Math.round(wi.GetX()) - wi.GetX();
                 const oy = Math.round(wi.GetY()) - wi.GetY();
                 tempQuad.copy(quad);
