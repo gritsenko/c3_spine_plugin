@@ -433,7 +433,9 @@
                 var bounds = this.skeletonInfo.bounds;
                 this.textureWidth = bounds.size.x;
                 this.textureHeight = bounds.size.y;
-                this._elementTexture = renderer.CreateDynamicTexture(this.textureWidth, this.textureHeight, { mipMap: false });
+                let sampling = this.runtime.GetSampling();
+                let options =  { mipMap: false, sampling: sampling }
+                this._elementTexture = renderer.CreateDynamicTexture(this.textureWidth, this.textureHeight, options);
                 // console.log('[Spine] Texture size:',bounds.size.x,',', bounds.size.y);
 
                 var oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
