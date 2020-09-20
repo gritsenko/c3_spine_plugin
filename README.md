@@ -30,7 +30,9 @@ Add-on based on **Mikal's** sample from this thread:
 
 ## Downloads
 
-[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.15.1/Spine-v1.15.1.c3addon)
+[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.15.2/Spine-v1.15.2.c3addon)
+
+[Previous Add-on Versions](https://github.com/gritsenko/c3_spine_plugin/tree/master/dist)
 
 [Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.5.0/SpinePluginTest.c3p)
 
@@ -66,6 +68,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 ## Wishlist
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 ## Release notes
+- 1.15.2 Add project sampling support to Spine C3 texture.
 - 1.15.1 Fix pixel rounding bug.
 - 1.15.0 Set Slot Color (temporary until new skin set), Set Custom Color Attachment (set color of attachment of a custom skin and set to the custom skin.) Fix one frame animation bug.
 - 1.14.1 Fix PMA bug regression (introduced in 1.11.0)
