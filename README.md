@@ -2,7 +2,8 @@
 
 ## Important notes for Spine export files:
 - Requires Spine version 3.8+ JSON files. See Spine Formatter below to upgrade older JSON files.
-- In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear.
+- In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear or Nearest.
+- In the Packing settings, set Region Padding to 2 or higher (if you see lines around your images, it may be because padding is set to 0).
 - Max texture size, 4096x4096. multiple texture sheets supported (use comma separated list on C3 spine object's png path property).
 ## Additional Spine project guidelines:
 - Do not use minify on export of C3 project.
