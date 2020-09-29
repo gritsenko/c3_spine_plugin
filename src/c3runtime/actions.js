@@ -119,15 +119,51 @@
 
         SetSlotColor(slotName, color)
         {
-            const skeleton = this.skeletonInfo.skeleton;
-            let slot = skeleton.findSlot(slotName);
+            this.slotColors[slotName] = color;
+        },
 
-            let tint = new spine.Color(
-                SpineBatch.getRValue(color),
-                SpineBatch.getGValue(color),
-                SpineBatch.getBValue(color),
-                SpineBatch.getAValue(color));            
-            slot.color = tint;
+        SetSlotDarkColor(slotName, darkColor)
+        {
+            this.slotDarkColors[slotName] = darkColor;
+        },
+
+        ApplySlotColors()
+        {
+            const skeleton = this.skeletonInfo.skeleton;
+            // Set regular colors to slots
+            let slotName;
+            for(slotName in this.slotColors)
+            {
+                let slot = skeleton.findSlot(slotName);
+                let color = this.slotColors[slotName];
+                let tint = new spine.Color(
+                    SpineBatch.getRValue(color),
+                    SpineBatch.getGValue(color),
+                    SpineBatch.getBValue(color),
+                    SpineBatch.getAValue(color));            
+                slot.color = tint;                
+            }
+
+            // Set dark colors to slots
+            for(slotName in this.slotDarkColors)
+            {
+                let slot = skeleton.findSlot(slotName);
+                let color = this.slotDarkColors[slotName];
+                let tint = new spine.Color(
+                    SpineBatch.getRValue(color),
+                    SpineBatch.getGValue(color),
+                    SpineBatch.getBValue(color),
+                    SpineBatch.getAValue(color));            
+                slot.darkColor = tint;                
+            }
+        },
+
+        ResetSlotColors()
+        {
+            const skeleton = this.skeletonInfo.skeleton;
+            this.slotColors = {};
+            this.slotDarkColors = {};
+            skeleton.setSlotsToSetupPose();
         }
 
     };

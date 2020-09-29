@@ -22,6 +22,8 @@
             this.gl = null;
             this.uid = this.GetInstance().GetUID();
             this.customSkins = {};
+            this.slotColors = {};
+            this.slotDarkColors = {};
 
             this.atlasPath = "";
 
@@ -384,6 +386,8 @@
             this.textureHeight = null;
             this.uid = null;
             this.customSkins = null;
+            this.slotColors = null;
+            this.slotDarkColors = null;
         }
 
         Tick() {

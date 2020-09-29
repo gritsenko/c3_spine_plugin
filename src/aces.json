@@ -157,6 +157,7 @@
         "id": "set-custom-attachment-color",
         "scriptName": "SetCustomAttachmentColor",
         "highlight": false,
+        "isDeprecated": true,
         "params": [
           {
             "id": "skin-name",
@@ -226,6 +227,35 @@
             "id": "color",
             "type": "number"
           }
+        ]
+      },
+      {
+        "id": "set-slot-dark-color",
+        "scriptName": "SetSlotDarkColor",
+        "highlight": false,
+        "params": [
+          {
+            "id": "slot-name",
+            "type": "string"
+          },
+          {
+            "id": "dark-color",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "apply-slot-colors",
+        "scriptName": "ApplySlotColors",
+        "highlight": false,
+        "params": [
+        ]
+      },
+      {
+        "id": "reset-slot-colors",
+        "scriptName": "ResetSlotColors",
+        "highlight": false,
+        "params": [
         ]
       }
     ],
