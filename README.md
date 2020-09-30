@@ -26,7 +26,7 @@
 - Runtime skins can be created, using *Create custom skin*, *Add custom skin* and *Set custom skin*.
 
 ## Slot color/dark color
-- Slot color can be set through *Set slot color* and *Set slot dark color*. The colors are applied using *Apply slot colors*. The slot colors will be reverted if a new skin is applied or if the Spine animation changes the slot colors. To reset the slot colors to the original colors, use *Reset slot colors*.
+- Slot color can be set through *Set slot color* and *Set slot dark color*. The colors are applied using *Apply slot colors*. The slot colors will be reverted if a new skin is applied or if the Spine animation changes the slot colors. To reset the slot colors to the original colors, use *Reset slot colors*. Dark color will only be applied if 'Tint Black' is enabled for the slot in the Spine project.
 
 ## Render quality
 - This sets the resolution of the texture to render to. Lower quality requres less texture memory and GPU performance.
@@ -41,7 +41,7 @@ Add-on based on **Mikal's** sample from this thread:
 [https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940 ](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.16.0/Spine-v1.16.0.c3addon)
+[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.16.1/Spine-v1.16.1.c3addon)
 
 [Previous Add-on Versions](https://github.com/gritsenko/c3_spine_plugin/tree/master/dist)
 
@@ -75,15 +75,16 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Multiple atlas pages (multiple pngs).
 - Mix and Match skins, custom runtime skins.
 - C3 worker mode support.
-- Color/Dark Color for Slot.
+- Color/Dark Color for Slot at runtime.
 
 ## Wishlist
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 ## Release notes
+- 1.16.1 Bug fix for slot color (handle reset and new skin properly, only apply dark color if Tint Black is set in Spine project for slot).
 - 1.16.0 Add Set slot dark color, Apply Slot color, Reset Slot color. Add Set animation time and starting point of Set animation (beginning, current time, current ratio). Deprecated set color attachment (did not support dark color).
 - 1.15.2 Add project sampling support to Spine C3 texture.
 - 1.15.1 Fix pixel rounding bug.
-- 1.15.0 Set Slot Color (temporary until new skin set), Set Custom Color Attachment (set color of attachment of a custom skin and set to the custom skin.) Fix one frame animation bug.
+- 1.15.0 Set Slot Color (temporary until new skin set), [*deprecated* Set Custom Color Attachment] Fix one frame animation bug.
 - 1.14.1 Fix PMA bug regression (introduced in 1.11.0)
 - 1.14.0 Add C3 worker mode support.
 - 1.13.0 Add runtime create skin and add skin ACEs and MixandMatch example project.
