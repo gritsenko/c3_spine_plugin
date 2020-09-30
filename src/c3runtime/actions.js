@@ -12,10 +12,10 @@
             this.isMirrored = isFlipped;
         },
 
-        SetAnimation(animationName, loop){
+        SetAnimation(animationName, loop, start){
             this.animationName = animationName;
 
-            this.updateCurrentAnimation(loop);
+            this.updateCurrentAnimation(loop, start);
         },
 
         Play(){
@@ -119,15 +119,79 @@
 
         SetSlotColor(slotName, color)
         {
-            const skeleton = this.skeletonInfo.skeleton;
-            let slot = skeleton.findSlot(slotName);
+            this.slotColors[slotName] = color;
+        },
 
-            let tint = new spine.Color(
-                SpineBatch.getRValue(color),
-                SpineBatch.getGValue(color),
-                SpineBatch.getBValue(color),
-                SpineBatch.getAValue(color));            
-            slot.color = tint;
+        SetSlotDarkColor(slotName, darkColor)
+        {
+            this.slotDarkColors[slotName] = darkColor;
+        },
+
+        ApplySlotColors()
+        {
+            const skeleton = this.skeletonInfo.skeleton;
+            // Set regular colors to slots
+            let slotName;
+            for(slotName in this.slotColors)
+            {
+                let slot = skeleton.findSlot(slotName);
+                let color = this.slotColors[slotName];
+                let tint = new spine.Color(
+                    SpineBatch.getRValue(color),
+                    SpineBatch.getGValue(color),
+                    SpineBatch.getBValue(color),
+                    SpineBatch.getAValue(color));            
+                slot.color = tint;                
+            }
+
+            // Set dark colors to slots
+            for(slotName in this.slotDarkColors)
+            {
+                let slot = skeleton.findSlot(slotName);
+                let color = this.slotDarkColors[slotName];
+                let tint = new spine.Color(
+                    SpineBatch.getRValue(color),
+                    SpineBatch.getGValue(color),
+                    SpineBatch.getBValue(color),
+                    SpineBatch.getAValue(color));            
+                slot.darkColor = tint;                
+            }
+        },
+
+        ResetSlotColors()
+        {
+            const skeleton = this.skeletonInfo.skeleton;
+            this.slotColors = {};
+            this.slotDarkColors = {};
+            skeleton.setSlotsToSetupPose();
+        },
+
+        SetAnimationTime(units, time)
+        {
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return;
+
+            const track = state.tracks[0];
+
+            if (units == 0)
+            // time in ms
+            {
+                if (time < track.animationStart || time > track.animationEnd)
+                {
+                    console.error('[Spine] SetAnimationTime time out of bounds:', time);
+                    return;
+                }
+                track.trackTime = time;
+            } else
+            // time in ratio
+            {
+                if (time < 0 || time > 1)
+                {
+                    console.error('[Spine] SetAnimationTime ratio out of bounds:', time);
+                    return;
+                }
+                track.trackTime = time * (track.animationEnd - track.animationStart);
+            }
         }
 
     };

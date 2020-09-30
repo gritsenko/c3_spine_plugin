@@ -136,7 +136,7 @@
           },
           "set-animation": {
             "list-name": "Set animation",
-            "display-text": "Set animation {0} (loop: {1})",
+            "display-text": "Set animation {0} start at {2} (loop: {1})",
             "description": "Set animation by name.",
             "params": {
               "animation-name": {
@@ -146,6 +146,34 @@
               "loop": {
                 "name": "Loop",
                 "desc": "Loop animation"
+              },
+              "start": {
+                "name": "Start at",
+                "desc": "Start animation at location, beginning, current time in seconds or current ratio between start and end of animation (0-1).",
+                "items": {
+                  "beginning": "beginning",
+                  "current-time": "current time",
+                  "current-ratio": "current ratio"
+                }
+              }
+            }
+          },
+          "set-animation-time": {
+            "list-name": "Set animation time",
+            "display-text": "Set animation time in {0} to {1}",
+            "description": "Set animation time by seconds or ratio.",
+            "params": {
+              "units": {
+                "name": "Units",
+                "desc": "Set to time in seconds or ratio between start and end of animation (0-1).",
+                "items": {
+                  "seconds": "seconds",
+                  "ratio": "ratio"
+                }
+              },          
+              "time": {
+                "name": "Time",
+                "desc": "Time in seconds or ratio (0-1)"
               }
             }
           },
@@ -272,6 +300,29 @@
               }
             }
           },
+          "set-custom-attachment-dark-color": {
+            "list-name": "Set custom skin attachment dark color",
+            "display-text": "Set (skin {0}, slot{1}, attachment {2}) dark color to {3}",
+            "description": "Set dark color of attachment by name in the custom skin and set skin.",
+            "params": {
+              "skin-name": {
+                "name": "Skin name",
+                "desc": "Custom skin name"
+              },
+              "slot-name": {
+                "name": "Slot name",
+                "desc": "Slot name"
+              },
+              "attachment-name": {
+                "name": "Attachment name",
+                "desc": "Attachment name (placeholder name)."
+              },
+              "dark-color": {
+                "name": "Dark color",
+                "desc": "Dark color (use rgba())."
+              }
+            }
+          },
           "set-slot-color": {
             "list-name": "Set slot color",
             "display-text": "Set (slot{0}) color to {1}",
@@ -285,6 +336,35 @@
                 "name": "Color",
                 "desc": "Color (use rgba())."
               }
+            }
+          },
+          "set-slot-dark-color": {
+            "list-name": "Set slot dark color",
+            "display-text": "Set (slot{0}) dark color to {1}",
+            "description": "Temporarily set dark color of slot of current skin, until Set (Custom) Skin.",
+            "params": {
+              "slot-name": {
+                "name": "Slot name",
+                "desc": "Slot name"
+              },
+              "dark-color": {
+                "name": "Dark color",
+                "desc": "Dark color (use rgba())."
+              }
+            }
+          },
+          "apply-slot-colors": {
+            "list-name": "Apply slot colors",
+            "display-text": "Apply slot colors",
+            "description": "Apply all slot colors, dark colors that were set.",
+            "params": {
+            }
+          },
+          "reset-slot-colors": {
+            "list-name": "Reset slot colors",
+            "display-text": "Reset slot colors",
+            "description": "Reset all slot colors, dark colors that were set.",
+            "params": {
             }
           }
         },
@@ -352,6 +432,26 @@
           "spine-error": {
             "description": "Error message for on error trigger.",
             "translated-name": "Error",
+            "params": {}
+          },
+          "animation-start": {
+            "description": "Animation start time.",
+            "translated-name": "AnimationStart",
+            "params": {}
+          },
+          "animation-end": {
+            "description": "Animation end time.",
+            "translated-name": "AnimationEnd",
+            "params": {}
+          },
+          "animation-last": {
+            "description": "Animation last time.",
+            "translated-name": "AnimationLast",
+            "params": {}
+          },
+          "track-time": {
+            "description": "Animation track time.",
+            "translated-name": "TrackTime",
             "params": {}
           }
         }
