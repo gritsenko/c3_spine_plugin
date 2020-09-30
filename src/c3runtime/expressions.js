@@ -48,6 +48,22 @@
         TextureWidth(){
             return this.textureWidth;
         },
+        AnimationStart(){
+            if (this.skeletonInfo && this.skeletonInfo.state) return this.skeletonInfo.state.tracks[0].animationStart;
+            else return 0;
+        },
+        AnimationEnd(){
+            if (this.skeletonInfo && this.skeletonInfo.state) return this.skeletonInfo.state.tracks[0].animationEnd;
+            else return 0;
+        },
+        AnimationLast(){
+            if (this.skeletonInfo && this.skeletonInfo.state) return this.skeletonInfo.state.tracks[0].animationLast;
+            else return 0;
+        },
+        TrackTime(){
+            if (this.skeletonInfo && this.skeletonInfo.state) return this.skeletonInfo.state.tracks[0].trackTime;
+            else return 0;
+        },
 
     };
 }

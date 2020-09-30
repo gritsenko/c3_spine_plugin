@@ -136,7 +136,7 @@
           },
           "set-animation": {
             "list-name": "Set animation",
-            "display-text": "Set animation {0} (loop: {1})",
+            "display-text": "Set animation {0} start at {2} (loop: {1})",
             "description": "Set animation by name.",
             "params": {
               "animation-name": {
@@ -146,6 +146,34 @@
               "loop": {
                 "name": "Loop",
                 "desc": "Loop animation"
+              },
+              "start": {
+                "name": "Start at",
+                "desc": "Start animation at location, beginning, current time in seconds or current ratio between start and end of animation (0-1).",
+                "items": {
+                  "beginning": "beginning",
+                  "current-time": "current time",
+                  "current-ratio": "current ratio"
+                }
+              }
+            }
+          },
+          "set-animation-time": {
+            "list-name": "Set animation time",
+            "display-text": "Set animation time in {0} to {1}",
+            "description": "Set animation time by seconds or ratio.",
+            "params": {
+              "units": {
+                "name": "Units",
+                "desc": "Set to time in seconds or ratio between start and end of animation (0-1).",
+                "items": {
+                  "seconds": "seconds",
+                  "ratio": "ratio"
+                }
+              },          
+              "time": {
+                "name": "Time",
+                "desc": "Time in seconds or ratio (0-1)"
               }
             }
           },
@@ -404,6 +432,26 @@
           "spine-error": {
             "description": "Error message for on error trigger.",
             "translated-name": "Error",
+            "params": {}
+          },
+          "animation-start": {
+            "description": "Animation start time.",
+            "translated-name": "AnimationStart",
+            "params": {}
+          },
+          "animation-end": {
+            "description": "Animation end time.",
+            "translated-name": "AnimationEnd",
+            "params": {}
+          },
+          "animation-last": {
+            "description": "Animation last time.",
+            "translated-name": "AnimationLast",
+            "params": {}
+          },
+          "track-time": {
+            "description": "Animation track time.",
+            "translated-name": "TrackTime",
             "params": {}
           }
         }

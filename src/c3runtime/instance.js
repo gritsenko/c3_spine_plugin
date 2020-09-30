@@ -215,6 +215,8 @@
 
             var state = new spine.AnimationState(stateData);
             state.setAnimation(0, animationName, true);
+            console.log('[Spine] track:', state.tracks[0]);
+
             state.apply(skeleton);
             skeleton.updateWorldTransform();
             var offset = new spine.Vector2();
@@ -278,10 +280,21 @@
             };
         }
 
-        updateCurrentAnimation(loop) {
+        updateCurrentAnimation(loop,start) {
             try {
                 const state = this.skeletonInfo.state;
                 const skeleton = this.skeletonInfo.skeleton;
+                const track = state.tracks[0];
+
+                let currentTime = 0;
+                let currentRatio = 0;
+                if (track) {
+                    // calculate ratio and time
+                    currentTime = track.trackTime;
+                    currentRatio = (track.animationLast+track.trackTime-track.trackLast)/(track.animationEnd-track.animationStart);
+                    console.log('[Spine] currentTime', currentTime, currentRatio);
+                }
+
                 state.setAnimation(0, this.animationName, loop);
 
                 state.tracks[0].listener = {
@@ -295,8 +308,25 @@
                         this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
                     }
                 };
+                
+                switch (start)
+                {
+                    case 0: break; // Start from beginning
+                    case 1: state.tracks[0].trackTime = currentTime; break;
+                    case 2: state.tracks[0].trackTime = currentRatio * (state.tracks[0].animationEnd-state.tracks[0].animationStart); break;
+                    default: break; 
+                }
 
                 state.apply(skeleton);
+
+
+
+                console.log('[Spine] trackTime 0', state.tracks[0].trackTime);
+
+                console.log('[Spine] trackTime 1', state.tracks[0].trackTime);
+
+                console.log('[Spine] track:', state.tracks[0]);
+
             } catch (ex) {
                 console.error(ex);
                 alert(ex + "\n\n available animations: \n" + this.animationNames.join("\n"));

@@ -12,10 +12,10 @@
             this.isMirrored = isFlipped;
         },
 
-        SetAnimation(animationName, loop){
+        SetAnimation(animationName, loop, start){
             this.animationName = animationName;
 
-            this.updateCurrentAnimation(loop);
+            this.updateCurrentAnimation(loop, start);
         },
 
         Play(){
@@ -164,6 +164,34 @@
             this.slotColors = {};
             this.slotDarkColors = {};
             skeleton.setSlotsToSetupPose();
+        },
+
+        SetAnimationTime(units, time)
+        {
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return;
+
+            const track = state.tracks[0];
+
+            if (units == 0)
+            // time in ms
+            {
+                if (time < track.animationStart || time > track.animationEnd)
+                {
+                    console.error('[Spine] SetAnimationTime time out of bounds:', time);
+                    return;
+                }
+                track.trackTime = time;
+            } else
+            // time in ratio
+            {
+                if (time < 0 || time > 1)
+                {
+                    console.error('[Spine] SetAnimationTime ratio out of bounds:', time);
+                    return;
+                }
+                track.trackTime = time * (track.animationEnd - track.animationStart);
+            }
         }
 
     };

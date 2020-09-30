@@ -85,6 +85,15 @@
           {
             "id": "loop",
             "type": "boolean"
+          },
+          {
+            "id": "start",
+            "type": "combo",
+            "items": [
+              "beginning",
+              "current-time",
+              "current-ratio"
+            ]
           }
         ]
       },
@@ -257,6 +266,25 @@
         "highlight": false,
         "params": [
         ]
+      },
+      {
+        "id": "set-animation-time",
+        "scriptName": "SetAnimationTime",
+        "highlight": false,
+        "params": [
+          {
+            "id": "units",
+            "type": "combo",
+            "items": [
+              "seconds",
+              "ratio"
+            ]
+          },
+          {
+            "id": "time",
+            "type": "number"
+          }
+        ]
       }
     ],
     "expressions": [
@@ -354,6 +382,38 @@
         "id": "texture-height",
         "expressionName": "TextureHeight",
         "scriptName": "TextureHeight",
+        "highlight": false,
+        "returnType": "number",
+        "params": []
+      },
+      {
+        "id": "animation-start",
+        "expressionName": "AnimationStart",
+        "scriptName": "AnimationStart",
+        "highlight": false,
+        "returnType": "number",
+        "params": []
+      },
+      {
+        "id": "animation-end",
+        "expressionName": "AnimationEnd",
+        "scriptName": "AnimationEnd",
+        "highlight": false,
+        "returnType": "number",
+        "params": []
+      },
+      {
+        "id": "animation-last",
+        "expressionName": "AnimationLast",
+        "scriptName": "AnimationLast",
+        "highlight": false,
+        "returnType": "number",
+        "params": []
+      },
+      {
+        "id": "track-time",
+        "expressionName": "TrackTime",
+        "scriptName": "TrackTime",
         "highlight": false,
         "returnType": "number",
         "params": []
