@@ -136,25 +136,27 @@
             {
                 let slot = skeleton.findSlot(slotName);
                 let color = this.slotColors[slotName];
-                let tint = new spine.Color(
+                slot.color.set(
                     SpineBatch.getRValue(color),
                     SpineBatch.getGValue(color),
                     SpineBatch.getBValue(color),
-                    SpineBatch.getAValue(color));            
-                slot.color = tint;                
+                    SpineBatch.getAValue(color));               
             }
 
             // Set dark colors to slots
             for(slotName in this.slotDarkColors)
             {
                 let slot = skeleton.findSlot(slotName);
-                let color = this.slotDarkColors[slotName];
-                let tint = new spine.Color(
-                    SpineBatch.getRValue(color),
-                    SpineBatch.getGValue(color),
-                    SpineBatch.getBValue(color),
-                    SpineBatch.getAValue(color));            
-                slot.darkColor = tint;                
+                // Set only if dark Color is available, (Tint Black must be applied to the slot in the project.)
+                if (slot.darkColor)
+                {
+                    let color = this.slotDarkColors[slotName];
+                    slot.darkColor.set(
+                        SpineBatch.getRValue(color),
+                        SpineBatch.getGValue(color),
+                        SpineBatch.getBValue(color),
+                        SpineBatch.getAValue(color));
+                }                
             }
         },
 
