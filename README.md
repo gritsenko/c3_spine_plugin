@@ -1,5 +1,9 @@
 # Spine add-on for Construct 3
 
+Please support development of the C3 Spine plugin:
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T8VV6CJVP3X3S)
+
 ## Important notes for Spine export files:
 - Requires Spine version 3.8+ JSON files. See Spine Formatter below to upgrade older JSON files.
 - In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear or Nearest.
