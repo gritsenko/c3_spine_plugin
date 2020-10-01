@@ -281,6 +281,10 @@
         }
 
         updateCurrentAnimation(loop,start) {
+            
+            if (!this.skeletonInfo) return;
+            if (!this.skeletonInfo.skeleton) return;
+
             try {
                 const state = this.skeletonInfo.state;
                 const skeleton = this.skeletonInfo.skeleton;
@@ -291,23 +295,14 @@
                 if (track) {
                     // calculate ratio and time
                     currentTime = track.trackTime;
-                    currentRatio = (track.animationLast+track.trackTime-track.trackLast)/(track.animationEnd-track.animationStart);
-                    console.log('[Spine] currentTime', currentTime, currentRatio);
+                    if (track.animationEnd != track.animationStart && track.animationEnd > track.animationStart)
+                    {
+                        currentRatio = (track.animationLast+track.trackTime-track.trackLast)/(track.animationEnd-track.animationStart);
+                    }
+                    // console.log('[Spine] currentTime', currentTime, currentRatio);
                 }
 
                 state.setAnimation(0, this.animationName, loop);
-
-                state.tracks[0].listener = {
-                    complete: (trackEntry, count) => {
-                        this.completeAnimationName = this.animationName;
-                        this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
-                        this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
-                    },
-                    event: (trackIndex, event) => {
-                        this.completeEventName = event.data.name;
-                        this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
-                    }
-                };
                 
                 switch (start)
                 {
@@ -317,16 +312,37 @@
                     default: break; 
                 }
 
-                state.apply(skeleton);
-
-
-
-                console.log('[Spine] trackTime 0', state.tracks[0].trackTime);
-
-                console.log('[Spine] trackTime 1', state.tracks[0].trackTime);
-
-                console.log('[Spine] track:', state.tracks[0]);
-
+                if (start == 0 || (start == 2 && currentRatio == 0))
+                // If starting from beginning or 0 ratio add listners so they'll trigger at 0
+                {
+                    state.tracks[0].listener = {
+                        complete: (trackEntry, count) => {
+                            this.completeAnimationName = this.animationName;
+                            this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
+                            this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
+                        },
+                        event: (trackIndex, event) => {
+                            this.completeEventName = event.data.name;
+                            this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
+                        }
+                    };
+                    state.apply(skeleton);
+                } else
+                // If starting later, apply time, then enable listeners so they do not trigger on past events
+                {
+                    state.apply(skeleton);
+                    state.tracks[0].listener = {
+                        complete: (trackEntry, count) => {
+                            this.completeAnimationName = this.animationName;
+                            this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
+                            this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
+                        },
+                        event: (trackIndex, event) => {
+                            this.completeEventName = event.data.name;
+                            this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
+                        }
+                    };    
+                }
             } catch (ex) {
                 console.error(ex);
                 alert(ex + "\n\n available animations: \n" + this.animationNames.join("\n"));

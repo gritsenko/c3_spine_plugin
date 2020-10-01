@@ -45,7 +45,7 @@ Add-on based on **Mikal's** sample from this thread:
 [https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940 ](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.16.1/Spine-v1.16.1.c3addon)
+[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.16.2/Spine-v1.16.2.c3addon)
 
 [Previous Add-on Versions](https://github.com/gritsenko/c3_spine_plugin/tree/master/dist)
 
@@ -84,6 +84,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 ## Wishlist
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 ## Release notes
+- 1.16.2 Change behavior of *Set Animation w/ starting time* to not trigger events if the events were before the starting time.
 - 1.16.1 Bug fix for slot color (handle reset and new skin properly, only apply dark color if Tint Black is set in Spine project for slot).
 - 1.16.0 Add Set slot dark color, Apply Slot color, Reset Slot color. Add Set animation time and starting point of Set animation (beginning, current time, current ratio). Deprecated set color attachment (did not support dark color).
 - 1.15.2 Add project sampling support to Spine C3 texture.

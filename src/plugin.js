@@ -2,7 +2,7 @@
 {
 
     const PLUGIN_ID = "Gritsenko_Spine";
-    const PLUGIN_VERSION = "1.16.1";
+    const PLUGIN_VERSION = "1.16.2";
     const PLUGIN_CATEGORY = "general";
 
     const PLUGIN_CLASS = SDK.Plugins.Gritsenko_Spine = class SpinePlugin extends SDK.IPluginBase {
