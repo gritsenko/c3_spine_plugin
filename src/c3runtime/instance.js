@@ -327,10 +327,13 @@
                         }
                     };
                     state.apply(skeleton);
+                    skeleton.updateWorldTransform();
+
                 } else
                 // If starting later, apply time, then enable listeners so they do not trigger on past events
                 {
                     state.apply(skeleton);
+                    skeleton.updateWorldTransform();
                     state.tracks[0].listener = {
                         complete: (trackEntry, count) => {
                             this.completeAnimationName = this.animationName;
