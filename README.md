@@ -35,17 +35,18 @@ Please support development of the C3 Spine plugin:
 ## Render quality
 - This sets the resolution of the texture to render to. Lower quality requres less texture memory and GPU performance.
 
+## Bounding Box Attachment
+- SpineBBoxCenterX, SpineBBoxCenterY espressions give the average of the named slot/bbox polygon points. Useful for attaching C3 Sprite object / collision box to the center of the Bounding Box.
+- The UpdateBBoxes updates the bounding box to the current point in the animation. It should be done just once per tick per instance, before the SpineBBoxCenterX/Y expressions are used.
 ## Share your C3 and Spine plugin work!
 - Tweet your work @kindeyegames , @pix2d and #construct3, we'd be happy to see your work!
 
-![warn](docs/images/SpineExportSettings.png "Use Runtime Filter* as Linear")
+![warn](docs/images/SpineExportSettings.png "Example export settings")
 
-Add-on based on **Mikal's** sample from this thread: 
-
-[https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940 ](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
+Add-on based on **Mikal's** sample from this[thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.16.3/Spine-v1.16.3.c3addon)
+[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.7.0/Spine-v1.17.0.c3addon)
 
 [Previous Add-on Versions](https://github.com/gritsenko/c3_spine_plugin/tree/master/dist)
 
@@ -53,12 +54,14 @@ Add-on based on **Mikal's** sample from this thread:
 
 [MixandMax project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.13.0/SpineMixandMatch.c3p)
 
+[BoundingBox project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.17.0/SpineMixandMatch.c3p)
+
 ## LIVE DEMO
-[https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html](https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html)
+[Live Demo](https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html)
 
 ## Spine Formatter (3.3+ to 3.8 JSON Format)
 Useful for Dragon Bones Spine JSON export and earlier Spine versions.
-[https://gritsenko.github.io/c3_spine_plugin/formatter/index.html](https://gritsenko.github.io/c3_spine_plugin/formatter/index.html)
+[Spine Formatter](https://gritsenko.github.io/c3_spine_plugin/formatter/index.html)
 
 ## Current supported features
 - Load Spine json, atlas and pngs.
@@ -80,10 +83,13 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Mix and Match skins, custom runtime skins.
 - C3 worker mode support.
 - Color/Dark Color for Slot at runtime.
+- BoundingBoxAttachment center expressions.
 
 ## Wishlist
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
+
 ## Release notes
+- 1.17.0 Add debug property, SpineBBoxCenterX,Y expressions. UpdateBBoxes action.
 - 1.16.3 Add updateWorldTransform on animation set.
 - 1.16.2 Change behavior of *Set Animation w/ starting time* to not trigger events if the events were before the starting time.
 - 1.16.1 Bug fix for slot color (handle reset and new skin properly, only apply dark color if Tint Black is set in Spine project for slot).

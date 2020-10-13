@@ -40,6 +40,7 @@
                 this.defaultMix = properties[9];
                 this.skeletonRenderQuality = properties[10];
                 this.keepAspectRatio = properties[11];
+                this.debug = properties[12];
             }
 
             this.isMirrored = false;
@@ -103,7 +104,7 @@
 
             if (this._sdkType._skeletonData.notInitialized)
             {
-                console.log(this.GetInstance().GetUID(),'[Spine] Loading skeleton, textures, json, atlas');
+                if (this.debug) console.log(this.GetInstance().GetUID(),'[Spine] Loading skeleton, textures, json, atlas');
                 // Only load textures once for creation of skeletonData, not for each instance
                 // Disable PMA when loading Spine textures
                 spine.webgl.GLTexture.DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL = true;
@@ -131,9 +132,7 @@
 
                 this.assetManager.loadText(this.DEMO_NAME, this.atlasURI);
             }
-            this.isSpineInitialized = true;
- 
-            // console.log("Spine renderer initialized");
+            this.isSpineInitialized = true; 
         }
 
         resize() {
@@ -150,11 +149,9 @@
             var height = (bounds.size.y) * scale;
 
             this.mvp.ortho2d(centerX - width / 2, centerY - height / 2, width, height);
-            // console.log('[Spine] bounds:',bounds)
         }
 
         loadSkeletons() {
-            // console.log("Loading skeleton");
 
             this.skeletonInfo = this.loadSkeleton(this.skeletonName, this.animationName);
             this.skeletonInfo.premultipliedAlpha = this.premultipliedAlpha;
@@ -177,14 +174,13 @@
             const assetManager = this.assetManager;
             const self = this;
 
-            // console.log("Reading skeleton data");
+            if (this.debug) console.log("[Spine] Reading skeleton data:", name, animationName);
             // If skeletonData not initialized, create it and stop other instances from creating it
             if (this._sdkType._skeletonData.notInitialized)
             {
                 this._sdkType._skeletonData.notInitialized = false;
                 const atlasURI = assetManager.get(this.DEMO_NAME, this.atlasURI);
                 this._sdkType._atlas = new spine.TextureAtlas(atlasURI, function(path) {
-                    // console.log(`Loading png atlas ${path} replaced with ${self._sdkType._assetPaths[path]}`);
                     return assetManager.get(self.DEMO_NAME, self._sdkType._assetPaths[path]);
                 });
                 this._sdkType._atlasLoader = new spine.AtlasAttachmentLoader(this._sdkType._atlas);
@@ -208,20 +204,20 @@
 
             skeleton.setSkin(subskin);
 
-            if (this.debug) console.log("Loading state");
-
             let stateData = new spine.AnimationStateData(this._sdkType._skeletonData);
             stateData.defaultMix = this.defaultMix;
 
             var state = new spine.AnimationState(stateData);
             state.setAnimation(0, animationName, true);
-            console.log('[Spine] track:', state.tracks[0]);
+            if (this.debug) console.log('[Spine] track:', state.tracks[0]);
 
             state.apply(skeleton);
             skeleton.updateWorldTransform();
             var offset = new spine.Vector2();
             var size = new spine.Vector2();
             skeleton.getBounds(offset, size, []);
+
+            var skeletonBounds = new spine.SkeletonBounds();
 
             if(this.keepAspectRatio){
                 var wi = this.GetWorldInfo();
@@ -238,7 +234,8 @@
                     offset: offset,
                     size: size
                 },
-                atlasLoader : this._sdkType._atlasLoader
+                atlasLoader : this._sdkType._atlasLoader,
+                skeletonBounds: skeletonBounds
             };
         }
 
@@ -246,7 +243,6 @@
 
             const state = this.skeletonInfo.state;
             const skeleton = this.skeletonInfo.skeleton;
-            // console.log(skeleton);
             let skins = [];
             if (this.skinName.indexOf(",") > -1) {
                 skins = this.skinName.split(",");
@@ -299,7 +295,6 @@
                     {
                         currentRatio = (track.animationLast+track.trackTime-track.trackLast)/(track.animationEnd-track.animationStart);
                     }
-                    // console.log('[Spine] currentTime', currentTime, currentRatio);
                 }
 
                 state.setAnimation(0, this.animationName, loop);
@@ -489,7 +484,6 @@
                 let sampling = this.runtime.GetSampling();
                 let options =  { mipMap: false, sampling: sampling }
                 this._elementTexture = renderer.CreateDynamicTexture(this.textureWidth, this.textureHeight, options);
-                // console.log('[Spine] Texture size:',bounds.size.x,',', bounds.size.y);
 
                 var oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
                 // Create FB and bind texture to spineFB
@@ -498,10 +492,8 @@
                 // attach the texture as the first color attachment
                 const attachmentPoint = gl.COLOR_ATTACHMENT0;
                 gl.framebufferTexture2D(gl.FRAMEBUFFER, attachmentPoint, gl.TEXTURE_2D, this._elementTexture._texture, 0);
-                // console.log("this.spineFB created:"+this.spineFB)
                 // Restore render to the canvas
                 gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
-                // console.log("Created dynamic texture for spine:" + this._elementId);
                 spineBatcher.setInstanceFB(this.spineFB, this.GetInstance().GetUID())
                 spineBatcher.setInstanceInitialized(this.GetInstance().GetUID());
                 this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnSkeletonLoaded);

@@ -2,7 +2,7 @@
 {
 
     const PLUGIN_ID = "Gritsenko_Spine";
-    const PLUGIN_VERSION = "1.16.3";
+    const PLUGIN_VERSION = "1.17.0";
     const PLUGIN_CATEGORY = "general";
 
     const PLUGIN_CLASS = SDK.Plugins.Gritsenko_Spine = class SpinePlugin extends SDK.IPluginBase {
@@ -52,9 +52,9 @@
             SDK.Lang.PushContext(".properties");
 
             this._info.SetProperties([
-                new SDK.PluginProperty("text", "json", ""),
-                new SDK.PluginProperty("text", "atlas", ""),
-                new SDK.PluginProperty("text", "png", ""),
+                new SDK.PluginProperty("text", "json", ".json"),
+                new SDK.PluginProperty("text", "atlas", ".atlas"),
+                new SDK.PluginProperty("text", "png", ".png"),
                 new SDK.PluginProperty("text", "skin", "default"),
                 new SDK.PluginProperty("text", "animation", "idle"),
                 new SDK.PluginProperty("text", "skeleton", ""),
@@ -63,7 +63,8 @@
                 new SDK.PluginProperty("check", "collisions", true),
                 new SDK.PluginProperty("float", "default-mix", 0.0),
                 new SDK.PluginProperty("float", "render-quality", 1.0),
-                new SDK.PluginProperty("check", "keep-aspect-ratio", false)
+                new SDK.PluginProperty("check", "keep-aspect-ratio", false),
+                new SDK.PluginProperty("check", "debug", false)
             ]);
             SDK.Lang.PopContext(); //.properties
             SDK.Lang.PopContext();

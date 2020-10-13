@@ -285,6 +285,13 @@
             "type": "number"
           }
         ]
+      },
+      {
+        "id": "update-b-boxes",
+        "scriptName": "UpdateBBoxes",
+        "highlight": false,
+        "params": [
+        ]
       }
     ],
     "expressions": [
@@ -417,6 +424,40 @@
         "highlight": false,
         "returnType": "number",
         "params": []
+      },
+      {
+        "id": "spine-b-box-center-x",
+        "expressionName": "SpineBBoxCenterX",
+        "scriptName": "SpineBBoxCenterX",
+        "highlight": false,
+        "returnType": "number",
+        "params": [
+          {
+            "id": "slot",
+            "type": "string"
+          },  
+          {
+            "id": "name",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "spine-b-box-center-y",
+        "expressionName": "SpineBBoxCenterY",
+        "scriptName": "SpineBBoxCenterY",
+        "highlight": false,
+        "returnType": "number",
+        "params": [
+          {
+            "id": "slot",
+            "type": "string"
+          },          
+          {
+            "id": "name",
+            "type": "string"
+          }
+        ]
       }
     ]
   }

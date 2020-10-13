@@ -14,14 +14,9 @@
 
         OnCreate()
         {
-            console.log("SPine plugin loaded");
-            
-            console.log(this);
         }
 
         async LoadSpineFile(){
-            //const uri = await globalThis.c3_runtimeInterface._localRuntime._assetManager.GetProjectFileUrl(this.jsonPath);
-            console.log(globalThis.c3_runtimeInterface);
         }
 
         OnPlacedInLayout()

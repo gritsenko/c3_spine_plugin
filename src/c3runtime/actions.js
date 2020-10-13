@@ -83,7 +83,7 @@
                 this.customSkins[skinName].addSkin(skeleton.data.findSkin(addSkinName));
             } else
             {
-                console.log('[Spine] AddCustomSkin, error - custom skin does not exist',skinName);
+                if (this.debug) console.log('[Spine] AddCustomSkin, error - custom skin does not exist',skinName);
             }
         },
 
@@ -194,6 +194,11 @@
                 }
                 track.trackTime = time * (track.animationEnd - track.animationStart);
             }
+        },
+
+        UpdateBBoxes()
+        {
+            this.skeletonInfo.skeletonBounds.update(this.skeletonInfo.skeleton, true);
         }
 
     };

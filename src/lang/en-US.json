@@ -55,6 +55,10 @@
           "keep-aspect-ratio": {
             "name": "Keep aspect",
             "desc": "Keep aspect ratio of the character or stretch it to object bounding box"
+          },
+          "debug": {
+            "name": "Debug",
+            "desc": "Enable debug messages to dev console."
           }
         },
         "aceCategories": {
@@ -366,6 +370,13 @@
             "description": "Reset all slot colors, dark colors that were set.",
             "params": {
             }
+          },
+          "update-b-boxes": {
+            "list-name": "Update B Boxes",
+            "display-text": "Update B Boxes",
+            "description": "Update all bounding box attachments.",
+            "params": {
+            }
           }
         },
         "expressions": {
@@ -453,6 +464,34 @@
             "description": "Animation track time.",
             "translated-name": "TrackTime",
             "params": {}
+          },
+          "spine-b-box-center-x": {
+            "description": "SpineBBoxCenterX",
+            "translated-name": "SpineBBoxCenterX",
+            "params": {
+              "slot": {
+                "name": "Slot",
+                "desc": "Name of slot."
+              },
+              "name": {
+                "name": "BoundingBox",
+                "desc": "Name of spine bounding box attachment."
+              }
+            }
+          },
+          "spine-b-box-center-y": {
+            "description": "SpineBBoxCenterY",
+            "translated-name": "SpineBBoxCenterY",
+            "params": {
+              "slot": {
+                "name": "Slot",
+                "desc": "Name of slot."
+              },
+              "name": {
+                "name": "BoundingBox",
+                "desc": "Name of spine bounding box attachment."
+              }
+            }
           }
         }
       }
