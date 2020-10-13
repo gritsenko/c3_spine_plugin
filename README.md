@@ -38,6 +38,7 @@
 ## Bounding Box Attachment
 - SpineBBoxCenterX, SpineBBoxCenterY espressions give the average of the named slot/bbox polygon points. Useful for attaching C3 Sprite object / collision box to the center of the Bounding Box.
 - The UpdateBBoxes updates the bounding box to the current point in the animation. It should be done just once per tick per instance, before the SpineBBoxCenterX/Y expressions are used.
+- [Spine Bounding Box Attachment Documentation](http://en.esotericsoftware.com/spine-bounding-boxes)
 ## Share your C3 and Spine plugin work!
 - Tweet your work @kindeyegames , @pix2d and #construct3, we'd be happy to see your work!
 
