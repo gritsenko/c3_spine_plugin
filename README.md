@@ -1,6 +1,6 @@
 # Spine add-on for Construct 3
 
-Please support development of the C3 Spine plugin:
+### Please support development of the C3 Spine plugin
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T8VV6CJVP3X3S)
 
@@ -41,9 +41,10 @@ Please support development of the C3 Spine plugin:
 ## Share your C3 and Spine plugin work!
 - Tweet your work @kindeyegames , @pix2d and #construct3, we'd be happy to see your work!
 
-![warn](docs/images/SpineExportSettings.png "Example export settings")
+### Example export settings
+[](docs/images/SpineExportSettings.png)
 
-Add-on based on **Mikal's** sample from this[thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
+Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
 [Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.7.0/Spine-v1.17.0.c3addon)
@@ -61,6 +62,7 @@ Add-on based on **Mikal's** sample from this[thread](https://www.construct.net/e
 
 ## Spine Formatter (3.3+ to 3.8 JSON Format)
 Useful for Dragon Bones Spine JSON export and earlier Spine versions.
+
 [Spine Formatter](https://gritsenko.github.io/c3_spine_plugin/formatter/index.html)
 
 ## Current supported features
