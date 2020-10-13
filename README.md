@@ -55,7 +55,7 @@ Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/
 
 [MixandMax project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.13.0/SpineMixandMatch.c3p)
 
-[BoundingBox project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.17.0/SpineMixandMatch.c3p)
+[BoundingBox project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.17.0/SpineBBox.c3p)
 
 ## LIVE DEMO
 [Live Demo](https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html)
