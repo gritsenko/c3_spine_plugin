@@ -492,6 +492,20 @@
                 "desc": "Name of spine bounding box attachment."
               }
             }
+          },
+          "spine-b-box-get-poly": {
+            "description": "SpineBBoxGetPoly, get bounding box polygon array of points in JSON string format.",
+            "translated-name": "SpineBBoxGetPoly",
+            "params": {
+              "slot": {
+                "name": "Slot",
+                "desc": "Name of slot."
+              },
+              "name": {
+                "name": "BoundingBox",
+                "desc": "Name of spine bounding box attachment."
+              }
+            }
           }
         }
       }

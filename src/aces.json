@@ -458,6 +458,23 @@
             "type": "string"
           }
         ]
+      },
+      {
+        "id": "spine-b-box-get-poly",
+        "expressionName": "SpineBBoxGetPoly",
+        "scriptName": "SpineBBoxGetPoly",
+        "highlight": false,
+        "returnType": "string",
+        "params": [
+          {
+            "id": "slot",
+            "type": "string"
+          },          
+          {
+            "id": "name",
+            "type": "string"
+          }
+        ]
       }
     ]
   }

@@ -38,6 +38,7 @@
 ## Bounding Box Attachment
 - SpineBBoxCenterX, SpineBBoxCenterY espressions give the average of the named slot/bbox polygon points. Useful for attaching C3 Sprite object / collision box to the center of the Bounding Box.
 - The UpdateBBoxes updates the bounding box to the current point in the animation. It should be done just once per tick per instance, before the SpineBBoxCenterX/Y expressions are used.
+- SpineBBoxGetPoly expression returns poly points in JSON format array of named slot/bounding box attachment. Use C3 JSON object to parse and use points. The points are returned in top level JSON array [x0,y0, x1, y1,...]
 - [Spine Bounding Box Attachment Documentation](http://en.esotericsoftware.com/spine-bounding-boxes)
 ## Share your C3 and Spine plugin work!
 - Tweet your work @kindeyegames , @pix2d and #construct3, we'd be happy to see your work!
@@ -48,7 +49,7 @@
 Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.7.0/Spine-v1.17.0.c3addon)
+[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.18.0/Spine-v1.18.0.c3addon)
 
 [Previous Add-on Versions](https://github.com/gritsenko/c3_spine_plugin/tree/master/dist)
 
@@ -92,6 +93,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 1.18.0 Add SpineBBoxGetPoly expression returns poly points in JSON format of named slot/bounding box attachment. 
 - 1.17.0 Add debug property, SpineBBoxCenterX,Y expressions. UpdateBBoxes action.
 - 1.16.3 Add updateWorldTransform on animation set.
 - 1.16.2 Change behavior of *Set Animation w/ starting time* to not trigger events if the events were before the starting time.

@@ -116,6 +116,53 @@
             let x = wi.GetX()-wi.GetWidth()/2+centerX/(this.textureWidth/wi.GetWidth());
             // If rotated, return rotate centerX by angle around center
             return Math.sin(wi.GetAngle()) * (x-wi.GetX()) + Math.cos(wi.GetAngle()) * (y-wi.GetY()) + wi.GetY();
+        },
+
+        SpineBBoxGetPoly(slot,name)
+        {
+            let bBox = this.skeletonInfo.skeleton.getAttachmentByName(slot,name);
+            if (!bBox) return JSON.stringify({});
+            
+            let wi = this.GetInstance().GetWorldInfo();
+            let x = wi.GetX();
+            let y = wi.GetY();
+            let halfHeight = wi.GetHeight()/2;
+            let halfWidth = wi.GetWidth()/2;
+            let angle = wi.GetAngle();
+            let yScale = this.textureHeight/wi.GetHeight();
+            let xScale = this.textureWidth/wi.GetWidth();
+            let sizeY = this.skeletonInfo.bounds.size.y;
+            let offsetY = this.skeletonInfo.bounds.offset.y;
+            let sizeX = this.skeletonInfo.bounds.size.x;
+            let offsetX = this.skeletonInfo.bounds.offset.x;
+            let cosT = 0;
+            let sinT = 0;
+            // If rotated pre calculate cos and sin
+            if (angle != 0)
+            {
+                cosT = Math.cos(angle);
+                sinT = Math.sin(angle);    
+            }
+
+            const points = Array.from(this.skeletonInfo.skeletonBounds.getPolygon(bBox));
+            for(let i=0;i<points.length;i+=2)
+            {
+                // X unroated
+                points[i] = points[i]+offsetX+sizeX;
+                points[i] = x-halfWidth+points[i]/(xScale);
+                // Y unroated
+                points[i+1] = sizeY-points[i+1]+offsetY;
+                points[i+1] = y-halfHeight+points[i+1]/(yScale);
+                // If rotated, rotate points around wi x,y
+                if (angle != 0)
+                {
+                    let rotX = cosT * (points[i]-x) - sinT * (points[i+1]-y) + x;
+                    let rotY = sinT * (points[i]-x) + cosT * (points[i+1]-y) + y;
+                    points[i] = rotX;
+                    points[i+1] = rotY;
+                }
+            }
+            return JSON.stringify(points);
         }
     };
 }
