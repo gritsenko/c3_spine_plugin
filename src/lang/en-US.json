@@ -377,6 +377,25 @@
             "description": "Update all bounding box attachments.",
             "params": {
             }
+          },
+          "set-animation-mix": {
+            "list-name": "Set animation mix",
+            "display-text": "Set mix from {0} to {1} with duration {2}",
+            "description": "Set animation mix from one animation to another with a duration.",
+            "params": {
+              "from-name": {
+                "name": "From animation",
+                "desc": "Animation name to mix from."
+              },
+              "to-name": {
+                "name": "To animation",
+                "desc": "Animation name to mix to."
+              },
+              "duration": {
+                "name": "Duration",
+                "desc": "Duration for the mix."
+              }
+            }
           }
         },
         "expressions": {

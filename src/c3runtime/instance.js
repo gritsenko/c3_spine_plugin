@@ -235,7 +235,8 @@
                     size: size
                 },
                 atlasLoader : this._sdkType._atlasLoader,
-                skeletonBounds: skeletonBounds
+                skeletonBounds: skeletonBounds,
+                stateData: stateData
             };
         }
 

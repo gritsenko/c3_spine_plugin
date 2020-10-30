@@ -78,6 +78,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Animation set time, play from beginning, current time, current ratio.
 - Animation finished, animation playing conditions.
 - Default mix interval for blending animations.
+- Per animation pair mix duration control.
 - Dynamic animation speed control.
 - Dynamic region changing for current skin attachments.
 - Events to trigger C3 triggers.
@@ -95,6 +96,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 1.19.0 Add Set animation mix {fromName} to {toName} with duration {seconds}.
 - 1.18.0 Add SpineBBoxGetPoly expression returns poly points in JSON format of named slot/bounding box attachment. 
 - 1.17.0 Add debug property, SpineBBoxCenterX,Y expressions. UpdateBBoxes action.
 - 1.16.3 Add updateWorldTransform on animation set.

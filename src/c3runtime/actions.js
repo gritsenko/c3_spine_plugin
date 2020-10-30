@@ -199,6 +199,19 @@
         UpdateBBoxes()
         {
             this.skeletonInfo.skeletonBounds.update(this.skeletonInfo.skeleton, true);
+        },
+        
+        SetAnimationMix(fromName, toName, duration)
+        {
+            const stateData = this.skeletonInfo.stateData;
+            try
+            {
+                stateData.setMix(fromName, toName, duration);
+            }
+            catch (error)
+            {
+                console.error('[Spine] SetAnimationMix:', error);
+            }
         }
 
     };

@@ -292,6 +292,25 @@
         "highlight": false,
         "params": [
         ]
+      },
+      {
+        "id": "set-animation-mix",
+        "scriptName": "SetAnimationMix",
+        "highlight": false,
+        "params": [
+          {
+            "id": "from-name",
+            "type": "string"
+          },
+          {
+            "id": "to-name",
+            "type": "string"
+          },
+          {
+            "id": "duration",
+            "type": "number"
+          }
+        ]
       }
     ],
     "expressions": [
