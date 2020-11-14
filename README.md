@@ -1,6 +1,6 @@
 # Spine add-on for Construct 3
 
-### Please support development of the C3 Spine plugin
+### Please support development of the C3 Spine plugin (thanks to those kind folks who have donated so far!)
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T8VV6CJVP3X3S)
 
