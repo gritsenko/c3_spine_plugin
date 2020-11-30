@@ -90,7 +90,7 @@
             let gl = this.gl
 
             // Init spineBatcher (only initializes once), add here after canvas, etc. are ready, adding inside type.js OnCreate() was too early for iOS (canvas not ready)
-            spineBatcher.init(this.canvas)
+            spineBatcher.init(this.canvas, this.runtime);
 
             // Init Spine elements
             this.mvp = new spine.webgl.Matrix4();

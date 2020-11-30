@@ -311,6 +311,18 @@
             "type": "number"
           }
         ]
+      },
+      {
+        "id": "set-object-render-rate",
+        "scriptName": "SetObjectRenderRate",
+        "highlight": false,
+        "params": [
+          {
+            "id": "render-rate",
+            "type": "number",
+            "initialValue": 1
+          }
+        ]
       }
     ],
     "expressions": [

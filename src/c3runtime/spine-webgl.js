@@ -11,7 +11,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var spine;
+globalThis.spine = {};
+var spine = globalThis.spine;
 (function (spine) {
     var Animation = (function () {
         function Animation(name, timelines, duration) {

@@ -6,6 +6,7 @@ class SpineBatch {
         // SpineDraw rendered yet this frame
         this._rendered = false
         this._tickCount = -1
+        this._renderRate = 1;
     }
 
     get rendered()
@@ -28,10 +29,20 @@ class SpineBatch {
         this._tickCount = tick
     }
 
-    init(canvas)
+    get renderRate()
+    {
+        return this._renderRate;
+    }
+
+    set renderRate(renderRate)
+    {
+        this._renderRate = renderRate;
+    }
+
+    init(canvas, runtime)
     {        
         if (this._initialized) return 
-
+        this.runtime = runtime;
         this.canvas = canvas;
 
         // Get C3 canvas gl context
@@ -164,12 +175,17 @@ class SpineBatch {
             extOESVAO.bindVertexArrayOES(this.myVAO); 
         }
 
+        let tickCount = this.runtime.GetTickCount();
+
         // Per instance render
+        let index = 0;
+        let count = 0;
         for (const uid in skeletonInstances)
         {
             const skeletonInstance = skeletonInstances[uid];
-            if (skeletonInstance.initialized)
+            if (skeletonInstance.initialized && (tickCount%this._renderRate == index%this._renderRate))
             {
+                count++;
                 const bounds = skeletonInstance.skeletonInfo.bounds;
                 const premultipliedAlpha = skeletonInstance.skeletonInfo.premultipliedAlpha;
 
@@ -209,6 +225,7 @@ class SpineBatch {
                 this.batcher.end();
                 this.shader.unbind();
             }
+            index++;
         }
 
         this._rendered = true;
@@ -302,4 +319,8 @@ class SpineBatch {
 
   }
 
-let spineBatcher = new SpineBatch()
+if (!globalThis.spineBatcher)
+{
+    console.log('[Spine] SpineBatcher init');
+    globalThis.spineBatcher = new SpineBatch();
+}

@@ -396,6 +396,17 @@
                 "desc": "Duration for the mix."
               }
             }
+          },
+          "set-object-render-rate": {
+            "list-name": "Set object render rate",
+            "display-text": "Set object render rate to {0} ticks per render",
+            "description": "Set object render rate to a number of ticks per render.",
+            "params": {
+              "render-rate": {
+                "name": "Render rate",
+                "desc": "Render rate (ticks per render.)"
+              }
+            }
           }
         },
         "expressions": {

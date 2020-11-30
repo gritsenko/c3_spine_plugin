@@ -212,6 +212,11 @@
             {
                 console.error('[Spine] SetAnimationMix:', error);
             }
+        },
+
+        SetObjectRenderRate(renderRate)
+        {
+            globalThis.spineBatcher.renderRate = renderRate;
         }
 
     };
