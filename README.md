@@ -49,7 +49,7 @@
 Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.19.0/Spine-v1.19.0.c3addon)
+[Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.20.0/Spine-v1.20.0.c3addon)
 
 [Previous Add-on Versions](https://github.com/gritsenko/c3_spine_plugin/tree/master/dist)
 
@@ -91,11 +91,13 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - C3 worker mode support.
 - Color/Dark Color for Slot at runtime.
 - BoundingBoxAttachment center expressions.
+- Set Object Render Rate, controls number of ticks per render of the Spine object, distributed amongst the number of instances of the object. This can reduce the CPU performance and GPU performance vs the frame rate of the render.
 
 ## Wishlist
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 1.20.0 Add support for R266 module mode, add Set Object Render Rate ACE. 
 - 1.19.0 Add Set animation mix {fromName} to {toName} with duration {seconds}.
 - 1.18.0 Add SpineBBoxGetPoly expression returns poly points in JSON format of named slot/bounding box attachment. 
 - 1.17.0 Add debug property, SpineBBoxCenterX,Y expressions. UpdateBBoxes action.
