@@ -12,10 +12,29 @@
             this.isMirrored = isFlipped;
         },
 
-        SetAnimation(animationName, loop, start){
+        SetAnimation(animationName, loop, start, trackIndex){
             this.animationName = animationName;
 
-            this.updateCurrentAnimation(loop, start);
+            this.updateCurrentAnimation(loop, start, trackIndex, animationName);
+        },
+
+        SetAlpha(alpha, trackIndex){
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return;
+            const track = state.tracks[trackIndex];
+            if(!track) return;
+
+            // Clamp alpha to 1-0
+            track.alpha = Math.max(0,Math.min(1,alpha));
+        },
+
+        DeleteAnimation(trackIndex, mixDuration) {
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return;
+            const track = state.tracks[trackIndex];
+            if(!track) return;
+
+            state.setEmptyAnimation(trackIndex, mixDuration);
         },
 
         Play(){
@@ -168,12 +187,13 @@
             skeleton.setSlotsToSetupPose();
         },
 
-        SetAnimationTime(units, time)
+        SetAnimationTime(units, time, trackIndex)
         {
             const state = this.skeletonInfo.state;
             if(!state || !state.tracks) return;
 
-            const track = state.tracks[0];
+            const track = state.tracks[trackIndex];
+            if(!track) return; 
 
             if (units == 0)
             // time in ms

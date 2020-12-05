@@ -24,8 +24,13 @@
             return this.animationNames.join("\n");
         },
 
-        CurrentAnimation(){
-            return this.animationName;
+        CurrentAnimation(trackIndex){
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return "";
+            const track = state.tracks[trackIndex];
+            if(!track) return "";
+
+            return track.animation.name;
         },
 
         AnimationsCount(){
@@ -46,23 +51,46 @@
         TextureWidth(){
             return this.textureWidth;
         },
-        AnimationStart(){
-            if (this.skeletonInfo && this.skeletonInfo.state) return this.skeletonInfo.state.tracks[0].animationStart;
-            else return 0;
-        },
-        AnimationEnd(){
-            if (this.skeletonInfo && this.skeletonInfo.state) return this.skeletonInfo.state.tracks[0].animationEnd;
-            else return 0;
-        },
-        AnimationLast(){
-            if (this.skeletonInfo && this.skeletonInfo.state) return this.skeletonInfo.state.tracks[0].animationLast;
-            else return 0;
-        },
-        TrackTime(){
-            if (this.skeletonInfo && this.skeletonInfo.state) return this.skeletonInfo.state.tracks[0].trackTime;
-            else return 0;
-        },
+        AnimationStart(trackIndex){
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return 0;
+            const track = state.tracks[trackIndex];
+            if(!track) return 0;
 
+            return track.animationStart;
+        },
+        AnimationEnd(trackIndex){
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return 0;
+            const track = state.tracks[trackIndex];
+            if(!track) return 0;
+
+            return track.animationEnd;
+        },
+        AnimationLast(trackIndex){
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return 0;
+            const track = state.tracks[trackIndex];
+            if(!track) return 0;
+
+            return track.animationLast;
+        },
+        TrackTime(trackIndex){
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return 0;
+            const track = state.tracks[trackIndex];
+            if(!track) return 0;
+
+            return track.trackTime;
+        },
+        Alpha(trackIndex){
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return 0;
+            const track = state.tracks[trackIndex];
+            if(!track) return 0;
+
+            return track.alpha;
+        },
         SpineBBoxCenterX(name){
             let bBox = this.skeletonInfo.skeleton.getAttachmentByName(name,name);
             if (!bBox) return 0;

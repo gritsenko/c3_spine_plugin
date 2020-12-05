@@ -6,22 +6,28 @@
             return true;
         },
 
-        OnAnimationFinished(animationName) {
-            return this.completeAnimationName == animationName;
+        OnAnimationFinished(animationName, trackIndex) {
+            return (this.completeAnimationName == animationName) && (this.completeTrackIndex == trackIndex);
         },
 
         OnAnyAnimationFinished() {
             return true;
         },
 
-        IsAnimationPlaying(animationName) {
-            return this.animationName == animationName;
+        IsAnimationPlaying(animationName, trackIndex) {
+            if (!this.skeletonInfo) return false;
+            if (!this.skeletonInfo.skeleton) return false;
+
+            const track = this.skeletonInfo.state.tracks[trackIndex];
+            if (!track) return false;
+
+            return (track.animation.name === animationName) && (track.trackIndex === trackIndex);
         },
         OnError() {
             return true;
         },
-        OnEvent(eventName) {
-            return this.completeEventName == eventName;
+        OnEvent(eventName, trackIndex) {
+            return (this.completeEventName === eventName) && (this.completeEventTrackIndex === trackIndex);
         }
     };
 }

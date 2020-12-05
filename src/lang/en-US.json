@@ -72,12 +72,16 @@
           },
           "on-animation-finished": {
             "list-name": "On animation finished",
-            "display-text": "On animation {0} finished",
+            "display-text": "On animation {0} finished on track {1}",
             "description": "Triggered when specified animation finished.",
             "params": {
               "animation-name": {
                 "name": "Animation name",
                 "desc": "Animation name"
+              },
+              "track-index": {
+                "name": "Track index",
+                "desc": "Track index"
               }
             }
 
@@ -89,12 +93,16 @@
           },
           "is-animation-playing": {
             "list-name": "Is animation playing",
-            "display-text": "Is animation {0} playing",
+            "display-text": "Is animation {0} playing on track {1}",
             "description": "Is animation playing.",
             "params": {
               "animation-name": {
                 "name": "Animation name",
                 "desc": "Animation name"
+              },
+              "track-index": {
+                "name": "Track index",
+                "desc": "Track index"
               }
             }
           },
@@ -105,12 +113,16 @@
           },
           "on-event": {
             "list-name": "On animation event",
-            "display-text": "On event {0}",
-            "description": "Triggered on specified animation event.",
+            "display-text": "On event {0} on track {1}",
+            "description": "Triggered on specified animation event on specified track.",
             "params": {
               "event-name": {
                 "name": "Event name",
                 "desc": "Event name"
+              },
+              "track-index": {
+                "name": "Track index",
+                "desc": "Track index"
               }
             }
           }
@@ -140,7 +152,7 @@
           },
           "set-animation": {
             "list-name": "Set animation",
-            "display-text": "Set animation {0} start at {2} (loop: {1})",
+            "display-text": "Set animation {0} start at {2} (loop: {1}) on track {3}",
             "description": "Set animation by name.",
             "params": {
               "animation-name": {
@@ -159,12 +171,16 @@
                   "current-time": "current time",
                   "current-ratio": "current ratio"
                 }
+              },
+              "track-index": {
+                "name": "Track index",
+                "desc": "Track index"
               }
             }
           },
           "set-animation-time": {
             "list-name": "Set animation time",
-            "display-text": "Set animation time in {0} to {1}",
+            "display-text": "Set animation time in {0} to {1} on track {2}",
             "description": "Set animation time by seconds or ratio.",
             "params": {
               "units": {
@@ -178,6 +194,25 @@
               "time": {
                 "name": "Time",
                 "desc": "Time in seconds or ratio (0-1)"
+              },
+              "track-index": {
+                "name": "Track index",
+                "desc": "Track index"
+              }
+            }
+          },
+          "delete-animation": {
+            "list-name": "Delete animation",
+            "display-text": "Delete animation on track {0} with mix {1}",
+            "description": "Delete animation from track with mix duration to empty track.",
+            "params": {
+              "track-index": {
+                "name": "Track index",
+                "desc": "Track index"
+              },
+              "mix-duration": {
+                "name": "Mix duration",
+                "desc": "Mix duration in seconds to empty animation on track."
               }
             }
           },
@@ -397,6 +432,21 @@
               }
             }
           },
+          "set-alpha": {
+            "list-name": "Set animation alpha",
+            "display-text": "Set alpha {0} on track {1}",
+            "description": "Set alpha mix on track.",
+            "params": {
+              "alpha": {
+                "name": "Alpha",
+                "desc": "Alpha (0-1), for track to mix with animations on lower tracks."
+              },
+              "track-index": {
+                "name": "Track index",
+                "desc": "Track index to set alpha to."
+              }
+            }
+          },
           "set-object-render-rate": {
             "list-name": "Set object render rate",
             "display-text": "Set object render rate to {0} ticks per render",
@@ -421,9 +471,14 @@
             "params": {}
           },
           "current-animation": {
-            "description": "Get current animation name",
+            "description": "Get current animation name on track.",
             "translated-name": "CurrentAnimation",
-            "params": {}
+            "params": {
+              "track-index": {
+                "name": "Track index",
+                "desc": "Track index"
+              }
+            }
           },
           "animations": {
             "description": "Get list of animations. separated by new lines",
@@ -476,24 +531,54 @@
             "params": {}
           },
           "animation-start": {
-            "description": "Animation start time.",
+            "description": "Animation start time on track.",
             "translated-name": "AnimationStart",
-            "params": {}
+            "params": {
+              "track-index": {
+                "name": "Track index",
+                "desc": "Track index"
+              }
+            }
           },
           "animation-end": {
-            "description": "Animation end time.",
+            "description": "Animation end time on track.",
             "translated-name": "AnimationEnd",
-            "params": {}
+            "params": {
+              "track-index": {
+                "name": "Track index",
+                "desc": "Track index"
+              }
+            }
           },
           "animation-last": {
-            "description": "Animation last time.",
+            "description": "Animation last time on track.",
             "translated-name": "AnimationLast",
-            "params": {}
+            "params": {
+              "track-index": {
+                "name": "Track index",
+                "desc": "Track index"
+              }
+            }
           },
           "track-time": {
-            "description": "Animation track time.",
+            "description": "Animation track time on track.",
             "translated-name": "TrackTime",
-            "params": {}
+            "params": {
+              "track-index": {
+                "name": "Track index",
+                "desc": "Track index"
+              }
+            }
+          },
+          "alpha": {
+            "description": "Animation alpha on track.",
+            "translated-name": "Alpha",
+            "params": {
+              "track-index": {
+                "name": "Track index",
+                "desc": "Track index"
+              }
+            }
           },
           "spine-b-box-center-x": {
             "description": "SpineBBoxCenterX",

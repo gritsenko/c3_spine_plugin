@@ -14,6 +14,11 @@
           {
             "id": "animation-name",
             "type": "string"
+          },
+          {
+            "id": "track-index",
+            "type": "number",
+            "initial-value": 0
           }
         ]
       },
@@ -30,6 +35,11 @@
           {
             "id": "animation-name",
             "type": "string"
+          },
+          {
+            "id": "track-index",
+            "type": "number",
+            "initial-value": 0
           }
         ]
       },
@@ -46,6 +56,11 @@
           {
             "id": "event-name",
             "type": "string"
+          },
+          {
+            "id": "track-index",
+            "type": "number",
+            "initial-value": 0
           }
         ]
       }
@@ -94,6 +109,11 @@
               "current-time",
               "current-ratio"
             ]
+          },
+          {
+            "id": "track-index",
+            "type": "number",
+            "initial-value": 0
           }
         ]
       },
@@ -283,6 +303,11 @@
           {
             "id": "time",
             "type": "number"
+          },
+          {
+            "id": "track-index",
+            "type": "number",
+            "initial-value": 0
           }
         ]
       },
@@ -323,6 +348,40 @@
             "initialValue": 1
           }
         ]
+      },
+      {
+        "id": "delete-animation",
+        "scriptName": "DeleteAnimation",
+        "highlight": false,
+        "params": [
+          {
+            "id": "track-index",
+            "type": "number",
+            "initial-value": 1
+          },
+          {
+            "id": "mix-duration",
+            "type": "number",
+            "initial-value": 0
+          }
+        ]
+      },
+      {
+        "id": "set-alpha",
+        "scriptName": "SetAlpha",
+        "highlight": false,
+        "params": [
+          {
+            "id": "alpha",
+            "type": "number",
+            "initial-value": 1
+          },
+          {
+            "id": "track-index",
+            "type": "number",
+            "initial-value": 1
+          }
+        ]
       }
     ],
     "expressions": [
@@ -348,7 +407,13 @@
         "scriptName": "CurrentAnimation",
         "highlight": true,
         "returnType": "string",
-        "params": []
+        "params": [
+          {
+            "id": "track-index",
+            "type": "number",
+            "initial-value": 0
+          }
+        ]
       },
       {
         "id": "animations",
@@ -430,7 +495,13 @@
         "scriptName": "AnimationStart",
         "highlight": false,
         "returnType": "number",
-        "params": []
+        "params": [
+          {
+            "id": "track-index",
+            "type": "number",
+            "initial-value": 0
+          }
+        ]
       },
       {
         "id": "animation-end",
@@ -438,7 +509,13 @@
         "scriptName": "AnimationEnd",
         "highlight": false,
         "returnType": "number",
-        "params": []
+        "params": [
+          {
+            "id": "track-index",
+            "type": "number",
+            "initial-value": 0
+          }
+        ]
       },
       {
         "id": "animation-last",
@@ -446,7 +523,13 @@
         "scriptName": "AnimationLast",
         "highlight": false,
         "returnType": "number",
-        "params": []
+        "params": [
+          {
+            "id": "track-index",
+            "type": "number",
+            "initial-value": 0
+          }
+        ]
       },
       {
         "id": "track-time",
@@ -454,7 +537,27 @@
         "scriptName": "TrackTime",
         "highlight": false,
         "returnType": "number",
-        "params": []
+        "params": [
+          {
+            "id": "track-index",
+            "type": "number",
+            "initial-value": 0
+          }
+        ]
+      },
+      {
+        "id": "alpha",
+        "expressionName": "Alpha",
+        "scriptName": "Alpha",
+        "highlight": false,
+        "returnType": "number",
+        "params": [
+          {
+            "id": "track-index",
+            "type": "number",
+            "initial-value": 1
+          }
+        ]
       },
       {
         "id": "spine-b-box-center-x",

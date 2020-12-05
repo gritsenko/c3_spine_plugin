@@ -277,7 +277,7 @@
             };
         }
 
-        updateCurrentAnimation(loop,start) {
+        updateCurrentAnimation(loop,start,trackIndex, animationName) {
             
             if (!this.skeletonInfo) return;
             if (!this.skeletonInfo.skeleton) return;
@@ -285,7 +285,7 @@
             try {
                 const state = this.skeletonInfo.state;
                 const skeleton = this.skeletonInfo.skeleton;
-                const track = state.tracks[0];
+                const track = state.tracks[trackIndex];
 
                 let currentTime = 0;
                 let currentRatio = 0;
@@ -298,27 +298,29 @@
                     }
                 }
 
-                state.setAnimation(0, this.animationName, loop);
+                state.setAnimation(trackIndex, animationName, loop);
                 
                 switch (start)
                 {
                     case 0: break; // Start from beginning
-                    case 1: state.tracks[0].trackTime = currentTime; break;
-                    case 2: state.tracks[0].trackTime = currentRatio * (state.tracks[0].animationEnd-state.tracks[0].animationStart); break;
+                    case 1: state.tracks[trackIndex].trackTime = currentTime; break;
+                    case 2: state.tracks[trackIndex].trackTime = currentRatio * (state.tracks[trackIndex].animationEnd-state.tracks[trackIndex].animationStart); break;
                     default: break; 
                 }
 
                 if (start == 0 || (start == 2 && currentRatio == 0))
                 // If starting from beginning or 0 ratio add listners so they'll trigger at 0
                 {
-                    state.tracks[0].listener = {
+                    state.tracks[trackIndex].listener = {
                         complete: (trackEntry, count) => {
-                            this.completeAnimationName = this.animationName;
+                            this.completeAnimationName = trackEntry.animation.name;
+                            this.completeTrackIndex = trackEntry.trackIndex;
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
                         },
                         event: (trackIndex, event) => {
                             this.completeEventName = event.data.name;
+                            this.completeEventTrackIndex = trackIndex;
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
                         }
                     };
@@ -330,7 +332,7 @@
                 {
                     state.apply(skeleton);
                     skeleton.updateWorldTransform();
-                    state.tracks[0].listener = {
+                    state.tracks[trackIndex].listener = {
                         complete: (trackEntry, count) => {
                             this.completeAnimationName = this.animationName;
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
