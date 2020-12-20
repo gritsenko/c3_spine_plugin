@@ -70,6 +70,11 @@
             "display-text": "On skeleton loaded",
             "description": "Triggered skeleton was loaded."
           },
+          "is-skeleton-loaded": {
+            "list-name": "Is skeleton loaded",
+            "display-text": "Is skeleton loaded",
+            "description": "True if skeleton was loaded."
+          },
           "on-animation-finished": {
             "list-name": "On animation finished",
             "display-text": "On animation {0} finished on track {1}",
@@ -203,7 +208,7 @@
           },
           "delete-animation": {
             "list-name": "Delete animation",
-            "display-text": "Delete animation on track {0} with mix {1}",
+            "display-text": "Delete animation with mix {1} on track {0}",
             "description": "Delete animation from track with mix duration to empty track.",
             "params": {
               "track-index": {

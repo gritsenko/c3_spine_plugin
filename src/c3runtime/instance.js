@@ -24,6 +24,7 @@
             this.customSkins = {};
             this.slotColors = {};
             this.slotDarkColors = {};
+            this.isLoaded = false;
 
             this.atlasPath = "";
 
@@ -209,6 +210,20 @@
 
             var state = new spine.AnimationState(stateData);
             state.setAnimation(0, animationName, true);
+            state.tracks[0].listener = {
+                complete: (trackEntry, count) => {
+                    this.completeAnimationName = trackEntry.animation.name;
+                    this.completeTrackIndex = trackEntry.trackIndex;
+                    this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
+                    this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
+                },
+                event: (trackEntry, event) => {
+                    this.completeEventName = event.data.name;
+                    this.completeEventTrackIndex = trackEntry.trackIndex;
+                    this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
+                }
+            };
+
             if (this.debug) console.log('[Spine] track:', state.tracks[0]);
 
             state.apply(skeleton);
@@ -318,9 +333,9 @@
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
                         },
-                        event: (trackIndex, event) => {
+                        event: (trackEntry, event) => {
                             this.completeEventName = event.data.name;
-                            this.completeEventTrackIndex = trackIndex;
+                            this.completeEventTrackIndex = trackEntry.trackIndex;
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
                         }
                     };
@@ -335,19 +350,23 @@
                     state.tracks[trackIndex].listener = {
                         complete: (trackEntry, count) => {
                             this.completeAnimationName = this.animationName;
+                            this.completeTrackIndex = trackEntry.trackIndex;
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
                         },
-                        event: (trackIndex, event) => {
+                        event: (trackEntry, event) => {
                             this.completeEventName = event.data.name;
+                            this.completeEventTrackIndex = trackEntry.trackIndex;
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
                         }
                     };    
                 }
             } catch (ex) {
-                console.error(ex);
-                alert(ex + "\n\n available animations: \n" + this.animationNames.join("\n"));
-                this.spineError = ex + "\n\n available animations: \n" + this.animationNames.join("\n");
+                if (this.debug)
+                {
+                    console.error('[Spine] setAnimation error', ex, trackIndex, animationName);
+                }
+                this.spineError = 'setAnimation error '+ex;
                 this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnError);
             }
         }
@@ -499,6 +518,7 @@
                 gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
                 spineBatcher.setInstanceFB(this.spineFB, this.GetInstance().GetUID())
                 spineBatcher.setInstanceInitialized(this.GetInstance().GetUID());
+                this.isLoaded = true;
                 this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnSkeletonLoaded);
             }
 

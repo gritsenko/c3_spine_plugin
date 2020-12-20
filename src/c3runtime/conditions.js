@@ -6,6 +6,10 @@
             return true;
         },
 
+        IsSkeletonLoaded() {
+            return this.isLoaded;
+        },
+
         OnAnimationFinished(animationName, trackIndex) {
             return (this.completeAnimationName == animationName) && (this.completeTrackIndex == trackIndex);
         },

@@ -95,11 +95,24 @@
 
         AddCustomSkin(skinName,addSkinName)
         {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.log('[Spine] AddCustomSkin, error - skeleton is not available');
+                return;
+            }
+
             const skeleton = this.skeletonInfo.skeleton;
-            
+
             if (this.customSkins[skinName])
             {
-                this.customSkins[skinName].addSkin(skeleton.data.findSkin(addSkinName));
+                let addSkin = skeleton.data.findSkin(addSkinName);
+                if (addSkin)
+                {
+                    this.customSkins[skinName].addSkin(skeleton.data.findSkin(addSkinName));
+                } else
+                {
+                    if (this.debug) console.log('[Spine] AddCustomSkin, error - add skin does not exist',addSkinName);
+                }
             } else
             {
                 if (this.debug) console.log('[Spine] AddCustomSkin, error - custom skin does not exist',skinName);
