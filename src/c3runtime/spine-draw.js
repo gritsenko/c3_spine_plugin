@@ -100,6 +100,7 @@ class SpineBatch {
         this._skeletonInstances[uid].skeletonInfo = instance
         this._skeletonInstances[uid].initialized = false
         this._skeletonInstances[uid].skeletonScale = skeletonScale
+        this._skeletonInstances[uid].onScreen = true
     }
 
     removeInstance(uid)
@@ -115,6 +116,11 @@ class SpineBatch {
     setInstanceFB(spineFB, uid)
     {
         this._skeletonInstances[uid].spineFB = spineFB
+    }
+
+    setInstanceOnScreen(onScreen, uid)
+    {
+        this._skeletonInstances[uid].onScreen = onScreen;
     }
 
     resize(bounds, skeletonScale) {
@@ -183,7 +189,7 @@ class SpineBatch {
         for (const uid in skeletonInstances)
         {
             const skeletonInstance = skeletonInstances[uid];
-            if (skeletonInstance.initialized && (tickCount%this._renderRate == index%this._renderRate))
+            if (skeletonInstance.initialized && skeletonInstance.onScreen && (tickCount%this._renderRate == index%this._renderRate))
             {
                 count++;
                 const bounds = skeletonInstance.skeletonInfo.bounds;

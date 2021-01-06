@@ -457,12 +457,21 @@
         }
 
         Tick() {
-                if (!this.IsSpineReady()) {
+            if (!this.IsSpineReady()) {
                 return;
             }
+
             const delta = this.runtime.GetDt() * this.animationSpeed;
             var active = this.skeletonInfo;
             const state = this.skeletonInfo.state;
+
+            // Check if onscreen
+            let wi = this.GetWorldInfo();
+            let layerRect = wi.GetLayer().GetViewport();
+            let instanceRect = wi.GetBoundingBox();
+            let onScreen = instanceRect.intersectsRect(layerRect);
+            // console.log('[Spine] onscreen, rects', onScreen, layerRect, instanceRect);
+            spineBatcher.setInstanceOnScreen(onScreen, this.uid);
 
             if (this.isPlaying) {
 
@@ -505,6 +514,10 @@
                 this.textureHeight = bounds.size.y;
                 let sampling = this.runtime.GetSampling();
                 let options =  { mipMap: false, sampling: sampling }
+                if (this.debug)
+                {
+                    console.log('[Spine] CreateDynamicTexture x,y:', this.textureWidth, this.textureHeight);
+                }
                 this._elementTexture = renderer.CreateDynamicTexture(this.textureWidth, this.textureHeight, options);
 
                 var oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
