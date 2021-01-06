@@ -51,7 +51,7 @@
 Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Current Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.22.2/Spine-v1.22.2.c3addon)
+[Current Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.23.0/Spine-v1.23.0.c3addon)
 
 [Previous Add-on Versions](https://github.com/gritsenko/c3_spine_plugin/releases)
 
@@ -96,11 +96,13 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Set Object Render Rate, controls number of ticks per render of the Spine object, distributed amongst the number of instances of the object. This can reduce the CPU performance and GPU performance vs the frame rate of the render.
 - C3 Module mode support.
 - Animation track support.
+- Disable render to texture when offscreen (for perf)
 
 ## Wishlist
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 1.23.0 Disable render to texture when offscreen (saves perf), animation continues for events, etc.
 - 1.22.2 Add animation track support. Default to track 0 for set, play, stop animation for backward compatability, add isSekeltonLoaded ACE. Add track alpha control to blend animation between tracks. (Feature commisioned by Adrian - thank you!)
 - 1.20.0 Add support for R266 module mode, add Set Object Render Rate ACE. 
 - 1.19.0 Add Set animation mix {fromName} to {toName} with duration {seconds}.
