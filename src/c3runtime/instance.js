@@ -25,6 +25,7 @@
             this.slotColors = {};
             this.slotDarkColors = {};
             this.isLoaded = false;
+            this.animateOnce = false;
 
             this.atlasPath = "";
 
@@ -482,8 +483,8 @@
             });
             spineBatcher.setInstanceTracksComplete(tracksComplete || !this.isPlaying, this.uid);
 
-            if (this.isPlaying) {
-
+            if (this.isPlaying || this.animateOnce) {
+                this.animateOnce = false;
                 var animationDuration = state.getCurrent(0).animation.duration;
                 active.playTime += delta;
                 if (animationDuration > 0)

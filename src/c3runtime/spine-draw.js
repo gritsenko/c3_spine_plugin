@@ -283,7 +283,7 @@ class SpineBatch {
         gl.viewport(oldViewport[0],oldViewport[1],oldViewport[2],oldViewport[3]);
     }
 
-    static getRValue(rgb)
+    getRValue(rgb)
     {
         const ALPHAEX_SHIFT = 1024;
         const ALPHAEX_MAX = 1023;
@@ -298,7 +298,7 @@ class SpineBatch {
         }
     };
 
-    static getGValue(rgb)
+    getGValue(rgb)
     {
         const ALPHAEX_SHIFT = 1024;
         const ALPHAEX_MAX = 1023;
@@ -316,7 +316,7 @@ class SpineBatch {
         }
     };
 
-    static getBValue(rgb)
+    getBValue(rgb)
     {
         const ALPHAEX_SHIFT = 1024;
         const ALPHAEX_MAX = 1023;
@@ -333,7 +333,7 @@ class SpineBatch {
         }
     };
 
-    static getAValue(rgb)
+    getAValue(rgb)
     {
         const ALPHAEX_SHIFT = 1024;
         const ALPHAEX_MAX = 1023;

@@ -7,11 +7,13 @@
 
             this.updateCurrentSkin();
             spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = true;
         },
 
         Flip(isFlipped){
             this.isMirrored = isFlipped;
             spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = true;
         },
 
         SetAnimation(animationName, loop, start, trackIndex){
@@ -19,6 +21,7 @@
 
             this.updateCurrentAnimation(loop, start, trackIndex, animationName);
             spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = true;
         },
 
         SetAlpha(alpha, trackIndex){
@@ -30,6 +33,7 @@
             // Clamp alpha to 1-0
             track.alpha = Math.max(0,Math.min(1,alpha));
             spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = true;
        },
 
         DeleteAnimation(trackIndex, mixDuration) {
@@ -44,6 +48,7 @@
         Play(){
             this.playAnimation();
             spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = true;
         },
 
         Stop(){
@@ -83,6 +88,7 @@
             // https://github.com/EsotericSoftware/spine-runtimes/blob/3.8/spine-ts/core/src/SkeletonJson.ts#L326-L340
             existing.updateOffset();
             spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = true;
         },
 
         SetAttachment(slotName, attachmentName)
@@ -91,6 +97,7 @@
 
             skeleton.setAttachment(slotName,attachmentName);
             spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = true;
         },
 
         CreateCustomSkin(skinName)
@@ -134,6 +141,7 @@
             skeleton.setSkin(this.customSkins[this.skinName]);
             skeleton.setSlotsToSetupPose();
             spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = true;
         },
 
         SetCustomAttachmentColor(skinName, slotName, attachmentName, color)
@@ -146,28 +154,31 @@
             let newAttachment = attachment.copy();
 
             let tint = new spine.Color(
-                SpineBatch.getRValue(color),
-                SpineBatch.getGValue(color),
-                SpineBatch.getBValue(color),
-                SpineBatch.getAValue(color));
+                spineBatcher.getRValue(color),
+                spineBatcher.getGValue(color),
+                spineBatcher.getBValue(color),
+                spineBatcher.getAValue(color));
             
             newAttachment.color = tint;
             skin.setAttachment(slotIndex, attachmentName, newAttachment);
             skeleton.setSkin(this.customSkins[skinName]);
             skeleton.setSlotsToSetupPose();
             spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = true;
         },
 
         SetSlotColor(slotName, color)
         {
             this.slotColors[slotName] = color;
             spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = true;
         },
 
         SetSlotDarkColor(slotName, darkColor)
         {
             this.slotDarkColors[slotName] = darkColor;
             spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = true;
         },
 
         ApplySlotColors()
@@ -180,10 +191,10 @@
                 let slot = skeleton.findSlot(slotName);
                 let color = this.slotColors[slotName];
                 slot.color.set(
-                    SpineBatch.getRValue(color),
-                    SpineBatch.getGValue(color),
-                    SpineBatch.getBValue(color),
-                    SpineBatch.getAValue(color));               
+                    spineBatcher.getRValue(color),
+                    spineBatcher.getGValue(color),
+                    spineBatcher.getBValue(color),
+                    spineBatcher.getAValue(color));               
             }
 
             // Set dark colors to slots
@@ -195,13 +206,14 @@
                 {
                     let color = this.slotDarkColors[slotName];
                     slot.darkColor.set(
-                        SpineBatch.getRValue(color),
-                        SpineBatch.getGValue(color),
-                        SpineBatch.getBValue(color),
-                        SpineBatch.getAValue(color));
+                        spineBatcher.getRValue(color),
+                        spineBatcher.getGValue(color),
+                        spineBatcher.getBValue(color),
+                        spineBatcher.getAValue(color));
                 }                
             }
             spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = true;
         },
 
         ResetSlotColors()
@@ -211,6 +223,7 @@
             this.slotDarkColors = {};
             skeleton.setSlotsToSetupPose();
             spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = true;
         },
 
         SetAnimationTime(units, time, trackIndex)
@@ -241,6 +254,7 @@
                 track.trackTime = time * (track.animationEnd - track.animationStart);
             }
             spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = true;
         },
 
         UpdateBBoxes()

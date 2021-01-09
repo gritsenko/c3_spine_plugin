@@ -51,7 +51,7 @@
 Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Current Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.24.0/Spine-v1.24.0.c3addon)
+[Current Add-on](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.25.0/Spine-v1.25.0.c3addon)
 
 [Previous Add-on Versions](https://github.com/gritsenko/c3_spine_plugin/releases)
 
@@ -102,6 +102,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 1.25.0 Advance animation one tick after applying set animation, apply color, set skin, so they will take effect, fix Set and Apply color C3 module mode bugs.
 - 1.24.0 Disable render when animation is complete (end of animation) or animation is stopped (perf optimization).
 - 1.23.0 Disable render to texture when offscreen (perf optimization), animation continues for events, etc.
 - 1.22.2 Add animation track support. Default to track 0 for set, play, stop animation for backward compatability, add isSekeltonLoaded ACE. Add track alpha control to blend animation between tracks. (Feature commisioned by Adrian - thank you!)
