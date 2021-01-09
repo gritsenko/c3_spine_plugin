@@ -101,6 +101,8 @@ class SpineBatch {
         this._skeletonInstances[uid].initialized = false
         this._skeletonInstances[uid].skeletonScale = skeletonScale
         this._skeletonInstances[uid].onScreen = true
+        this._skeletonInstances[uid].tracksComplete = false
+        this._skeletonInstances[uid].renderOnce = true
     }
 
     removeInstance(uid)
@@ -121,6 +123,23 @@ class SpineBatch {
     setInstanceOnScreen(onScreen, uid)
     {
         this._skeletonInstances[uid].onScreen = onScreen;
+    }
+
+    setInstanceTracksComplete(tracksComplete, uid)
+    {
+        // If transitioning to tracksComplete, render one more time
+        if (!this._skeletonInstances[uid].tracksComplete && tracksComplete)
+        {
+            this._skeletonInstances[uid].renderOnce = true
+        }
+        this._skeletonInstances[uid].tracksComplete = tracksComplete;
+    }
+
+    setInstanceRenderOnce(renderOnce, uid)
+    {
+        if (!this._skeletonInstances[uid]) return
+
+        this._skeletonInstances[uid].renderOnce = renderOnce;
     }
 
     resize(bounds, skeletonScale) {
@@ -189,8 +208,14 @@ class SpineBatch {
         for (const uid in skeletonInstances)
         {
             const skeletonInstance = skeletonInstances[uid];
-            if (skeletonInstance.initialized && skeletonInstance.onScreen && (tickCount%this._renderRate == index%this._renderRate))
+            if (skeletonInstance.initialized && skeletonInstance.onScreen
+                && (!skeletonInstance.tracksComplete || skeletonInstance.renderOnce)
+                && (tickCount%this._renderRate == index%this._renderRate))
             {
+                // XXX console.log('[Spine] render, uid', this.uid)
+                // For one off render (e.g. end of track or set slot)
+                skeletonInstance.renderOnce = false;
+
                 count++;
                 const bounds = skeletonInstance.skeletonInfo.bounds;
                 const premultipliedAlpha = skeletonInstance.skeletonInfo.premultipliedAlpha;

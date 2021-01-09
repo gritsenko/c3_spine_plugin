@@ -457,7 +457,7 @@
         }
 
         Tick() {
-            if (!this.IsSpineReady()) {
+            if (!this.IsSpineReady() || !this.isLoaded) {
                 return;
             }
 
@@ -472,6 +472,15 @@
             let onScreen = instanceRect.intersectsRect(layerRect);
             // console.log('[Spine] onscreen, rects', onScreen, layerRect, instanceRect);
             spineBatcher.setInstanceOnScreen(onScreen, this.uid);
+
+            
+            let tracksComplete = true;
+            state.tracks.forEach((track) => {
+                if (track) {
+                    if (track.loop || !track.isComplete()) tracksComplete = false;
+                }
+            });
+            spineBatcher.setInstanceTracksComplete(tracksComplete || !this.isPlaying, this.uid);
 
             if (this.isPlaying) {
 

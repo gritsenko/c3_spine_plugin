@@ -6,16 +6,19 @@
             this.skinName = skinName;
 
             this.updateCurrentSkin();
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
         },
 
         Flip(isFlipped){
             this.isMirrored = isFlipped;
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
         },
 
         SetAnimation(animationName, loop, start, trackIndex){
             this.animationName = animationName;
 
             this.updateCurrentAnimation(loop, start, trackIndex, animationName);
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
         },
 
         SetAlpha(alpha, trackIndex){
@@ -26,7 +29,8 @@
 
             // Clamp alpha to 1-0
             track.alpha = Math.max(0,Math.min(1,alpha));
-        },
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
+       },
 
         DeleteAnimation(trackIndex, mixDuration) {
             const state = this.skeletonInfo.state;
@@ -39,6 +43,7 @@
 
         Play(){
             this.playAnimation();
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
         },
 
         Stop(){
@@ -77,6 +82,7 @@
             // Need to do one last thing, which SkeletonJson/SkeletonBinary do last:
             // https://github.com/EsotericSoftware/spine-runtimes/blob/3.8/spine-ts/core/src/SkeletonJson.ts#L326-L340
             existing.updateOffset();
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
         },
 
         SetAttachment(slotName, attachmentName)
@@ -84,6 +90,7 @@
             const skeleton = this.skeletonInfo.skeleton;
 
             skeleton.setAttachment(slotName,attachmentName);
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
         },
 
         CreateCustomSkin(skinName)
@@ -126,6 +133,7 @@
             this.customSkins[this.skinName]
             skeleton.setSkin(this.customSkins[this.skinName]);
             skeleton.setSlotsToSetupPose();
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
         },
 
         SetCustomAttachmentColor(skinName, slotName, attachmentName, color)
@@ -147,16 +155,19 @@
             skin.setAttachment(slotIndex, attachmentName, newAttachment);
             skeleton.setSkin(this.customSkins[skinName]);
             skeleton.setSlotsToSetupPose();
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
         },
 
         SetSlotColor(slotName, color)
         {
             this.slotColors[slotName] = color;
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
         },
 
         SetSlotDarkColor(slotName, darkColor)
         {
             this.slotDarkColors[slotName] = darkColor;
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
         },
 
         ApplySlotColors()
@@ -190,6 +201,7 @@
                         SpineBatch.getAValue(color));
                 }                
             }
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
         },
 
         ResetSlotColors()
@@ -198,6 +210,7 @@
             this.slotColors = {};
             this.slotDarkColors = {};
             skeleton.setSlotsToSetupPose();
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
         },
 
         SetAnimationTime(units, time, trackIndex)
@@ -227,6 +240,7 @@
                 }
                 track.trackTime = time * (track.animationEnd - track.animationStart);
             }
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
         },
 
         UpdateBBoxes()

@@ -96,13 +96,14 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Set Object Render Rate, controls number of ticks per render of the Spine object, distributed amongst the number of instances of the object. This can reduce the CPU performance and GPU performance vs the frame rate of the render.
 - C3 Module mode support.
 - Animation track support.
-- Disable render to texture when offscreen (for perf)
+- Disable render to texture when offscreen or animation is complete/stopped (perf optimization)
 
 ## Wishlist
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
-- 1.23.0 Disable render to texture when offscreen (saves perf), animation continues for events, etc.
+- 1.24.0 Disable render when animation is complete (end of animation) or animation is stopped (perf optimization).
+- 1.23.0 Disable render to texture when offscreen (perf optimization), animation continues for events, etc.
 - 1.22.2 Add animation track support. Default to track 0 for set, play, stop animation for backward compatability, add isSekeltonLoaded ACE. Add track alpha control to blend animation between tracks. (Feature commisioned by Adrian - thank you!)
 - 1.20.0 Add support for R266 module mode, add Set Object Render Rate ACE. 
 - 1.19.0 Add Set animation mix {fromName} to {toName} with duration {seconds}.
