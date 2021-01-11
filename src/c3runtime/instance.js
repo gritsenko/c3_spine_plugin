@@ -25,7 +25,7 @@
             this.slotColors = {};
             this.slotDarkColors = {};
             this.isLoaded = false;
-            this.animateOnce = false;
+            this.animateOnce = 0;
 
             this.atlasPath = "";
 
@@ -458,7 +458,7 @@
         }
 
         Tick() {
-            if (!this.IsSpineReady() || !this.isLoaded) {
+            if (!this.IsSpineReady()) {
                 return;
             }
 
@@ -483,8 +483,7 @@
             });
             spineBatcher.setInstanceTracksComplete(tracksComplete || !this.isPlaying, this.uid);
 
-            if (this.isPlaying || this.animateOnce) {
-                this.animateOnce = false;
+            if (this.isPlaying || this.animateOnce > 0) {
                 var animationDuration = state.getCurrent(0).animation.duration;
                 active.playTime += delta;
                 if (animationDuration > 0)
@@ -496,6 +495,14 @@
                 state.apply(active.skeleton);
                 active.skeleton.updateWorldTransform();
                 this.runtime.UpdateRender();
+                if (this.animateOnce > 0)
+                {
+                    this.animateOnce -= delta;
+                    if (this.animateOnce <= 0)
+                    {
+                        spineBatcher.setInstanceRenderOnce(false, this.uid);
+                    }
+                }
             }
         }
 

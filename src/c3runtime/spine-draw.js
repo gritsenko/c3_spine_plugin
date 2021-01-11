@@ -107,26 +107,31 @@ class SpineBatch {
 
     removeInstance(uid)
     {
+        if (!this._skeletonInstances[uid]) return
         delete this._skeletonInstances[uid]
     }
 
     setInstanceInitialized(uid)
     {
+        if (!this._skeletonInstances[uid]) return
         this._skeletonInstances[uid].initialized = true
     }
 
     setInstanceFB(spineFB, uid)
     {
+        if (!this._skeletonInstances[uid]) return
         this._skeletonInstances[uid].spineFB = spineFB
     }
 
     setInstanceOnScreen(onScreen, uid)
     {
+        if (!this._skeletonInstances[uid]) return
         this._skeletonInstances[uid].onScreen = onScreen;
     }
 
     setInstanceTracksComplete(tracksComplete, uid)
     {
+        if (!this._skeletonInstances[uid]) return
         // If transitioning to tracksComplete, render one more time
         if (!this._skeletonInstances[uid].tracksComplete && tracksComplete)
         {
@@ -212,9 +217,10 @@ class SpineBatch {
                 && (!skeletonInstance.tracksComplete || skeletonInstance.renderOnce)
                 && (tickCount%this._renderRate == index%this._renderRate))
             {
-                // XXX console.log('[Spine] render, uid', this.uid)
-                // For one off render (e.g. end of track or set slot)
-                skeletonInstance.renderOnce = false;
+                // console.log('[Spine] render, uid', skeletonInstance.renderOnce, uid)
+                // For one off render (e.g. end of track or set slot), now set based on animateOnce
+                // skeletonInstance.renderOnce = false;
+
 
                 count++;
                 const bounds = skeletonInstance.skeletonInfo.bounds;

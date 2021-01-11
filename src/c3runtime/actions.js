@@ -7,13 +7,13 @@
 
             this.updateCurrentSkin();
             spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = true;
+            this.animateOnce = 1.0;
         },
 
         Flip(isFlipped){
             this.isMirrored = isFlipped;
             spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = true;
+            this.animateOnce = 1.0;
         },
 
         SetAnimation(animationName, loop, start, trackIndex){
@@ -21,7 +21,7 @@
 
             this.updateCurrentAnimation(loop, start, trackIndex, animationName);
             spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = true;
+            this.animateOnce = 1.0;
         },
 
         SetAlpha(alpha, trackIndex){
@@ -33,7 +33,7 @@
             // Clamp alpha to 1-0
             track.alpha = Math.max(0,Math.min(1,alpha));
             spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = true;
+            this.animateOnce = 1.0;
        },
 
         DeleteAnimation(trackIndex, mixDuration) {
@@ -48,11 +48,13 @@
         Play(){
             this.playAnimation();
             spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = true;
+            this.animateOnce = 1.0;
         },
 
         Stop(){
             this.stopAnimation();
+            spineBatcher.setInstanceRenderOnce(false, this.uid);
+            this.animateOnce = 0.0;
         },
 
         UpdateBounds() {
@@ -88,7 +90,7 @@
             // https://github.com/EsotericSoftware/spine-runtimes/blob/3.8/spine-ts/core/src/SkeletonJson.ts#L326-L340
             existing.updateOffset();
             spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = true;
+            this.animateOnce = 1.0;
         },
 
         SetAttachment(slotName, attachmentName)
@@ -97,7 +99,7 @@
 
             skeleton.setAttachment(slotName,attachmentName);
             spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = true;
+            this.animateOnce = 1.0;
         },
 
         CreateCustomSkin(skinName)
@@ -131,6 +133,8 @@
             {
                 if (this.debug) console.log('[Spine] AddCustomSkin, error - custom skin does not exist',skinName);
             }
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = 1.0;
         },
 
         SetCustomSkin(skinName)
@@ -141,7 +145,7 @@
             skeleton.setSkin(this.customSkins[this.skinName]);
             skeleton.setSlotsToSetupPose();
             spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = true;
+            this.animateOnce = 1.0;
         },
 
         SetCustomAttachmentColor(skinName, slotName, attachmentName, color)
@@ -164,21 +168,21 @@
             skeleton.setSkin(this.customSkins[skinName]);
             skeleton.setSlotsToSetupPose();
             spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = true;
+            this.animateOnce = 1.0;
         },
 
         SetSlotColor(slotName, color)
         {
             this.slotColors[slotName] = color;
             spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = true;
+            this.animateOnce = 1.0;
         },
 
         SetSlotDarkColor(slotName, darkColor)
         {
             this.slotDarkColors[slotName] = darkColor;
             spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = true;
+            this.animateOnce = 1.0;
         },
 
         ApplySlotColors()
@@ -213,7 +217,7 @@
                 }                
             }
             spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = true;
+            this.animateOnce = 1.0;
         },
 
         ResetSlotColors()
@@ -223,7 +227,7 @@
             this.slotDarkColors = {};
             skeleton.setSlotsToSetupPose();
             spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = true;
+            this.animateOnce = 1.0;
         },
 
         SetAnimationTime(units, time, trackIndex)
@@ -254,7 +258,7 @@
                 track.trackTime = time * (track.animationEnd - track.animationStart);
             }
             spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = true;
+            this.animateOnce = 1.0;
         },
 
         UpdateBBoxes()
