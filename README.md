@@ -45,6 +45,11 @@
 ## Share your C3 and Spine plugin work!
 - Tweet your work @kindeyegames , @pix2d and #construct3, we'd be happy to see your work!
 
+## Known issues / workarounds
+- Clipping on rendering, see above for one solution  (add transparent image of size of area to render.)
+- Animation finished with animation mix causing another finished trigger see [issue](https://github.com/gritsenko/c3_spine_plugin/issues/44) for workaround.
+- No render of default skin w/ no bones assigned, instead assign default skin bones.
+
 ### Example export settings
 [](docs/images/SpineExportSettings.png)
 
