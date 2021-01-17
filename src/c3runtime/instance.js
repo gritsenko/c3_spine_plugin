@@ -1,7 +1,9 @@
-"use strict"; {
-    // const DOM_COMPONENT_ID = "gritsenko-spine";
+"use strict";
+{
+    const C3 = self.C3;
+    const spineBatcher = globalThis.spineBatcher;
+    
     C3.Plugins.Gritsenko_Spine.Instance = class SpineInstance extends C3.SDKWorldInstanceBase {
-        //C3.Plugins.Gritsenko_Spine.Instance = class SpineInstance extends C3.SDKDOMInstanceBase {
 
         constructor(inst, properties) {
             super(inst);
@@ -26,6 +28,7 @@
             this.slotDarkColors = {};
             this.isLoaded = false;
             this.animateOnce = 0;
+            this.trackAnimations = {};
 
             this.atlasPath = "";
 
@@ -211,9 +214,11 @@
 
             var state = new spine.AnimationState(stateData);
             state.setAnimation(0, animationName, true);
+            // Record animation assigned for listener
+            this.trackAnimations[0] = this.animationName;
             state.tracks[0].listener = {
                 complete: (trackEntry, count) => {
-                    this.completeAnimationName = trackEntry.animation.name;
+                    this.completeAnimationName = this.trackAnimations[0];
                     this.completeTrackIndex = trackEntry.trackIndex;
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
@@ -324,12 +329,16 @@
                     default: break; 
                 }
 
+                // Record animation assigned for listener
+                this.trackAnimations[trackIndex] = this.animationName;
+
                 if (start == 0 || (start == 2 && currentRatio == 0))
                 // If starting from beginning or 0 ratio add listners so they'll trigger at 0
                 {
                     state.tracks[trackIndex].listener = {
                         complete: (trackEntry, count) => {
-                            this.completeAnimationName = trackEntry.animation.name;
+                            // XXX this.completeAnimationName = trackEntry.animation.name;
+                            this.completeAnimationName = this.trackAnimations[trackEntry.trackIndex];
                             this.completeTrackIndex = trackEntry.trackIndex;
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
@@ -350,7 +359,7 @@
                     skeleton.updateWorldTransform();
                     state.tracks[trackIndex].listener = {
                         complete: (trackEntry, count) => {
-                            this.completeAnimationName = this.animationName;
+                            this.completeAnimationName = this.trackAnimations[trackEntry.trackIndex];
                             this.completeTrackIndex = trackEntry.trackIndex;
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);

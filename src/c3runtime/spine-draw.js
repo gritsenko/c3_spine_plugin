@@ -1,4 +1,4 @@
-class SpineBatch {
+class SpineBatch {    
     constructor() {
         // Skeleton instances to render
         this._initialized = false
@@ -40,7 +40,9 @@ class SpineBatch {
     }
 
     init(canvas, runtime)
-    {        
+    {    
+        const spine = globalThis.spine;
+    
         if (this._initialized) return 
         this.runtime = runtime;
         this.canvas = canvas;
@@ -162,6 +164,8 @@ class SpineBatch {
     }
 
     drawBatch() {
+        const spine = globalThis.spine;
+
         const gl = this.gl;
         const skeletonInstances = this._skeletonInstances;
 

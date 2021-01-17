@@ -1,5 +1,7 @@
 "use strict";
 {
+    const C3 = self.C3;
+    
     const PLUGIN_CLASS = SDK.Plugins.Gritsenko_Spine;
 
     PLUGIN_CLASS.Instance = class SpineInstance extends SDK.IWorldInstanceBase

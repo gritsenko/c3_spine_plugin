@@ -1,5 +1,8 @@
 "use strict";
 {
+    const C3 = self.C3;
+    const spineBatcher = globalThis.spineBatcher;
+
     C3.Plugins.Gritsenko_Spine.Acts = {
 
         SetSkin(skinName){

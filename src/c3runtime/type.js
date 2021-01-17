@@ -1,5 +1,7 @@
 "use strict";
 {
+    const C3 = self.C3;
+    
     C3.Plugins.Gritsenko_Spine.Type = class SpineType extends C3.SDKTypeBase
     {
         constructor(objectClass)
