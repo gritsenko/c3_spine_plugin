@@ -179,7 +179,7 @@
             const assetManager = this.assetManager;
             const self = this;
 
-            if (this.debug) console.log("[Spine] Reading skeleton data:", name, animationName);
+            if (this.debug) console.log("[Spine] Reading skeleton data:", this.uid, name, animationName);
             // If skeletonData not initialized, create it and stop other instances from creating it
             if (this._sdkType._skeletonData.notInitialized)
             {
@@ -230,7 +230,7 @@
                 }
             };
 
-            if (this.debug) console.log('[Spine] track:', state.tracks[0]);
+            // if (this.debug) console.log('[Spine] track:', state.tracks[0]);
 
             state.apply(skeleton);
             skeleton.updateWorldTransform();
@@ -542,7 +542,7 @@
                 let options =  { mipMap: false, sampling: sampling }
                 if (this.debug)
                 {
-                    console.log('[Spine] CreateDynamicTexture x,y:', this.textureWidth, this.textureHeight);
+                    console.log('[Spine] CreateDynamicTexture x,y:', this.textureWidth, this.textureHeight, this.uid);
                 }
                 this._elementTexture = renderer.CreateDynamicTexture(this.textureWidth, this.textureHeight, options);
 

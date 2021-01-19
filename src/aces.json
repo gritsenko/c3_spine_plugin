@@ -387,6 +387,17 @@
             "initial-value": 1
           }
         ]
+      },
+      {
+        "id": "set-debug",
+        "scriptName": "SetDebug",
+        "highlight": false,
+        "params": [
+          {
+            "id": "enable",
+            "type": "boolean"
+          }
+        ]
       }
     ],
     "expressions": [

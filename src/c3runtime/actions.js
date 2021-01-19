@@ -6,6 +6,13 @@
     C3.Plugins.Gritsenko_Spine.Acts = {
 
         SetSkin(skinName){
+
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine], SetSkin, no skeleton.');
+                return;
+            }
+
             this.skinName = skinName;
 
             this.updateCurrentSkin();
@@ -20,6 +27,12 @@
         },
 
         SetAnimation(animationName, loop, start, trackIndex){
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine], SetSkin, no skeleton.');
+                return;
+            }
+
             this.animationName = animationName;
 
             this.updateCurrentAnimation(loop, start, trackIndex, animationName);
@@ -28,6 +41,12 @@
         },
 
         SetAlpha(alpha, trackIndex){
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine], SetAlpha, no state.');
+                return;
+            }
+
             const state = this.skeletonInfo.state;
             if(!state || !state.tracks) return;
             const track = state.tracks[trackIndex];
@@ -40,6 +59,12 @@
        },
 
         DeleteAnimation(trackIndex, mixDuration) {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine], DeleteAnimation, no state.');
+                return;
+            }
+
             const state = this.skeletonInfo.state;
             if(!state || !state.tracks) return;
             const track = state.tracks[trackIndex];
@@ -68,6 +93,12 @@
         },
         
         SetRegion(slotName, attachmentName, regionName){
+
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine], SetRegion, no skeleton.');
+                return;
+            }
 
             // First get the new region from the atlas.
             const atlas = this.skeletonInfo.atlas;
@@ -98,6 +129,12 @@
 
         SetAttachment(slotName, attachmentName)
         {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine], SetAttachment, no skeleton.');
+                return;
+            }
+
             const skeleton = this.skeletonInfo.skeleton;
 
             skeleton.setAttachment(slotName,attachmentName);
@@ -107,6 +144,12 @@
 
         CreateCustomSkin(skinName)
         {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine], CreateCustomSkin, no skeleton.');
+                return;
+            }
+
             const skeleton = this.skeletonInfo.skeleton;
             
             this.customSkins[skinName] = new spine.Skin(skinName);
@@ -116,7 +159,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.log('[Spine] AddCustomSkin, error - skeleton is not available');
+                if (this.debug) console.warn('[Spine] AddCustomSkin, skeleton is not available');
                 return;
             }
 
@@ -130,11 +173,11 @@
                     this.customSkins[skinName].addSkin(skeleton.data.findSkin(addSkinName));
                 } else
                 {
-                    if (this.debug) console.log('[Spine] AddCustomSkin, error - add skin does not exist',addSkinName);
+                    if (this.debug) console.warn('[Spine] AddCustomSkin, add skin does not exist',addSkinName);
                 }
             } else
             {
-                if (this.debug) console.log('[Spine] AddCustomSkin, error - custom skin does not exist',skinName);
+                if (this.debug) console.warn('[Spine] AddCustomSkin, custom skin does not exist',skinName);
             }
             spineBatcher.setInstanceRenderOnce(true, this.uid);
             this.animateOnce = 1.0;
@@ -142,17 +185,30 @@
 
         SetCustomSkin(skinName)
         {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine], SetCustomSkin, no skeleton', skinName);
+                return;
+            } 
+
             this.skinName = skinName
             const skeleton = this.skeletonInfo.skeleton;
             this.customSkins[this.skinName]
             skeleton.setSkin(this.customSkins[this.skinName]);
             skeleton.setSlotsToSetupPose();
+            
             spineBatcher.setInstanceRenderOnce(true, this.uid);
             this.animateOnce = 1.0;
         },
 
         SetCustomAttachmentColor(skinName, slotName, attachmentName, color)
         {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine], SetCustomAttachmentColor, no skeleton', skinName);
+                return;
+            }
+
             const skeleton = this.skeletonInfo.skeleton;
             let skin = this.customSkins[skinName];
             let slotIndex = skeleton.data.findSlot(slotName).index;
@@ -190,6 +246,12 @@
 
         ApplySlotColors()
         {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine], ApplySlotColors, no skeleton.');
+                return;
+            } 
+
             const skeleton = this.skeletonInfo.skeleton;
             // Set regular colors to slots
             let slotName;
@@ -225,6 +287,12 @@
 
         ResetSlotColors()
         {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine], ResetSlotColors, no skeleton.');
+                return;
+            } 
+
             const skeleton = this.skeletonInfo.skeleton;
             this.slotColors = {};
             this.slotDarkColors = {};
@@ -235,6 +303,12 @@
 
         SetAnimationTime(units, time, trackIndex)
         {
+            if (!this.skeletonInfo || !this.skeletonInfo.state)
+            {
+                if (this.debug) console.warn('[Spine], SetAninationTime, no state.');
+                return;
+            } 
+
             const state = this.skeletonInfo.state;
             if(!state || !state.tracks) return;
 
@@ -246,7 +320,7 @@
             {
                 if (time < track.animationStart || time > track.animationEnd)
                 {
-                    console.error('[Spine] SetAnimationTime time out of bounds:', time);
+                    if (this.debug) console.warn('[Spine] SetAnimationTime time out of bounds:', time);
                     return;
                 }
                 track.trackTime = time;
@@ -255,7 +329,7 @@
             {
                 if (time < 0 || time > 1)
                 {
-                    console.error('[Spine] SetAnimationTime ratio out of bounds:', time);
+                    if (this.debug) console.warn('[Spine] SetAnimationTime ratio out of bounds:', time);
                     return;
                 }
                 track.trackTime = time * (track.animationEnd - track.animationStart);
@@ -271,6 +345,12 @@
         
         SetAnimationMix(fromName, toName, duration)
         {
+            if (!this.skeletonInfo || !this.skeletonInfo.stateData)
+            {
+                if (this.debug) console.warn('[Spine], SetAnimationMix, no stateData.');
+                return;
+            } 
+
             const stateData = this.skeletonInfo.stateData;
             try
             {
@@ -284,7 +364,18 @@
 
         SetObjectRenderRate(renderRate)
         {
+            if (!globalThis.spineBatcher)
+            {
+                if (this.debug) console.warn('[Spine], SetObjectRenderRate, error no spineBatcher.');
+                return;                
+            }
+
             globalThis.spineBatcher.renderRate = renderRate;
+        },
+
+        SetDebug(enable)
+        {
+            this.debug = enable;
         }
 
     };

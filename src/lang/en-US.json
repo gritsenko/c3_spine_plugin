@@ -462,6 +462,17 @@
                 "desc": "Render rate (ticks per render.)"
               }
             }
+          },
+          "set-debug": {
+            "list-name": "Enable debug",
+            "display-text": "Set debug to {0}",
+            "description": "Enable debug, send debug messages to dev console.",
+            "params": {
+              "enable": {
+                "name": "Enable",
+                "desc": "Enable or disable debug."
+              }
+            }
           }
         },
         "expressions": {
