@@ -21,6 +21,7 @@
         },
 
         IsAnimationPlaying(animationName, trackIndex) {
+            if (!this.isLoaded) return false;
             if (!this.skeletonInfo) return false;
             if (!this.skeletonInfo.skeleton) return false;
 

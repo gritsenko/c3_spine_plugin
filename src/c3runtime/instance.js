@@ -29,6 +29,7 @@
             this.isLoaded = false;
             this.animateOnce = 0;
             this.trackAnimations = {};
+            this.skinNames = [];
 
             this.atlasPath = "";
 

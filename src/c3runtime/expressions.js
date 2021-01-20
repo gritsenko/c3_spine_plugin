@@ -6,27 +6,46 @@
       
         /* Skins */
         Skins() {
+
+            if (!this.isLoaded) return "";
+
             return this.skinNames.join("\n");
         },
 
         CurrentSkin(){
+
+            if (!this.isLoaded) return "";
+
             return this.skinName;
         },
 
         SkinsCount(){
+
+            if (!this.isLoaded) return 0;
+
             return  this.skinNames.length;
         },
 
         SkinName(index){
+
+            if (!this.isLoaded) return "";
+            if (index >= this.skinNames.length || index < 0) return "";
+
             return this.skinNames[index];
         },
 
         /* ANIMATIONS */
         Animations() {
+
+            if (!this.isLoaded) return "";
+
             return this.animationNames.join("\n");
         },
 
         CurrentAnimation(trackIndex){
+
+            if (!this.isLoaded) return "";
+
             const state = this.skeletonInfo.state;
             if(!state || !state.tracks) return "";
             const track = state.tracks[trackIndex];
@@ -36,11 +55,18 @@
         },
 
         AnimationsCount(){
+
+            if (!this.isLoaded) return 0;
+
             return  this.animationNames.length;
         },
 
 
         AnimationName(index){
+
+            if (!this.isLoaded) return "";
+            if (index >= this.animationNames.length || index < 0) return "";
+
             return this.animationNames[index];
         },
         
@@ -48,12 +74,21 @@
             return this.spineError;
         },
         TextureHeight(){
+
+            if (!this.isLoaded) return 0;
+
             return this.textureHeight;
         },
         TextureWidth(){
+
+            if (!this.isLoaded) return 0;
+
             return this.textureWidth;
         },
         AnimationStart(trackIndex){
+
+            if (!this.isLoaded) return 0;
+
             const state = this.skeletonInfo.state;
             if(!state || !state.tracks) return 0;
             const track = state.tracks[trackIndex];
@@ -62,6 +97,9 @@
             return track.animationStart;
         },
         AnimationEnd(trackIndex){
+
+            if (!this.isLoaded) return 0;
+
             const state = this.skeletonInfo.state;
             if(!state || !state.tracks) return 0;
             const track = state.tracks[trackIndex];
@@ -70,6 +108,9 @@
             return track.animationEnd;
         },
         AnimationLast(trackIndex){
+
+            if (!this.isLoaded) return 0;
+
             const state = this.skeletonInfo.state;
             if(!state || !state.tracks) return 0;
             const track = state.tracks[trackIndex];
@@ -78,6 +119,9 @@
             return track.animationLast;
         },
         TrackTime(trackIndex){
+
+            if (!this.isLoaded) return 0;
+
             const state = this.skeletonInfo.state;
             if(!state || !state.tracks) return 0;
             const track = state.tracks[trackIndex];
@@ -86,6 +130,9 @@
             return track.trackTime;
         },
         Alpha(trackIndex){
+
+            if (!this.isLoaded) return 0;
+
             const state = this.skeletonInfo.state;
             if(!state || !state.tracks) return 0;
             const track = state.tracks[trackIndex];
@@ -94,6 +141,9 @@
             return track.alpha;
         },
         SpineBBoxCenterX(name){
+
+            if (!this.isLoaded) return 0;
+
             let bBox = this.skeletonInfo.skeleton.getAttachmentByName(name,name);
             if (!bBox) return 0;
 
@@ -122,6 +172,9 @@
         },
 
         SpineBBoxCenterY(slot, name){
+
+            if (!this.isLoaded) return 0;
+
             let bBox = this.skeletonInfo.skeleton.getAttachmentByName(slot,name);
             if (!bBox) return 0;
 
@@ -150,6 +203,9 @@
 
         SpineBBoxGetPoly(slot,name)
         {
+
+            if (!this.isLoaded) return JSON.stringify({});
+
             let bBox = this.skeletonInfo.skeleton.getAttachmentByName(slot,name);
             if (!bBox) return JSON.stringify({});
             
