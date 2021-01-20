@@ -9,7 +9,7 @@
 
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine], SetSkin, no skeleton.');
+                if (this.debug) console.warn('[Spine], SetSkin, no skeleton.', skinName, this.uid);
                 return;
             }
 
@@ -29,7 +29,7 @@
         SetAnimation(animationName, loop, start, trackIndex){
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine], SetSkin, no skeleton.');
+                if (this.debug) console.warn('[Spine], SetAnimation, no skeleton.',  animation, this.uid);
                 return;
             }
 
@@ -43,7 +43,7 @@
         SetAlpha(alpha, trackIndex){
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine], SetAlpha, no state.');
+                if (this.debug) console.warn('[Spine], SetAlpha, no state.', alpha, trackIndex, this.uid);
                 return;
             }
 
@@ -61,7 +61,7 @@
         DeleteAnimation(trackIndex, mixDuration) {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine], DeleteAnimation, no state.');
+                if (this.debug) console.warn('[Spine], DeleteAnimation, no state.', trackIndex, this.uid);
                 return;
             }
 
@@ -96,7 +96,7 @@
 
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine], SetRegion, no skeleton.');
+                if (this.debug) console.warn('[Spine], SetRegion, no skeleton.', slotName, attachmentName, regionName, this.uid);
                 return;
             }
 
@@ -105,7 +105,7 @@
             const skeleton = this.skeletonInfo.skeleton;
 
             let region = atlas.findRegion(regionName);
-            if (region == null) throw new Error("Region not found in atlas: " + regionName);
+            if (region == null) throw new Error("Region not found in atlas: " + regionName + " " + this.uid);
 
             // Get the existing attachment, if skin not on skeleton
             // let skin = skeleton.data.findSkin(skinName)
@@ -131,7 +131,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine], SetAttachment, no skeleton.');
+                if (this.debug) console.warn('[Spine], SetAttachment, no skeleton.', slotName, attachmentName, this.uid);
                 return;
             }
 
@@ -146,7 +146,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine], CreateCustomSkin, no skeleton.');
+                if (this.debug) console.warn('[Spine], CreateCustomSkin, no skeleton.', skinName, this.uid);
                 return;
             }
 
@@ -159,7 +159,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] AddCustomSkin, skeleton is not available');
+                if (this.debug) console.warn('[Spine] AddCustomSkin, skeleton is not available',skinName,addSkinName,this.uid);
                 return;
             }
 
@@ -173,11 +173,11 @@
                     this.customSkins[skinName].addSkin(skeleton.data.findSkin(addSkinName));
                 } else
                 {
-                    if (this.debug) console.warn('[Spine] AddCustomSkin, add skin does not exist',addSkinName);
+                    if (this.debug) console.warn('[Spine] AddCustomSkin, add skin does not exist',skinName,addSkinName,this.uid);
                 }
             } else
             {
-                if (this.debug) console.warn('[Spine] AddCustomSkin, custom skin does not exist',skinName);
+                if (this.debug) console.warn('[Spine] AddCustomSkin, custom skin does not exist',skinName,addSkinName,this.uid);
             }
             spineBatcher.setInstanceRenderOnce(true, this.uid);
             this.animateOnce = 1.0;
@@ -187,7 +187,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine], SetCustomSkin, no skeleton', skinName);
+                if (this.debug) console.warn('[Spine], SetCustomSkin, no skeleton', skinName, this.uid);
                 return;
             } 
 
@@ -205,7 +205,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine], SetCustomAttachmentColor, no skeleton', skinName);
+                if (this.debug) console.warn('[Spine], SetCustomAttachmentColor, no skeleton', skinNameskinName, slotName, attachmentName, color, this.uid);
                 return;
             }
 
@@ -248,7 +248,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine], ApplySlotColors, no skeleton.');
+                if (this.debug) console.warn('[Spine], ApplySlotColors, no skeleton.', this.uid);
                 return;
             } 
 
@@ -289,7 +289,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine], ResetSlotColors, no skeleton.');
+                if (this.debug) console.warn('[Spine], ResetSlotColors, no skeleton.', this.uid);
                 return;
             } 
 
@@ -305,7 +305,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.state)
             {
-                if (this.debug) console.warn('[Spine], SetAninationTime, no state.');
+                if (this.debug) console.warn('[Spine], SetAninationTime, no state.',units, time, trackIndex,this.uid);
                 return;
             } 
 
@@ -320,7 +320,7 @@
             {
                 if (time < track.animationStart || time > track.animationEnd)
                 {
-                    if (this.debug) console.warn('[Spine] SetAnimationTime time out of bounds:', time);
+                    if (this.debug) console.warn('[Spine] SetAnimationTime time out of bounds:', units, time, trackIndex,this.uid);
                     return;
                 }
                 track.trackTime = time;
@@ -329,7 +329,7 @@
             {
                 if (time < 0 || time > 1)
                 {
-                    if (this.debug) console.warn('[Spine] SetAnimationTime ratio out of bounds:', time);
+                    if (this.debug) console.warn('[Spine] SetAnimationTime ratio out of bounds:', units, time, trackIndex, this.uid);
                     return;
                 }
                 track.trackTime = time * (track.animationEnd - track.animationStart);
@@ -347,7 +347,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.stateData)
             {
-                if (this.debug) console.warn('[Spine], SetAnimationMix, no stateData.');
+                if (this.debug) console.warn('[Spine], SetAnimationMix, no stateData.', fromName, toName, duration, this.uid);
                 return;
             } 
 
@@ -366,7 +366,7 @@
         {
             if (!globalThis.spineBatcher)
             {
-                if (this.debug) console.warn('[Spine], SetObjectRenderRate, error no spineBatcher.');
+                if (this.debug) console.warn('[Spine], SetObjectRenderRate, error no spineBatcher.', renderRate, this.uid);
                 return;                
             }
 
