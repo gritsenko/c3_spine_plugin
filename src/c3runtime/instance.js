@@ -303,6 +303,12 @@
             
             if (!this.skeletonInfo) return;
             if (!this.skeletonInfo.skeleton) return;
+            if (!this.animationNames) return;
+            if (!(this.animationNames.includes(animationName)))
+            {
+                if (this.debug) console.warn('[Spine] updateCurrentAnimation, animation does not exist.', animationName, this.uid);
+                return;                
+            }
 
             try {
                 const state = this.skeletonInfo.state;
