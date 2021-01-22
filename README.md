@@ -56,7 +56,7 @@
 Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Current Add-on, Release 1.27.1](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.27.1/Spine-v1.27.1.c3addon)
+[Current Add-on, Release 1.27.2](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.27.2/Spine-v1.27.2.c3addon)
 
 [Previous Add-on Releases](https://github.com/gritsenko/c3_spine_plugin/releases)
 
@@ -107,6 +107,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 1.27.2 Advance animation/slot render while off screen.
 - 1.27.1 Add updateCurrentAnimation check if animatioName exists and warn if not.
 - 1.27.0 Add parameters and UID to Action console warnings for debug.
 - 1.26.1 Return w/o JS error from Expression/Conditions if skeleton not loaded.

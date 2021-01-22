@@ -217,8 +217,10 @@ class SpineBatch {
         for (const uid in skeletonInstances)
         {
             const skeletonInstance = skeletonInstances[uid];
-            if (skeletonInstance.initialized && skeletonInstance.onScreen
-                && (!skeletonInstance.tracksComplete || skeletonInstance.renderOnce)
+            if (skeletonInstance.initialized 
+                && (!skeletonInstance.tracksComplete
+                    || skeletonInstance.renderOnce
+                    || skeletonInstance.onScreen)
                 && (tickCount%this._renderRate == index%this._renderRate))
             {
                 // console.log('[Spine] render, uid', skeletonInstance.renderOnce, uid)
