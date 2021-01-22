@@ -1,3 +1,71 @@
+const SPRITE_SHEET_WIDTH = 512;
+const SPRITE_SHEET_HEIGHT = 512;
+const SPRITE_WIDTH = 256;
+const SPRITE_HEIGHT = 256;
+
+class SpriteSheet {
+    constructor() {
+        this._width = SPRITE_SHEET_WIDTH;
+        this._height = SPRITE_SHEET_HEIGHT;
+        this._spriteWidth = SPRITE_WIDTH;
+        this._spriteHeight = SPRITE_HEIGHT;
+        this._sprites = [];
+        this._texture = null;
+        this._spineFB = null;
+
+        for (let x = 0; x < Math.floor(this._width/this._spriteWidth); x++)
+        {
+            for (let y = 0; y < Math.floor(this._height/this._spriteHeight); y++)
+            {
+                let sprite =
+                    {
+                        x: x,
+                        y: y,
+                        available : true,
+                        left : (x*this._spriteWidth)/this._width,
+                        top : 1 - (y*this._spriteHeight)/this._height,
+                        right : ((x+1)*this._spriteWidth)/this._width,
+                        bottom : 1 - ((y+1)*this._spriteHeight)/this._height
+                    };
+                this._sprites.push(sprite);                
+            }            
+        }
+        console.log('[Spine] this._sprites', this._sprites);
+
+    }
+
+    get width() {return this._width};
+    get height() {return this._height};
+    get sprites() {return this._sprites};
+    get spriteWidth() {return this._spriteWidth};
+    get spriteHeight() {return this._spriteHeight};
+    get texture() {return this._texture};
+    get spineFB() {return this._spineFB};  
+
+    // Create dynamic texture for full sprite sheet
+    createTexture(runtime)
+    {
+        const c3Renderer = runtime.GetWebGLRenderer();
+        const gl = c3Renderer._gl;
+        const sampling = runtime.GetSampling();
+        const options =  { mipMap: false, sampling: sampling }
+        console.log('[Spine] SpriteSheet CreateDynamicTexture x,y:', this._width, this._height);
+        this._texture = c3Renderer.CreateDynamicTexture(this._width, this._height, options);
+
+        let oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
+        // Create FB and bind texture to spineFB
+        this._spineFB = gl.createFramebuffer();
+        gl.bindFramebuffer(gl.FRAMEBUFFER, this._spineFB);
+        // attach the texture as the first color attachment
+        const attachmentPoint = gl.COLOR_ATTACHMENT0;
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, attachmentPoint, gl.TEXTURE_2D, this._texture._texture, 0);
+        // Restore render to the canvas
+        gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
+
+    }
+
+}
+
 class SpineBatch {    
     constructor() {
         // Skeleton instances to render
@@ -7,6 +75,7 @@ class SpineBatch {
         this._rendered = false
         this._tickCount = -1
         this._renderRate = 1;
+        this._spriteSheet = new SpriteSheet();
     }
 
     get rendered()
@@ -92,6 +161,9 @@ class SpineBatch {
         this.batcher = new spine.webgl.PolygonBatcher(gl);
         this.renderer = new spine.webgl.SkeletonRenderer(gl);
         this.shapes = new spine.webgl.ShapeRenderer(gl);
+
+        this._spriteSheet.createTexture(runtime);
+        console.log('Spine] this._spriteSheet._spineFB',this._spriteSheet._spineFB);
 
         this._initialized = true;
     }
