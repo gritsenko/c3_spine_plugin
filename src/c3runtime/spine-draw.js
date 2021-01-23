@@ -1,7 +1,82 @@
-const SPRITE_SHEET_WIDTH = 512;
-const SPRITE_SHEET_HEIGHT = 512;
+const SPRITE_SHEET_WIDTH = 4096;
+const SPRITE_SHEET_HEIGHT = 4096;
 const SPRITE_WIDTH = 256;
 const SPRITE_HEIGHT = 256;
+
+class GlCache {
+    constructor(isWebGL2, gl) {
+        this._oldFrameBuffer = null;
+        this._extOESVAO = null;
+        this._oldVAO = null;
+        this._oldProgram = null;    
+        this._oldActive = null;
+        this._oldTex = null;
+        this._oldBinding = null;
+        this._oldElement = null;
+        this._oldClearColor = null;
+        this._oldViewport = null;
+        this._isWebGL2 = isWebGL2;
+        this._gl = gl;
+    }
+
+    cache() {
+
+        const gl = this._gl;
+
+        if (!this._isWebGL2)
+        {
+            this._extOESVAO = gl.getExtension("OES_vertex_array_object");
+        }
+
+        if (this._isWebGL2)
+        {
+            this._oldVAO = gl.createVertexArray();
+            this._oldVAO = gl.getParameter(gl.VERTEX_ARRAY_BINDING);
+        } else
+        {
+            this._oldVAO = this._extOESVAO.createVertexArrayOES(); 
+            this._oldVAO = gl.getParameter(extOESVAO.VERTEX_ARRAY_BINDING_OES);
+        }
+
+        // Save C3 wegl parameters to restore
+        this._oldProgram = gl.getParameter(gl.CURRENT_PROGRAM);        
+        this._oldActive = gl.getParameter(gl.ACTIVE_TEXTURE);            
+        this._oldTex = gl.getParameter(gl.TEXTURE_BINDING_2D);        
+        this._oldBinding = gl.getParameter(gl.ARRAY_BUFFER_BINDING);
+        this._oldElement = gl.getParameter(gl.ELEMENT_ARRAY_BUFFER_BINDING);
+        this._oldClearColor = gl.getParameter(gl.COLOR_CLEAR_VALUE);
+        this._oldViewport = gl.getParameter(gl.VIEWPORT);
+    }
+
+    restore() {
+        const gl = this._gl;
+
+        // Change back to C3 FB last used
+        gl.bindFramebuffer(gl.FRAMEBUFFER, this._oldFrameBuffer);
+
+        // Restore C3 webgl state
+        gl.useProgram(this._oldProgram);
+        if (this._isWebGL2)
+        {
+            gl.bindVertexArray(this._oldVAO);
+        } else
+        {
+            this._extOESVAO.bindVertexArrayOES(this._oldVAO); 
+        }                    
+        gl.activeTexture(this._oldActive);                
+        gl.bindTexture(gl.TEXTURE_2D, this._oldTex);        
+        gl.bindBuffer(gl.ARRAY_BUFFER, this._oldBinding);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._oldElement);
+        gl.clearColor(this._oldClearColor[0],this._oldClearColor[1],this._oldClearColor[2],this._oldClearColor[3])
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+        gl.viewport(this._oldViewport[0],this._oldViewport[1],this._oldViewport[2],this._oldViewport[3]);        
+    }
+
+        // Save C3 webgl context, may be able to reduce some
+        // Save VAO to restore
+    
+}
 
 class SpriteSheet {
     constructor() {
@@ -19,13 +94,19 @@ class SpriteSheet {
             {
                 let sprite =
                     {
+                        index: this._sprites.length,
                         x: x,
                         y: y,
                         available : true,
                         left : (x*this._spriteWidth)/this._width,
                         top : 1 - (y*this._spriteHeight)/this._height,
                         right : ((x+1)*this._spriteWidth)/this._width,
-                        bottom : 1 - ((y+1)*this._spriteHeight)/this._height
+                        bottom : 1 - ((y+1)*this._spriteHeight)/this._height,
+                        viewX : x*this._spriteWidth,
+                        viewY : y*this._spriteHeight,
+                        viewWidth : this._spriteWidth,
+                        viewHeight : this._spriteHeight,
+                        uid : -1
                     };
                 this._sprites.push(sprite);                
             }            
@@ -64,6 +145,30 @@ class SpriteSheet {
 
     }
 
+    getSprite(uid)
+    {
+        const length = this._sprites.length;
+        for (let index=0;index<length;index++)
+        {
+            if (this._sprites[index].available)
+            {
+                this._sprites[index].available = false;
+                this._sprites[index].uid = uid;
+                return this._sprites[index];
+            }
+        }
+
+        // There is no sprite available
+        return false;
+    }
+
+    releaseSprite(index)
+    {
+        if (index < 0 || index >= length) return;
+        this._sprites[index].available = true;
+        this._sprites[index].uid = -1;
+    }
+
 }
 
 class SpineBatch {    
@@ -76,37 +181,16 @@ class SpineBatch {
         this._tickCount = -1
         this._renderRate = 1;
         this._spriteSheet = new SpriteSheet();
+        this._glCached = false;
     }
 
-    get rendered()
-    {
-        return this._rendered
-    }
-
-    get initialized()
-    {
-        return this._initialized
-    }
-
-    get tickCount()
-    {
-        return this._tickCount
-    }
-
-    set tickCount(tick)
-    {
-        this._tickCount = tick
-    }
-
-    get renderRate()
-    {
-        return this._renderRate;
-    }
-
-    set renderRate(renderRate)
-    {
-        this._renderRate = renderRate;
-    }
+    get rendered() {return this._rendered;}
+    get initialized() {return this._initialized;}
+    get tickCount() {return this._tickCount;}
+    set tickCount(tick) {this._tickCount = tick;}
+    get renderRate() {return this._renderRate;}
+    set renderRate(renderRate) {this._renderRate = renderRate;}
+    get spriteSheet() {return this._spriteSheet;}
 
     init(canvas, runtime)
     {    
@@ -120,7 +204,7 @@ class SpineBatch {
         // Context already exists and we want to use (for render to texture)
         let config = {}
         this.gl = this.canvas.getContext("webgl2", config) || this.canvas.getContext("webgl", config) || canvas.getContext("experimental-webgl", config);
-        let gl = this.gl
+        const gl = this.gl
 
         if (!gl) {
             alert('WebGL is unavailable.');
@@ -164,6 +248,8 @@ class SpineBatch {
 
         this._spriteSheet.createTexture(runtime);
         console.log('Spine] this._spriteSheet._spineFB',this._spriteSheet._spineFB);
+
+        this._glCache = new GlCache(this.isWebGL2, this.gl);
 
         this._initialized = true;
     }
@@ -244,7 +330,14 @@ class SpineBatch {
         // End C3 Batch
         // this.c3wgl.EndBatch();
 
-        var oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
+        if (!this._glCached)
+        {
+            this._glCache.cache();
+            // this._glCached = true;
+        }
+
+
+        //var oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
 
         // Save C3 webgl context, may be able to reduce some
         // Save VAO to restore
@@ -254,24 +347,25 @@ class SpineBatch {
             var extOESVAO = gl.getExtension("OES_vertex_array_object");
         }
 
-        if (this.isWebGL2)
-        {
-            var oldVAO = gl.createVertexArray();
-            oldVAO = gl.getParameter(gl.VERTEX_ARRAY_BINDING);
-        } else
-        {
-            var oldVAO = extOESVAO.createVertexArrayOES(); 
-            oldVAO = gl.getParameter(extOESVAO.VERTEX_ARRAY_BINDING_OES);
-        }
+        //if (this.isWebGL2)
+        //{
+        //    var oldVAO = gl.createVertexArray();
+        //    oldVAO = gl.getParameter(gl.VERTEX_ARRAY_BINDING);
+        //} else
+        //{
+        //    var oldVAO = extOESVAO.createVertexArrayOES(); 
+        //    oldVAO = gl.getParameter(extOESVAO.VERTEX_ARRAY_BINDING_OES);
+        //}
 
         // Save C3 wegl parameters to restore
-        var oldProgram = gl.getParameter(gl.CURRENT_PROGRAM);        
-        var oldActive = gl.getParameter(gl.ACTIVE_TEXTURE);            
-        var oldTex = gl.getParameter(gl.TEXTURE_BINDING_2D);        
-        var oldBinding = gl.getParameter(gl.ARRAY_BUFFER_BINDING);
-        var oldElement = gl.getParameter(gl.ELEMENT_ARRAY_BUFFER_BINDING);
-        var oldClearColor = gl.getParameter(gl.COLOR_CLEAR_VALUE);
-        var oldViewport = gl.getParameter(gl.VIEWPORT);
+        //var oldProgram = gl.getParameter(gl.CURRENT_PROGRAM);        
+        //var oldActive = gl.getParameter(gl.ACTIVE_TEXTURE);            
+        //var oldTex = gl.getParameter(gl.TEXTURE_BINDING_2D);        
+        //var oldBinding = gl.getParameter(gl.ARRAY_BUFFER_BINDING);
+        //var oldElement = gl.getParameter(gl.ELEMENT_ARRAY_BUFFER_BINDING);
+        //var oldClearColor = gl.getParameter(gl.COLOR_CLEAR_VALUE);
+        //var oldViewport = gl.getParameter(gl.VIEWPORT);
+
         // Bind to private VAO so Spine use does not impact C3 VAO
         if (this.isWebGL2)
         {
@@ -286,63 +380,121 @@ class SpineBatch {
         // Per instance render
         let index = 0;
         let count = 0;
+
+        // Initialize SkeletonRenderer
+        const skeletonInstance = skeletonInstances[Object.keys(skeletonInstances)[0]];
+        const bounds = skeletonInstance.skeletonInfo.bounds;
+        const premultipliedAlpha = skeletonInstance.skeletonInfo.premultipliedAlpha;
+
+        // Render to our targetTexture by binding the framebuffer to the SpineFB texture
+        gl.bindFramebuffer(gl.FRAMEBUFFER, this._spriteSheet.spineFB);
+
+        // Set viewport
+        // gl.viewport(0, 0, this._spriteSheet.width, this._spriteSheet.height);
+        // gl.viewport(0, 0, 256, 256);
+
+        // Set proper webgl blend for Spine render
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+        gl.bindTexture(gl.TEXTURE_2D, null);        
+        gl.bindBuffer(gl.ARRAY_BUFFER, null);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+        // Bind the shader and set the texture and model-view-projection matrix.
+        this.shader.bind();
+        this.shader.setUniformi(spine.webgl.Shader.SAMPLER, 0);
+
+        // Common mvp for all sprites
+        this.resize(bounds, skeletonInstance.skeletonScale);
+        this.shader.setUniform4x4f(spine.webgl.Shader.MVP_MATRIX, this.mvp.values);
+
+        // No vertex effect used
+        this.renderer.vertexEffect = null;
+
+        // Clear spriteSheet FB
+        gl.clearColor(0, 0, 0, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        this.renderer.premultipliedAlpha = premultipliedAlpha;
+
+        // this.batcher.begin(this.shader);
+
         for (const uid in skeletonInstances)
         {
             const skeletonInstance = skeletonInstances[uid];
-            if (skeletonInstance.initialized && skeletonInstance.onScreen
-                && (!skeletonInstance.tracksComplete || skeletonInstance.renderOnce)
+            if (skeletonInstance.initialized 
+                && (!skeletonInstance.tracksComplete
+                    || skeletonInstance.renderOnce
+                    || skeletonInstance.onScreen)
                 && (tickCount%this._renderRate == index%this._renderRate))
             {
                 // console.log('[Spine] render, uid', skeletonInstance.renderOnce, uid)
                 // For one off render (e.g. end of track or set slot), now set based on animateOnce
                 // skeletonInstance.renderOnce = false;
 
+                this.batcher.begin(this.shader);
 
                 count++;
-                const bounds = skeletonInstance.skeletonInfo.bounds;
-                const premultipliedAlpha = skeletonInstance.skeletonInfo.premultipliedAlpha;
+                // const bounds = skeletonInstance.skeletonInfo.bounds;
+                // const premultipliedAlpha = skeletonInstance.skeletonInfo.premultipliedAlpha;
 
                 // Render to our targetTexture by binding the framebuffer to the SpineFB texture
-                gl.bindFramebuffer(gl.FRAMEBUFFER, skeletonInstance.spineFB);
+                // gl.bindFramebuffer(gl.FRAMEBUFFER, skeletonInstance.spineFB);
 
                 // Set viewport
-                gl.viewport(0, 0, bounds.size.x, bounds.size.y);
+                // gl.viewport(0, 0, bounds.size.x, bounds.size.y);
+                gl.viewport(skeletonInstance.skeletonInfo.sprite.viewX,
+                            skeletonInstance.skeletonInfo.sprite.viewY,
+                            skeletonInstance.skeletonInfo.sprite.viewWidth,
+                            skeletonInstance.skeletonInfo.sprite.viewHeight);
+                /*
+                console.log('[Spine] viewport',skeletonInstance.skeletonInfo.sprite.viewX,
+                    skeletonInstance.skeletonInfo.sprite.viewY,
+                    skeletonInstance.skeletonInfo.sprite.viewWidth,
+                    skeletonInstance.skeletonInfo.sprite.viewHeight);
+                */
 
                 // Set proper webgl blend for Spine render
-                gl.enable(gl.BLEND);
-                gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+                // gl.enable(gl.BLEND);
+                // gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
-                gl.bindTexture(gl.TEXTURE_2D, null);        
-                gl.bindBuffer(gl.ARRAY_BUFFER, null);
-                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+                // gl.bindTexture(gl.TEXTURE_2D, null);        
+                // gl.bindBuffer(gl.ARRAY_BUFFER, null);
+                // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
                 // Bind the shader and set the texture and model-view-projection matrix.
-                this.shader.bind();
-                this.shader.setUniformi(spine.webgl.Shader.SAMPLER, 0);
+                // this.shader.bind();
+                // this.shader.setUniformi(spine.webgl.Shader.SAMPLER, 0);
                 // Resize 
-                this.resize(bounds, skeletonInstance.skeletonScale);
-                this.shader.setUniform4x4f(spine.webgl.Shader.MVP_MATRIX, this.mvp.values);
+                // this.resize(bounds, skeletonInstance.skeletonScale);
+                // this.shader.setUniform4x4f(spine.webgl.Shader.MVP_MATRIX, this.mvp.values);
                 
                 // Start the batch and tell the SkeletonRenderer to render the active skeleton.
-                this.batcher.begin(this.shader);
+                // this.batcher.begin(this.shader);
                 
                 // Apply vertex effect
-                this.renderer.vertexEffect = null;
+                // this.renderer.vertexEffect = null;
 
-                gl.clearColor(0, 0, 0, 0);
-                gl.clear(gl.COLOR_BUFFER_BIT);
-
+                // gl.clearColor(0, 0, 0, 0);
+                // gl.clear(gl.COLOR_BUFFER_BIT);
+                // skeletonInstance.skeletonInfo.skeleton.x = count * 25;
                 // Render
-                this.renderer.premultipliedAlpha = premultipliedAlpha;
+                // this.renderer.premultipliedAlpha = premultipliedAlpha;
                 this.renderer.draw(this.batcher, skeletonInstance.skeletonInfo.skeleton);
                 this.batcher.end();
-                this.shader.unbind();
+                // this.shader.unbind();
             }
             index++;
         }
 
-        this._rendered = true;
+        // this.batcher.end();
+        this.shader.unbind();
 
+        this._rendered = true;
+        this._glCache.restore();
+
+        /*
         // Change back to C3 FB last used
         gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
 
@@ -363,6 +515,7 @@ class SpineBatch {
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
         gl.viewport(oldViewport[0],oldViewport[1],oldViewport[2],oldViewport[3]);
+        */
     }
 
     getRValue(rgb)

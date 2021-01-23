@@ -30,6 +30,7 @@
             this.animateOnce = 0;
             this.trackAnimations = {};
             this.skinNames = [];
+            this.sprite = {};
 
             this.atlasPath = "";
 
@@ -173,7 +174,7 @@
 
             this.resize();
 
-            spineBatcher.addInstance(this.skeletonInfo, this.skeletonScale, this.GetInstance().GetUID())
+            spineBatcher.addInstance(this.skeletonInfo, this.skeletonScale, this.GetInstance().GetUID());
         }
 
         loadSkeleton(name, animationName, sequenceSlots) {
@@ -247,6 +248,11 @@
                 size = {x : wi._w, y: wi._h};
             }
 
+            // Get sprite from sprite sheet
+            debugger
+            let sprite = spineBatcher.spriteSheet.getSprite(this.uid);
+            if (!sprite && this.debug) console.warn('[Spine] Unable to getSprite');             
+
             return {
                 atlas: this._sdkType._atlas,
                 skeleton: skeleton,
@@ -258,7 +264,8 @@
                 },
                 atlasLoader : this._sdkType._atlasLoader,
                 skeletonBounds: skeletonBounds,
-                stateData: stateData
+                stateData: stateData,
+                sprite : sprite
             };
         }
 
@@ -471,6 +478,8 @@
             this.customSkins = null;
             this.slotColors = null;
             this.slotDarkColors = null;
+            spineBatcher.spriteSheet.releaseSprite(this.sprite.index);
+            this.sprite = null;
         }
 
         Tick() {
@@ -583,9 +592,13 @@
             }
 
             // Flip Y due to render to texture vs fb, Y is flipped
-            const rcTex = new C3.Rect(x0, 1, x1, 0); // Possible to get from this._texture instead? Not needed, not spritesheeted?
-
-            renderer.SetTexture(this._elementTexture);
+            // const rcTex = new C3.Rect(x0, 1, x1, 0); // Possible to get from this._texture instead? Not needed, not spritesheeted?
+            const rcTex = new C3.Rect(  this.skeletonInfo.sprite.left,
+                                        this.skeletonInfo.sprite.top,
+                                        this.skeletonInfo.sprite.right,
+                                        this.skeletonInfo.sprite.bottom);
+            // renderer.SetTexture(this._elementTexture);
+            renderer.SetTexture(spineBatcher.spriteSheet.texture);
     
             if (this.runtime.IsPixelRoundingEnabled()) {
                 let tempQuad = new C3.Quad();
