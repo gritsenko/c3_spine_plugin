@@ -35,7 +35,7 @@ class GlCache {
         } else
         {
             this._oldVAO = this._extOESVAO.createVertexArrayOES(); 
-            this._oldVAO = gl.getParameter(extOESVAO.VERTEX_ARRAY_BINDING_OES);
+            this._oldVAO = gl.getParameter(this._extOESVAO.VERTEX_ARRAY_BINDING_OES);
         }
 
         // Save C3 wegl parameters to restore
@@ -344,9 +344,10 @@ class SpineBatch {
         // Save C3 webgl context, may be able to reduce some
         // Save VAO to restore
 
+        let extOESVAO;
         if (!this.isWebGL2)
         {
-            var extOESVAO = gl.getExtension("OES_vertex_array_object");
+            extOESVAO = gl.getExtension("OES_vertex_array_object");
         }
 
         //if (this.isWebGL2)
