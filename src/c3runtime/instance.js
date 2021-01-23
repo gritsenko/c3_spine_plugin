@@ -578,11 +578,13 @@
             }
 
             // Only call render once per tick for all instances
+            
             if (spineBatcher.tickCount != this.runtime.GetTickCount())
             {
                 spineBatcher.tickCount = this.runtime.GetTickCount()
                 spineBatcher.drawBatch();
             }
+            
 
             let x0 = 0;
             let x1 = 1;
@@ -594,9 +596,9 @@
             // Flip Y due to render to texture vs fb, Y is flipped
             // const rcTex = new C3.Rect(x0, 1, x1, 0); // Possible to get from this._texture instead? Not needed, not spritesheeted?
             const rcTex = new C3.Rect(  this.skeletonInfo.sprite.left,
-                                        this.skeletonInfo.sprite.top,
-                                        this.skeletonInfo.sprite.right,
-                                        this.skeletonInfo.sprite.bottom);
+                                         this.skeletonInfo.sprite.top,
+                                         this.skeletonInfo.sprite.right,
+                                         this.skeletonInfo.sprite.bottom);
             // renderer.SetTexture(this._elementTexture);
             renderer.SetTexture(spineBatcher.spriteSheet.texture);
     

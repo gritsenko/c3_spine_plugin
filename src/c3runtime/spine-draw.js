@@ -99,9 +99,9 @@ class SpriteSheet {
                         y: y,
                         available : true,
                         left : (x*this._spriteWidth)/this._width,
-                        top : 1 - (y*this._spriteHeight)/this._height,
+                        top : ((y+1)*this._spriteHeight)/this._height,
                         right : ((x+1)*this._spriteWidth)/this._width,
-                        bottom : 1 - ((y+1)*this._spriteHeight)/this._height,
+                        bottom : ((y)*this._spriteHeight)/this._height,
                         viewX : x*this._spriteWidth,
                         viewY : y*this._spriteHeight,
                         viewWidth : this._spriteWidth,
@@ -390,7 +390,7 @@ class SpineBatch {
         gl.bindFramebuffer(gl.FRAMEBUFFER, this._spriteSheet.spineFB);
 
         // Set viewport
-        // gl.viewport(0, 0, this._spriteSheet.width, this._spriteSheet.height);
+        gl.viewport(0, 0, this._spriteSheet.width, this._spriteSheet.height);
         // gl.viewport(0, 0, 256, 256);
 
         // Set proper webgl blend for Spine render
@@ -407,6 +407,7 @@ class SpineBatch {
 
         // Common mvp for all sprites
         this.resize(bounds, skeletonInstance.skeletonScale);
+        this.mvp.ortho2d(0, 0, this._spriteSheet.width, this._spriteSheet.height);
         this.shader.setUniform4x4f(spine.webgl.Shader.MVP_MATRIX, this.mvp.values);
 
         // No vertex effect used
@@ -418,7 +419,10 @@ class SpineBatch {
 
         this.renderer.premultipliedAlpha = premultipliedAlpha;
 
-        // this.batcher.begin(this.shader);
+        this.batcher.begin(this.shader);
+
+        let spriteWidth = spineBatcher.spriteSheet.spriteWidth;
+        let spriteHeight = spineBatcher.spriteSheet.spriteHeight;
 
         for (const uid in skeletonInstances)
         {
@@ -433,7 +437,7 @@ class SpineBatch {
                 // For one off render (e.g. end of track or set slot), now set based on animateOnce
                 // skeletonInstance.renderOnce = false;
 
-                this.batcher.begin(this.shader);
+                // this.batcher.begin(this.shader);
 
                 count++;
                 // const bounds = skeletonInstance.skeletonInfo.bounds;
@@ -444,10 +448,10 @@ class SpineBatch {
 
                 // Set viewport
                 // gl.viewport(0, 0, bounds.size.x, bounds.size.y);
-                gl.viewport(skeletonInstance.skeletonInfo.sprite.viewX,
-                            skeletonInstance.skeletonInfo.sprite.viewY,
-                            skeletonInstance.skeletonInfo.sprite.viewWidth,
-                            skeletonInstance.skeletonInfo.sprite.viewHeight);
+                // gl.viewport(skeletonInstance.skeletonInfo.sprite.viewX,
+                //            skeletonInstance.skeletonInfo.sprite.viewY,
+                //            skeletonInstance.skeletonInfo.sprite.viewWidth,
+                //            skeletonInstance.skeletonInfo.sprite.viewHeight);
                 /*
                 console.log('[Spine] viewport',skeletonInstance.skeletonInfo.sprite.viewX,
                     skeletonInstance.skeletonInfo.sprite.viewY,
@@ -478,17 +482,20 @@ class SpineBatch {
 
                 // gl.clearColor(0, 0, 0, 0);
                 // gl.clear(gl.COLOR_BUFFER_BIT);
-                // skeletonInstance.skeletonInfo.skeleton.x = count * 25;
+                let spriteX = skeletonInstance.skeletonInfo.sprite.x;      
+                let spriteY = skeletonInstance.skeletonInfo.sprite.y;      
+                skeletonInstance.skeletonInfo.skeleton.x = spriteX*spriteWidth + spriteWidth/2;
+                skeletonInstance.skeletonInfo.skeleton.y = spriteY*spriteHeight + spriteHeight/2;
                 // Render
                 // this.renderer.premultipliedAlpha = premultipliedAlpha;
                 this.renderer.draw(this.batcher, skeletonInstance.skeletonInfo.skeleton);
-                this.batcher.end();
+                // this.batcher.end();
                 // this.shader.unbind();
             }
             index++;
         }
 
-        // this.batcher.end();
+        this.batcher.end();
         this.shader.unbind();
 
         this._rendered = true;
