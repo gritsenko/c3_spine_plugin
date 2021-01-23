@@ -162,11 +162,13 @@ class SpriteSheet {
         return false;
     }
 
-    releaseSprite(index)
+    releaseSprite(index, debug)
     {
+        let length = this._sprites.length;
         if (index < 0 || index >= length) return;
         this._sprites[index].available = true;
         this._sprites[index].uid = -1;
+        if (debug) console.log('[Spine] sprite released', index);
     }
 
 }

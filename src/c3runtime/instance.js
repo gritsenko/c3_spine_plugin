@@ -30,7 +30,6 @@
             this.animateOnce = 0;
             this.trackAnimations = {};
             this.skinNames = [];
-            this.sprite = {};
 
             this.atlasPath = "";
 
@@ -441,6 +440,7 @@
             this.isSkeletonLoaded = null;
             this.isSkeletonLoading = null;
             this.isSpineInitialized = null;
+            spineBatcher.spriteSheet.releaseSprite(this.skeletonInfo.sprite.index, this.debug);
             this.skeletonInfo = null;
             this.renderer = null;
             this.gl = null;
@@ -478,8 +478,7 @@
             this.customSkins = null;
             this.slotColors = null;
             this.slotDarkColors = null;
-            spineBatcher.spriteSheet.releaseSprite(this.sprite.index);
-            this.sprite = null;
+            this.debug = null;
         }
 
         Tick() {
@@ -586,19 +585,19 @@
             }
             
 
-            let x0 = 0;
-            let x1 = 1;
+            let left = this.skeletonInfo.sprite.left;
+            let right = this.skeletonInfo.sprite.right;
             if (this.isMirrored) {
-                x0 = 1;
-                x1 = 0;
+                left = this.skeletonInfo.sprite.right;
+                right = this.skeletonInfo.sprite.left;
             }
 
             // Flip Y due to render to texture vs fb, Y is flipped
             // const rcTex = new C3.Rect(x0, 1, x1, 0); // Possible to get from this._texture instead? Not needed, not spritesheeted?
-            const rcTex = new C3.Rect(  this.skeletonInfo.sprite.left,
-                                         this.skeletonInfo.sprite.top,
-                                         this.skeletonInfo.sprite.right,
-                                         this.skeletonInfo.sprite.bottom);
+            const rcTex = new C3.Rect(  left,
+                                        this.skeletonInfo.sprite.top,
+                                        right,
+                                        this.skeletonInfo.sprite.bottom);
             // renderer.SetTexture(this._elementTexture);
             renderer.SetTexture(spineBatcher.spriteSheet.texture);
     
