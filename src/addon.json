@@ -3,11 +3,11 @@
   "type": "plugin",
   "name": "Spine",
   "id": "Gritsenko_Spine",
-  "version": "1.27.2",
+  "version": "1.27.3",
   "author": "Mikal and Igor Gritsenko",
   "website": "https://gritsenko.github.io/c3_spine_plugin",
   "documentation": "https://gritsenko.github.io/c3_spine_plugin",
-  "description": "Spine addon - render to texture",
+  "description": "Spine addon - render to textures",
   "editor-scripts": [
     "plugin.js",
     "type.js",

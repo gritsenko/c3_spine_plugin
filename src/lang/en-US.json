@@ -5,7 +5,7 @@
     "plugins": {
       "gritsenko_spine": {
         "name": "Spine",
-        "description": "Spine plugin",
+        "description": "Spine plugin, render to textures",
         "help-url": "https://gritsenko.github.io/c3_spine_plugin/",
         "properties": {
           "json": {

@@ -218,15 +218,10 @@ class SpineBatch {
         {
             const skeletonInstance = skeletonInstances[uid];
             if (skeletonInstance.initialized 
-                && (!skeletonInstance.tracksComplete
-                    || skeletonInstance.renderOnce
-                    || skeletonInstance.onScreen)
-                && (tickCount%this._renderRate == index%this._renderRate))
-            {
-                // console.log('[Spine] render, uid', skeletonInstance.renderOnce, uid)
-                // For one off render (e.g. end of track or set slot), now set based on animateOnce
-                // skeletonInstance.renderOnce = false;
-
+                && (tickCount%this._renderRate == index%this._renderRate)
+                && (skeletonInstance.renderOnce ||
+                    (!skeletonInstance.tracksComplete
+                    && skeletonInstance.onScreen)))            {
 
                 count++;
                 const bounds = skeletonInstance.skeletonInfo.bounds;
@@ -364,6 +359,6 @@ class SpineBatch {
 
 if (!globalThis.spineBatcher)
 {
-    console.log('[Spine] SpineBatcher init');
+    console.log('[Spine] SpineBatcher init, 1.27.3');
     globalThis.spineBatcher = new SpineBatch();
 }
