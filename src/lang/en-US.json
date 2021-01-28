@@ -473,6 +473,21 @@
                 "desc": "Enable or disable debug."
               }
             }
+          },
+          "set-debug-variable": {
+            "list-name": "Set debug variable",
+            "display-text": "Set debug {0} to {1}",
+            "description": "Set spine plugin debug variable.",
+            "params": {
+              "name": {
+                "name": "Name",
+                "desc": "Name of variable."
+              },
+              "value": {
+                "name": "Value",
+                "desc": "Value of variable (string)."
+              }
+            }
           }
         },
         "expressions": {

@@ -9,7 +9,7 @@
 
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] SetSkin, no skeleton.', skinName, this.uid);
+                if (this.debug) console.warn('[Spine] SetSkin, no skeleton.', skinName, this.uid, this.runtime.GetTickCount());
                 return;
             }
 
@@ -29,7 +29,7 @@
         SetAnimation(animationName, loop, start, trackIndex){
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] SetAnimation, no skeleton.', animationName, loop, start, trackIndex, this.uid);
+                if (this.debug) console.warn('[Spine] SetAnimation, no skeleton.', animationName, loop, start, trackIndex, this.uid, this.runtime.GetTickCount());
                 return;
             }
 
@@ -43,7 +43,7 @@
         SetAlpha(alpha, trackIndex){
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] SetAlpha, no state.', alpha, trackIndex, this.uid);
+                if (this.debug) console.warn('[Spine] SetAlpha, no state.', alpha, trackIndex, this.uid, this.runtime.GetTickCount());
                 return;
             }
 
@@ -61,7 +61,7 @@
         DeleteAnimation(trackIndex, mixDuration) {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] DeleteAnimation, no state.', trackIndex, mixDuration, this.uid);
+                if (this.debug) console.warn('[Spine] DeleteAnimation, no state.', trackIndex, mixDuration, this.uid, this.runtime.GetTickCount());
                 return;
             }
 
@@ -96,7 +96,7 @@
 
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] SetRegion, no skeleton.', slotName, attachmentName, regionName, this.uid);
+                if (this.debug) console.warn('[Spine] SetRegion, no skeleton.', slotName, attachmentName, regionName, this.uid, this.runtime.GetTickCount());
                 return;
             }
 
@@ -131,7 +131,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] SetAttachment, no skeleton.', slotName, attachmentName, this.uid);
+                if (this.debug) console.warn('[Spine] SetAttachment, no skeleton.', slotName, attachmentName, this.uid, this.runtime.GetTickCount());
                 return;
             }
 
@@ -159,7 +159,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] AddCustomSkin, skeleton is not available',skinName,addSkinName,this.uid);
+                if (this.debug) console.warn('[Spine] AddCustomSkin, skeleton is not available',skinName,addSkinName, this.uid, this.runtime.GetTickCount());
                 return;
             }
 
@@ -173,11 +173,11 @@
                     this.customSkins[skinName].addSkin(skeleton.data.findSkin(addSkinName));
                 } else
                 {
-                    if (this.debug) console.warn('[Spine] AddCustomSkin, add skin does not exist',skinName,addSkinName,this.uid);
+                    if (this.debug) console.warn('[Spine] AddCustomSkin, add skin does not exist',skinName,addSkinName, this.uid, this.runtime.GetTickCount());
                 }
             } else
             {
-                if (this.debug) console.warn('[Spine] AddCustomSkin, custom skin does not exist',skinName,addSkinName,this.uid);
+                if (this.debug) console.warn('[Spine] AddCustomSkin, custom skin does not exist',skinName,addSkinName, this.uid, this.runtime.GetTickCount());
             }
             spineBatcher.setInstanceRenderOnce(true, this.uid);
             this.animateOnce = 1.0;
@@ -187,7 +187,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] SetCustomSkin, no skeleton', skinName, this.uid);
+                if (this.debug) console.warn('[Spine] SetCustomSkin, no skeleton', skinName, this.uid, this.runtime.GetTickCount());
                 return;
             } 
 
@@ -205,7 +205,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] SetCustomAttachmentColor, no skeleton', skinName, slotName, attachmentName, color, this.uid);
+                if (this.debug) console.warn('[Spine] SetCustomAttachmentColor, no skeleton', skinName, slotName, attachmentName, color, this.uid, this.runtime.GetTickCount());
                 return;
             }
 
@@ -248,7 +248,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] ApplySlotColors, no skeleton.', this.uid);
+                if (this.debug) console.warn('[Spine] ApplySlotColors, no skeleton.', this.uid, this.runtime.GetTickCount());
                 return;
             } 
 
@@ -289,7 +289,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] ResetSlotColors, no skeleton.', this.uid);
+                if (this.debug) console.warn('[Spine] ResetSlotColors, no skeleton.', this.uid, this.runtime.GetTickCount());
                 return;
             } 
 
@@ -305,7 +305,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.state)
             {
-                if (this.debug) console.warn('[Spine] SetAninationTime, no state.',units, time, trackIndex,this.uid);
+                if (this.debug) console.warn('[Spine] SetAninationTime, no state.',units, time, trackIndex, this.uid, this.runtime.GetTickCount());
                 return;
             } 
 
@@ -320,7 +320,7 @@
             {
                 if (time < track.animationStart || time > track.animationEnd)
                 {
-                    if (this.debug) console.warn('[Spine] SetAnimationTime time out of bounds:', units, time, trackIndex,this.uid);
+                    if (this.debug) console.warn('[Spine] SetAnimationTime time out of bounds:', units, time, trackIndex, this.uid, this.runtime.GetTickCount());
                     return;
                 }
                 track.trackTime = time;
@@ -329,7 +329,7 @@
             {
                 if (time < 0 || time > 1)
                 {
-                    if (this.debug) console.warn('[Spine] SetAnimationTime ratio out of bounds:', units, time, trackIndex, this.uid);
+                    if (this.debug) console.warn('[Spine] SetAnimationTime ratio out of bounds:', units, time, trackIndex, this.uid, this.runtime.GetTickCount());
                     return;
                 }
                 track.trackTime = time * (track.animationEnd - track.animationStart);
@@ -347,7 +347,7 @@
         {
             if (!this.skeletonInfo || !this.skeletonInfo.stateData)
             {
-                if (this.debug) console.warn('[Spine] SetAnimationMix, no stateData.', fromName, toName, duration, this.uid);
+                if (this.debug) console.warn('[Spine] SetAnimationMix, no stateData.', fromName, toName, duration, this.uid, this.runtime.GetTickCount());
                 return;
             } 
 
@@ -366,7 +366,7 @@
         {
             if (!globalThis.spineBatcher)
             {
-                if (this.debug) console.warn('[Spine] SetObjectRenderRate, error no spineBatcher.', renderRate, this.uid);
+                if (this.debug) console.warn('[Spine] SetObjectRenderRate, error no spineBatcher.', renderRate, this.uid, this.runtime.GetTickCount());
                 return;                
             }
 
@@ -376,6 +376,13 @@
         SetDebug(enable)
         {
             this.debug = enable;
+        },
+
+        SetDebugVariable(name,value)
+        {
+            if (!spineBatcher) {console.warn('[Spine] SetDebugVariable, no spineBatcher',name,value);return}
+            spineBatcher.debugVariables[name] = value;
+            if (this.debug) console.info('[Spine] SetDebugVariable',name,value,spineBatcher.debugVariables);
         }
 
     };

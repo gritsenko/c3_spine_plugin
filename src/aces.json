@@ -398,6 +398,23 @@
             "type": "boolean"
           }
         ]
+      },
+      {
+        "id": "set-debug-variable",
+        "scriptName": "SetDebugVariable",
+        "highlight": false,
+        "params": [
+          {
+            "id": "name",
+            "type": "string",
+            "initialValue" : "\"\""
+          },
+          {
+            "id": "value",
+            "type": "string",
+            "initialValue" : "\"\""
+          }
+        ]
       }
     ],
     "expressions": [

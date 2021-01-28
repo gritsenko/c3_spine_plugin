@@ -7,37 +7,16 @@ class SpineBatch {
         this._rendered = false
         this._tickCount = -1
         this._renderRate = 1;
+        this._debugVariables = {};
     }
 
-    get rendered()
-    {
-        return this._rendered
-    }
-
-    get initialized()
-    {
-        return this._initialized
-    }
-
-    get tickCount()
-    {
-        return this._tickCount
-    }
-
-    set tickCount(tick)
-    {
-        this._tickCount = tick
-    }
-
-    get renderRate()
-    {
-        return this._renderRate;
-    }
-
-    set renderRate(renderRate)
-    {
-        this._renderRate = renderRate;
-    }
+    get rendered(){return this._rendered;}
+    get initialized(){return this._initialized;}
+    get tickCount(){return this._tickCount;}
+    set tickCount(tick){this._tickCount = tick;}
+    get renderRate(){return this._renderRate;}
+    set renderRate(renderRate){this._renderRate = renderRate;}
+    get debugVariables(){return this._debugVariables;}
 
     init(canvas, runtime)
     {    
@@ -359,6 +338,6 @@ class SpineBatch {
 
 if (!globalThis.spineBatcher)
 {
-    console.log('[Spine] SpineBatcher init, 1.27.3');
+    console.log('[Spine] SpineBatcher init, 1.30.1');
     globalThis.spineBatcher = new SpineBatch();
 }

@@ -497,9 +497,15 @@
                     if (track.loop || !track.isComplete()) tracksComplete = false;
                 }
             });
-            spineBatcher.setInstanceTracksComplete(tracksComplete || !this.isPlaying, this.uid);
+            tracksComplete = tracksComplete || !this.isPlaying;
+            spineBatcher.setInstanceTracksComplete(tracksComplete, this.uid);
 
-            if (this.isPlaying || this.animateOnce > 0) {
+            let animationReduce = spineBatcher.debugVariables.animationReduce === "enable";
+            let fullAnimation = this.isPlaying || this.animateOnce > 0;
+            let reducededAnimation = this.animateOnce > 0 || (!tracksComplete && this.isPlaying);
+            let animateFrame = animationReduce ? reducededAnimation : fullAnimation;
+
+            if (animateFrame) {
                 var animationDuration = state.getCurrent(0).animation.duration;
                 active.playTime += delta;
                 if (animationDuration > 0)
