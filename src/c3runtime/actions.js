@@ -61,7 +61,7 @@
         DeleteAnimation(trackIndex, mixDuration) {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] DeleteAnimation, no state.', trackIndex, mixDuration, this.uid, this.runtime.GetTickCount());
+                if (this.debug) console.warn('[Spine] DeleteAnimation, no skelton.', trackIndex, mixDuration, this.uid, this.runtime.GetTickCount());
                 return;
             }
 
