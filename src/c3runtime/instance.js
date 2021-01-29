@@ -555,7 +555,7 @@
                 let options =  { mipMap: false, sampling: sampling }
                 if (this.debug)
                 {
-                    console.log('[Spine] CreateDynamicTexture x,y:', this.textureWidth, this.textureHeight, this.uid);
+                    console.log('[Spine] CreateDynamicTexture x,y:', Math.round(this.textureWidth), Math.round(this.textureHeight), this.uid, this.runtime.GetTickCount());
                 }
                 this._elementTexture = renderer.CreateDynamicTexture(this.textureWidth, this.textureHeight, options);
 
