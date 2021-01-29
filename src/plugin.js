@@ -45,6 +45,10 @@
                 type: "external-runtime-script"
            });
 
+           this._info.AddFileDependency({
+            filename: "c3runtime/spine-gl-cache.js",
+            type: "external-runtime-script"
+           });
             // this._info.SetDOMSideScripts(["c3runtime/spine-webgl.js"]);
 
 
