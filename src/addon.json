@@ -22,6 +22,7 @@
     "c3runtime/expressions.js",
     "c3runtime/spine-webgl.js",
     "c3runtime/spine-draw.js",
+    "c3runtime/spine-gl-cache.js",
     "lang/en-US.json",
     "aces.json",
     "addon.json",

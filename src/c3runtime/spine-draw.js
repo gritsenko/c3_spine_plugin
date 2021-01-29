@@ -1,3 +1,6 @@
+// @ts-check
+"use strict";
+
 class SpineBatch {    
     constructor() {
         // Skeleton instances to render
@@ -7,7 +10,12 @@ class SpineBatch {
         this._rendered = false
         this._tickCount = -1
         this._renderRate = 1;
-        this._debugVariables = {};
+        this._spineGLCache = null;
+        this._spineGLCacheStored = false;
+        this._debugVariables =  {
+                                    animationReduce : "disable",
+                                    spineGLCache : "disable"
+                                };
     }
 
     get rendered(){return this._rendered;}
@@ -28,14 +36,8 @@ class SpineBatch {
 
         // Get C3 canvas gl context
         // Context already exists and we want to use (for render to texture)
-        let config = {}
-        this.gl = this.canvas.getContext("webgl2", config) || this.canvas.getContext("webgl", config) || canvas.getContext("experimental-webgl", config);
-        let gl = this.gl
-
-        if (!gl) {
-            alert('WebGL is unavailable.');
-            return;
-        }
+        this.gl = this.runtime.GetWebGLRenderer()._gl;
+        const gl = this.gl;
 
         let version = 0;
         this.isWebGL2 = false;
@@ -60,7 +62,7 @@ class SpineBatch {
             let extOESVAO = gl.getExtension("OES_vertex_array_object");
             if (!extOESVAO)
             {
-                alert("Spine plugin error: webGL1 with no OES_vertex_array_object support");  // tell user they don't have the required extension or work around it
+                console.error("Spine plugin error: webGL1 with no OES_vertex_array_object support");  // tell user they don't have the required extension or work around it
                 return;
             }
             this.myVAO = extOESVAO.createVertexArrayOES();
@@ -73,6 +75,10 @@ class SpineBatch {
         this.shapes = new spine.webgl.ShapeRenderer(gl);
 
         this._initialized = true;
+
+        // C3 webgl state cache store / restore
+        // @ts-ignore
+        this._spineGLCache = new globalThis.SpineGLCache(this.isWebGL2, gl);
     }
 
     addInstance(instance, skeletonScale, uid)
@@ -151,40 +157,19 @@ class SpineBatch {
         // End C3 Batch
         // this.c3wgl.EndBatch();
 
-        var oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
-
-        // Save C3 webgl context, may be able to reduce some
-        // Save VAO to restore
-
-        if (!this.isWebGL2)
+        if (!this._spineGLCacheStored || !(this._debugVariables.spineGLCache === "enable"))
         {
-            var extOESVAO = gl.getExtension("OES_vertex_array_object");
+            this._spineGLCache.store();
+            this._spineGLCacheStored = true;    
         }
 
-        if (this.isWebGL2)
-        {
-            var oldVAO = gl.createVertexArray();
-            oldVAO = gl.getParameter(gl.VERTEX_ARRAY_BINDING);
-        } else
-        {
-            var oldVAO = extOESVAO.createVertexArrayOES(); 
-            oldVAO = gl.getParameter(extOESVAO.VERTEX_ARRAY_BINDING_OES);
-        }
-
-        // Save C3 wegl parameters to restore
-        var oldProgram = gl.getParameter(gl.CURRENT_PROGRAM);        
-        var oldActive = gl.getParameter(gl.ACTIVE_TEXTURE);            
-        var oldTex = gl.getParameter(gl.TEXTURE_BINDING_2D);        
-        var oldBinding = gl.getParameter(gl.ARRAY_BUFFER_BINDING);
-        var oldElement = gl.getParameter(gl.ELEMENT_ARRAY_BUFFER_BINDING);
-        var oldClearColor = gl.getParameter(gl.COLOR_CLEAR_VALUE);
-        var oldViewport = gl.getParameter(gl.VIEWPORT);
         // Bind to private VAO so Spine use does not impact C3 VAO
         if (this.isWebGL2)
         {
             gl.bindVertexArray(this.myVAO);
         } else
         {
+            let extOESVAO = gl.getExtension("OES_vertex_array_object");
             extOESVAO.bindVertexArrayOES(this.myVAO); 
         }
 
@@ -246,27 +231,9 @@ class SpineBatch {
         }
 
         this._rendered = true;
+       
+        this._spineGLCache.restore();
 
-        // Change back to C3 FB last used
-        gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
-
-        // Restore C3 webgl state
-        gl.useProgram(oldProgram);
-        if (this.isWebGL2)
-        {
-            gl.bindVertexArray(oldVAO);
-        } else
-        {
-            extOESVAO.bindVertexArrayOES(oldVAO); 
-        }                    
-        gl.activeTexture(oldActive);                
-        gl.bindTexture(gl.TEXTURE_2D, oldTex);        
-        gl.bindBuffer(gl.ARRAY_BUFFER, oldBinding);
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, oldElement);
-        gl.clearColor(oldClearColor[0],oldClearColor[1],oldClearColor[2],oldClearColor[3])
-        gl.enable(gl.BLEND);
-        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-        gl.viewport(oldViewport[0],oldViewport[1],oldViewport[2],oldViewport[3]);
     }
 
     getRValue(rgb)
