@@ -110,6 +110,8 @@
 
             if (this._sdkType._skeletonData.notInitialized)
             {
+                this._sdkType._skeletonData.initializing = true;
+                
                 if (this.debug) console.log(this.GetInstance().GetUID(),'[Spine] Loading skeleton, textures, json, atlas');
                 // Only load textures once for creation of skeletonData, not for each instance
                 // Disable PMA when loading Spine textures
@@ -137,6 +139,7 @@
                 }
 
                 this.assetManager.loadText(this.DEMO_NAME, this.atlasURI);
+                this._sdkType._skeletonData.initializing = false;
             }
             this.isSpineInitialized = true; 
         }
@@ -406,7 +409,7 @@
             }
 
             if (!this.isSpineInitialized) {
-                if (!this.initSpineInProgress)
+                if (!this.initSpineInProgress && !this._sdkType._skeletonData.initializing)
                     {
                         this.initSpine();
                     }
