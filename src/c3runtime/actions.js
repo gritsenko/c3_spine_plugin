@@ -71,6 +71,8 @@
             if(!track) return;
 
             state.setEmptyAnimation(trackIndex, mixDuration);
+            spineBatcher.setInstanceRenderOnce(true, this.uid);
+            this.animateOnce = 1.0;
         },
 
         Play(){
