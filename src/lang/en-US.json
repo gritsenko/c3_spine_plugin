@@ -488,6 +488,58 @@
                 "desc": "Value of variable (string)."
               }
             }
+          },
+          "set-bone-control": {
+            "list-name": "Set bone control",
+            "display-text": "Set {0} {1} to {2}",
+            "description": "Override bone property with value.",
+            "params": {
+              "bone": {
+                "name": "Bone",
+                "desc": "Name of bone."
+              },
+              "property": {
+                "name": "Property",
+                "desc": "Property to control.",
+                "items": {
+                  "x": "X",
+                  "y": "Y",
+                  "rotation": "Rotation",
+                  "scale-x": "Scale X",
+                  "scale-y": "Scale Y"
+                }
+              },
+              "value": {
+                "name": "Value",
+                "desc": "Value of variable (string)."
+              }
+            }
+          },
+          "remove-bone-control": {
+            "list-name": "Remove bone control",
+            "display-text": "Remove {0} control of {1}",
+            "description": "Override bone property with value.",
+            "params": {
+              "bone": {
+                "name": "Bone",
+                "desc": "Name of bone."
+              },
+              "property": {
+                "name": "Property",
+                "desc": "Property to control.",
+                "items": {
+                  "x": "X",
+                  "y": "Y",
+                  "rotation": "Rotation",
+                  "scale-x": "Scale X",
+                  "scale-y": "Scale Y"
+                }
+              },
+              "value": {
+                "name": "Value",
+                "desc": "Value of variable (string)."
+              }
+            }
           }
         },
         "expressions": {

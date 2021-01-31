@@ -385,6 +385,18 @@
             if (!spineBatcher) {console.warn('[Spine] SetDebugVariable, no spineBatcher',name,value);return}
             spineBatcher.debugVariables[name] = value;
             if (this.debug) console.info('[Spine] SetDebugVariable',name,value,spineBatcher.debugVariables);
+        },
+
+        SetBoneControl(bone, propertyIndex, value)
+        {
+            let properties=['x','y','rotation','scaleX','scaleY'];
+            this.spineBoneControl.setBoneControl(bone, properties[propertyIndex], value);
+        },
+
+        RemoveBoneControl(bone, propertyIndex)
+        {
+            let properties=['x','y','rotation','scaleX','scaleY'];
+            this.spineBoneControl.removeBoneControl(bone, properties[propertyIndex]);
         }
 
     };
