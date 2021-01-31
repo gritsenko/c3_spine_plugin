@@ -387,16 +387,16 @@
             if (this.debug) console.info('[Spine] SetDebugVariable',name,value,spineBatcher.debugVariables);
         },
 
-        SetBoneControl()
+        SetBoneControl(bone, propertyIndex, value)
         {
-            // Call this.spineBoneControl.setBoneControl(bone, property, value)
-            // Translate property index to correct API name
+            let properties=['x','y','rotation','scaleX','scaleY'];
+            this.spineBoneControl.setBoneControl(bone, properties[propertyIndex], value);
         },
 
-        RemoveBoneControl()
+        RemoveBoneControl(bone, propertyIndex)
         {
-            // Call this.spineBoneControl.removeBoneControl(bone, property)
-            // Translate property index to correct API name
+            let properties=['x','y','rotation','scaleX','scaleY'];
+            this.spineBoneControl.removeBoneControl(bone, properties[propertyIndex]);
         }
 
     };

@@ -19,13 +19,11 @@ class SpineBoneControl {
         {
             this.bones[name][property] = value;    
         }
-        // XXX debug
-        console.log('[Spine] bone control', name, this.bones[name])
     }
 
-    removeBoneControl(name, property) {
-        if (!this.bones[name] || !!this.bones[name][property]) {console.warn('[Spine] removeBoneConrtol, no control', name, property);return}
-        delete this.bones[name][property];
+    removeBoneControl(bone, property) {
+        if (!this.bones[bone] || !this.bones[bone][property]) {console.warn('[Spine] removeBoneConrtol, no control', bone, property);return}
+        delete this.bones[bone][property];
     }
 
     applyBoneControl(skeleton) {
@@ -33,7 +31,7 @@ class SpineBoneControl {
         for(let boneName in bones)
         {
             let bone = skeleton.findBone(boneName);
-            if (!bone) {console.warn('[Spine] applyBoneControl bone not found', bone);}
+            if (!bone) {console.warn('[Spine] applyBoneControl bone not found', boneName);continue;}
             for(const property in bones[boneName])
             {
                 bone[property] = bones[boneName][property];

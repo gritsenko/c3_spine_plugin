@@ -102,7 +102,7 @@
             this.mvp = new spine.webgl.Matrix4();
             // this.shader = spine.webgl.Shader.newTwoColoredTextured(gl);
             // this.batcher = new spine.webgl.PolygonBatcher(gl);
-            this.mvp.ortho2d(0, 0, 0, 0); // XXX Render to texture size unknown until skeleton loaded.
+            this.mvp.ortho2d(0, 0, 0, 0); // Texture size unknown at this point
             // this.renderer = new spine.webgl.SkeletonRenderer(gl);
             // this.shapes = new spine.webgl.ShapeRenderer(gl);
             this.assetManager = new spine.SharedAssetManager();
@@ -348,7 +348,6 @@
                 {
                     state.tracks[trackIndex].listener = {
                         complete: (trackEntry, count) => {
-                            // XXX this.completeAnimationName = trackEntry.animation.name;
                             this.completeAnimationName = this.trackAnimations[trackEntry.trackIndex];
                             this.completeTrackIndex = trackEntry.trackIndex;
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
@@ -519,12 +518,9 @@
                 }
                 state.update(delta);
                 state.apply(active.skeleton);
-                active.skeleton.updateWorldTransform();
-                
                 // Override bones under bone control
-                // this.spineBoneControl.applyBoneControl(skeleton);
-                // Is this required?
-                // active.skeleton.updateWorldTransform();
+                this.spineBoneControl.applyBoneControl(active.skeleton);
+                active.skeleton.updateWorldTransform();
                 
                 this.runtime.UpdateRender();
                 if (this.animateOnce > 0)
