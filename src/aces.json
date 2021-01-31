@@ -415,6 +415,59 @@
             "initialValue" : "\"\""
           }
         ]
+      },
+      {
+        "id": "set-bone-control",
+        "scriptName": "SetBoneControl",
+        "highlight": false,
+        "params": [
+          {
+            "id": "bone",
+            "type": "string",
+            "initialValue" : "\"\""
+          },
+          {
+            "id": "property",
+            "type": "combo",
+            "items": [
+              "x",
+              "y",
+              "rotation",
+              "scale-x",
+              "scale-y"
+            ],
+            "initialValue" : "x"
+          },
+          {
+            "id": "value",
+            "type": "number",
+            "initialValue" : 0
+          }
+        ]
+      },
+      {
+        "id": "remove-bone-control",
+        "scriptName": "RemoveBoneControl",
+        "highlight": false,
+        "params": [
+          {
+            "id": "bone",
+            "type": "string",
+            "initialValue" : "\"\""
+          },
+          {
+            "id": "property",
+            "type": "combo",
+            "items": [
+              "x",
+              "y",
+              "rotation",
+              "scale-x",
+              "scale-y"
+            ],
+            "initialValue" : "x"
+          }
+        ]
       }
     ],
     "expressions": [

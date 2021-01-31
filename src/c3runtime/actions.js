@@ -385,6 +385,18 @@
             if (!spineBatcher) {console.warn('[Spine] SetDebugVariable, no spineBatcher',name,value);return}
             spineBatcher.debugVariables[name] = value;
             if (this.debug) console.info('[Spine] SetDebugVariable',name,value,spineBatcher.debugVariables);
+        },
+
+        SetBoneControl()
+        {
+            // Call this.spineBoneControl.setBoneControl(bone, property, value)
+            // Translate property index to correct API name
+        },
+
+        RemoveBoneControl()
+        {
+            // Call this.spineBoneControl.removeBoneControl(bone, property)
+            // Translate property index to correct API name
         }
 
     };

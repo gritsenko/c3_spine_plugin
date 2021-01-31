@@ -176,7 +176,8 @@
 
             this.resize();
 
-            spineBatcher.addInstance(this.skeletonInfo, this.skeletonScale, this.GetInstance().GetUID())
+            spineBatcher.addInstance(this.skeletonInfo, this.skeletonScale, this.GetInstance().GetUID());
+            this.spineBoneControl = new SpineBoneControl(this.debug);
         }
 
         loadSkeleton(name, animationName, sequenceSlots) {
@@ -519,6 +520,12 @@
                 state.update(delta);
                 state.apply(active.skeleton);
                 active.skeleton.updateWorldTransform();
+                
+                // Override bones under bone control
+                // this.spineBoneControl.applyBoneControl(skeleton);
+                // Is this required?
+                // active.skeleton.updateWorldTransform();
+                
                 this.runtime.UpdateRender();
                 if (this.animateOnce > 0)
                 {
