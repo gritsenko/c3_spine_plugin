@@ -35,6 +35,16 @@
         },
         OnEvent(eventName, trackIndex) {
             return (this.completeEventName === eventName) && (this.completeEventTrackIndex === trackIndex);
+        },
+
+        IsBoneControlPropertyActive(bone, propertyIndex) {
+            let properties=['x','y','rotation','scaleX','scaleY'];
+            let property = properties[propertyIndex];
+
+            if (!this.spineBoneControl.bones.hasOwnProperty(bone)) return false;
+            if (!this.spineBoneControl.bones[bone].hasOwnProperty(property)) return false;
+
+            return true;
         }
     };
 }

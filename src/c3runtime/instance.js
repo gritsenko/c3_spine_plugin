@@ -359,14 +359,14 @@
                             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
                         }
                     };
-                    state.apply(skeleton);
-                    skeleton.updateWorldTransform();
+                    // state.apply(skeleton);
+                    // skeleton.updateWorldTransform();
 
                 } else
                 // If starting later, apply time, then enable listeners so they do not trigger on past events
                 {
-                    state.apply(skeleton);
-                    skeleton.updateWorldTransform();
+                    // state.apply(skeleton);
+                    // skeleton.updateWorldTransform();
                     state.tracks[trackIndex].listener = {
                         complete: (trackEntry, count) => {
                             this.completeAnimationName = this.trackAnimations[trackEntry.trackIndex];
