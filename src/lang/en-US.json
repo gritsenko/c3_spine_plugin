@@ -130,6 +130,28 @@
                 "desc": "Track index"
               }
             }
+          },
+          "is-bone-control-property-active": {
+            "list-name": "Is bone control property active",
+            "display-text": "Is {0} {1} control active",
+            "description": "Is bone control property active.",
+            "params": {
+              "bone": {
+                "name": "Bone",
+                "desc": "Name of bone."
+              },
+              "property": {
+                "name": "Property",
+                "desc": "Property to control.",
+                "items": {
+                  "x": "X",
+                  "y": "Y",
+                  "rotation": "Rotation",
+                  "scale-x": "Scale X",
+                  "scale-y": "Scale Y"
+                }
+              }
+            }
           }
         },
         "actions": {
@@ -702,6 +724,56 @@
               "name": {
                 "name": "BoundingBox",
                 "desc": "Name of spine bounding box attachment."
+              }
+            }
+          },
+          "bone-x": {
+            "description": "Bone control x",
+            "translated-name": "BoneX",
+            "params": {
+              "bone": {
+                "name": "Bone",
+                "desc": "Name of bone."
+              }
+            }
+          },
+          "bone-y": {
+            "description": "Bone control y",
+            "translated-name": "BoneY",
+            "params": {
+              "bone": {
+                "name": "Bone",
+                "desc": "Name of bone."
+              }
+            }
+          },
+          "bone-rotation": {
+            "description": "Bone control rotation",
+            "translated-name": "BoneRotation",
+            "params": {
+              "bone": {
+                "name": "Bone",
+                "desc": "Name of bone."
+              }
+            }
+          },
+          "bone-scale-x": {
+            "description": "Bone control scale x",
+            "translated-name": "BoneScaleX",
+            "params": {
+              "bone": {
+                "name": "Bone",
+                "desc": "Name of bone."
+              }
+            }
+          },
+          "bone-scale-y": {
+            "description": "Bone control scale y",
+            "translated-name": "BoneScaleY",
+            "params": {
+              "bone": {
+                "name": "Bone",
+                "desc": "Name of bone."
               }
             }
           }
