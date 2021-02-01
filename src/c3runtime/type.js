@@ -17,7 +17,7 @@
         OnCreate()
         {
             this.GetImageInfo().LoadAsset(this._runtime);
-            this._skeletonData = {'notInitialized' : true}
+            this._skeletonData = {notInitialized : true, initializing : false}
             // Skeleton instances to render
             this._skeletonInstances = {};
             this._rendered = false;

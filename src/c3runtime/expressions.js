@@ -249,6 +249,37 @@
                 }
             }
             return JSON.stringify(points);
-        }
+        },
+
+        BoneX(bone){
+            if (!this.spineBoneControl.bones.hasOwnProperty(bone)) return 0;
+            if (!this.spineBoneControl.bones[bone].hasOwnProperty('x')) return 0;
+
+            return this.spineBoneControl.bones[bone].x;
+        },
+        BoneY(bone){
+            if (!this.spineBoneControl.bones.hasOwnProperty(bone)) return 0;
+            if (!this.spineBoneControl.bones[bone].hasOwnProperty('y')) return 0;
+
+            return this.spineBoneControl.bones[bone].y;
+        },
+        BoneRotation(bone){
+            if (!this.spineBoneControl.bones.hasOwnProperty(bone)) return 0;
+            if (!this.spineBoneControl.bones[bone].hasOwnProperty('rotation')) return 0;
+
+            return this.spineBoneControl.bones[bone].rotation;
+        },
+        BoneScaleX(bone){
+            if (!this.spineBoneControl.bones.hasOwnProperty(bone)) return 0;
+            if (!this.spineBoneControl.bones[bone].hasOwnProperty('scaleX')) return 0;
+
+            return this.spineBoneControl.bones[bone].scaleX;
+        },
+        BoneScaleY(bone){
+            if (!this.spineBoneControl.bones.hasOwnProperty(bone)) return 0;
+            if (!this.spineBoneControl.bones[bone].hasOwnProperty('scaleY')) return 0;
+
+            return this.spineBoneControl.bones[bone].scaleY;
+        },
     };
 }

@@ -68,6 +68,30 @@
             "initial-value": 0
           }
         ]
+      },
+      {
+        "id": "is-bone-control-property-active",
+        "scriptName": "IsBoneControlPropertyActive",
+        "isTrigger": false,
+        "params": [
+          {
+            "id": "bone",
+            "type": "string",
+            "initialValue" : "\"\""
+          },
+          {
+            "id": "property",
+            "type": "combo",
+            "items": [
+              "x",
+              "y",
+              "rotation",
+              "scale-x",
+              "scale-y"
+            ],
+            "initialValue" : "x"
+          }
+        ]
       }
     ],
     "actions": [
@@ -415,6 +439,59 @@
             "initialValue" : "\"\""
           }
         ]
+      },
+      {
+        "id": "set-bone-control",
+        "scriptName": "SetBoneControl",
+        "highlight": false,
+        "params": [
+          {
+            "id": "bone",
+            "type": "string",
+            "initialValue" : "\"\""
+          },
+          {
+            "id": "property",
+            "type": "combo",
+            "items": [
+              "x",
+              "y",
+              "rotation",
+              "scale-x",
+              "scale-y"
+            ],
+            "initialValue" : "x"
+          },
+          {
+            "id": "value",
+            "type": "number",
+            "initialValue" : 0
+          }
+        ]
+      },
+      {
+        "id": "remove-bone-control",
+        "scriptName": "RemoveBoneControl",
+        "highlight": false,
+        "params": [
+          {
+            "id": "bone",
+            "type": "string",
+            "initialValue" : "\"\""
+          },
+          {
+            "id": "property",
+            "type": "combo",
+            "items": [
+              "x",
+              "y",
+              "rotation",
+              "scale-x",
+              "scale-y"
+            ],
+            "initialValue" : "x"
+          }
+        ]
       }
     ],
     "expressions": [
@@ -640,6 +717,76 @@
           {
             "id": "name",
             "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "bone-x",
+        "expressionName": "BoneX",
+        "scriptName": "BoneX",
+        "highlight": false,
+        "returnType": "number",
+        "params": [
+          {
+            "id": "bone",
+            "type": "string",
+            "initialValue" : "\"\""
+          }
+        ]
+      },
+      {
+        "id": "bone-y",
+        "expressionName": "BoneY",
+        "scriptName": "BoneY",
+        "highlight": false,
+        "returnType": "number",
+        "params": [
+          {
+            "id": "bone",
+            "type": "string",
+            "initialValue" : "\"\""
+          }
+        ]
+      },
+      {
+        "id": "bone-rotation",
+        "expressionName": "BoneRotation",
+        "scriptName": "BoneRotation",
+        "highlight": false,
+        "returnType": "number",
+        "params": [
+          {
+            "id": "bone",
+            "type": "string",
+            "initialValue" : "\"\""
+          }
+        ]
+      },
+      {
+        "id": "bone-scale-x",
+        "expressionName": "BoneScaleX",
+        "scriptName": "BoneScaleX",
+        "highlight": false,
+        "returnType": "number",
+        "params": [
+          {
+            "id": "bone",
+            "type": "string",
+            "initialValue" : "\"\""
+          }
+        ]
+      },
+      {
+        "id": "bone-scale-y",
+        "expressionName": "BoneScaleY",
+        "scriptName": "BoneScaleY",
+        "highlight": false,
+        "returnType": "number",
+        "params": [
+          {
+            "id": "bone",
+            "type": "string",
+            "initialValue" : "\"\""
           }
         ]
       }
