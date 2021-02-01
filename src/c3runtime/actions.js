@@ -16,14 +16,12 @@
             this.skinName = skinName;
 
             this.updateCurrentSkin();
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+            this.SetRenderOnce(1.0, true, this.uid);
         },
 
         Flip(isFlipped){
             this.isMirrored = isFlipped;
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+            this.SetRenderOnce(1.0, true, this.uid);
         },
 
         SetAnimation(animationName, loop, start, trackIndex){
@@ -36,8 +34,7 @@
             this.animationName = animationName;
 
             this.updateCurrentAnimation(loop, start, trackIndex, animationName);
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+            this.SetRenderOnce(1.0, true, this.uid);
         },
 
         SetAlpha(alpha, trackIndex){
@@ -54,8 +51,7 @@
 
             // Clamp alpha to 1-0
             track.alpha = Math.max(0,Math.min(1,alpha));
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+            this.SetRenderOnce(1.0, true, this.uid);
        },
 
         DeleteAnimation(trackIndex, mixDuration) {
@@ -71,20 +67,17 @@
             if(!track) return;
 
             state.setEmptyAnimation(trackIndex, mixDuration);
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+            this.SetRenderOnce(1.0, true, this.uid);
         },
 
         Play(){
             this.playAnimation();
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+            this.SetRenderOnce(1.0, true, this.uid);
         },
 
         Stop(){
             this.stopAnimation();
-            spineBatcher.setInstanceRenderOnce(false, this.uid);
-            this.animateOnce = 0.0;
+            this.SetRenderOnce(0.0, false, this.uid);
         },
 
         UpdateBounds() {
@@ -125,8 +118,7 @@
             // Need to do one last thing, which SkeletonJson/SkeletonBinary do last:
             // https://github.com/EsotericSoftware/spine-runtimes/blob/3.8/spine-ts/core/src/SkeletonJson.ts#L326-L340
             existing.updateOffset();
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+            this.SetRenderOnce(1.0, true, this.uid);
         },
 
         SetAttachment(slotName, attachmentName)
@@ -140,8 +132,7 @@
             const skeleton = this.skeletonInfo.skeleton;
 
             skeleton.setAttachment(slotName,attachmentName);
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+            this.SetRenderOnce(1.0, true, this.uid);
         },
 
         CreateCustomSkin(skinName)
@@ -181,8 +172,7 @@
             {
                 if (this.debug) console.warn('[Spine] AddCustomSkin, custom skin does not exist',skinName,addSkinName, this.uid, this.runtime.GetTickCount());
             }
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+            this.SetRenderOnce(1.0, true, this.uid);
         },
 
         SetCustomSkin(skinName)
@@ -199,8 +189,7 @@
             skeleton.setSkin(this.customSkins[this.skinName]);
             skeleton.setSlotsToSetupPose();
             
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+            this.SetRenderOnce(1.0, true, this.uid);
         },
 
         SetCustomAttachmentColor(skinName, slotName, attachmentName, color)
@@ -228,22 +217,20 @@
             skin.setAttachment(slotIndex, attachmentName, newAttachment);
             skeleton.setSkin(this.customSkins[skinName]);
             skeleton.setSlotsToSetupPose();
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+
+            this.SetRenderOnce(1.0, true, this.uid);
         },
 
         SetSlotColor(slotName, color)
         {
             this.slotColors[slotName] = color;
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+            this.SetRenderOnce(1.0, true, this.uid);
         },
 
         SetSlotDarkColor(slotName, darkColor)
         {
             this.slotDarkColors[slotName] = darkColor;
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+            this.SetRenderOnce(1.0, true, this.uid);
         },
 
         ApplySlotColors()
@@ -283,8 +270,8 @@
                         spineBatcher.getAValue(color));
                 }                
             }
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+
+            this.SetRenderOnce(1.0, true, this.uid);
         },
 
         ResetSlotColors()
@@ -299,8 +286,8 @@
             this.slotColors = {};
             this.slotDarkColors = {};
             skeleton.setSlotsToSetupPose();
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+
+            this.SetRenderOnce(1.0, true, this.uid);
         },
 
         SetAnimationTime(units, time, trackIndex)
@@ -336,8 +323,8 @@
                 }
                 track.trackTime = time * (track.animationEnd - track.animationStart);
             }
-            spineBatcher.setInstanceRenderOnce(true, this.uid);
-            this.animateOnce = 1.0;
+
+            this.SetRenderOnce(1.0, true, this.uid);
         },
 
         UpdateBBoxes()
@@ -391,12 +378,16 @@
         {
             let properties=['x','y','rotation','scaleX','scaleY'];
             this.spineBoneControl.setBoneControl(bone, properties[propertyIndex], value);
+
+            this.SetRenderOnce(0.017, true, this.uid);
         },
 
         RemoveBoneControl(bone, propertyIndex)
         {
             let properties=['x','y','rotation','scaleX','scaleY'];
+
             this.spineBoneControl.removeBoneControl(bone, properties[propertyIndex]);
+            this.SetRenderOnce(0.017, true, this.uid);
         }
 
     };
