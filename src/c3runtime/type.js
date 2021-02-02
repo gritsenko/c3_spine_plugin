@@ -18,6 +18,9 @@
         {
             this.GetImageInfo().LoadAsset(this._runtime);
             this._skeletonData = {notInitialized : true, initializing : false}
+            this._skeletonJson = null;
+            // Tag for asset manager for skeletonData assets.
+            this._assetTag = null;
             // Skeleton instances to render
             this._skeletonInstances = {};
             this._rendered = false;

@@ -492,6 +492,18 @@
             "initialValue" : "x"
           }
         ]
+      },
+      {
+        "id": "set-skeletondata-render-quality",
+        "scriptName": "SetSkeletondataRenderQuality",
+        "highlight": false,
+        "params": [
+          {
+            "id": "render-quality",
+            "type": "number",
+            "initial-value": 1
+          }
+        ]
       }
     ],
     "expressions": [
