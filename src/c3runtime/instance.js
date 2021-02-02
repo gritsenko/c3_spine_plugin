@@ -9,7 +9,6 @@
             super(inst);
 
 
-            this.DEMO_NAME = "Hero";
             this.canvas = null;
             this.bgColor = null;
             this.isPlaying = true;
@@ -53,7 +52,6 @@
             this._elementId = "";
 
             this._elementTexture = null
-            this._newElementId = false
 
 
             this.pngURI = ""
@@ -86,7 +84,6 @@
             this.initSpineInProgress = true;
             var uid = this.GetInstance().GetUID()
             this._elementId = uid;
-            this.DEMO_NAME = this._elementId;
 
             // Get C3 canvas gl context
             // Context already exists and we want to use (for render to texture)
@@ -105,12 +102,16 @@
             this.mvp.ortho2d(0, 0, 0, 0); // Texture size unknown at this point
             // this.renderer = new spine.webgl.SkeletonRenderer(gl);
             // this.shapes = new spine.webgl.ShapeRenderer(gl);
-            this.assetManager = new spine.SharedAssetManager();
+            // this.assetManager = new spine.SharedAssetManager();
             // this.bgColor = new spine.Color(0.0, 0.0, 0.0, 0.0);
 
             if (this._sdkType._skeletonData.notInitialized)
             {
+                this._sdkType._assetManager = new spine.SharedAssetManager();
+                this._sdkType._assetTag = this.uid;
+                this.assetManager = this._sdkType._assetManager;
                 this._sdkType._skeletonData.initializing = true;
+                const assetTag = this._sdkType._assetTag;
                 
                 if (this.debug) console.log(this.GetInstance().GetUID(),'[Spine] Loading skeleton, textures, json, atlas');
                 // Only load textures once for creation of skeletonData, not for each instance
@@ -125,7 +126,7 @@
                 this._sdkType._assetPaths[this.jsonURI] = this.jsonURI;
                 this._sdkType._assetPaths[this.jsonPath] = this.jsonURI;
 
-                this.assetManager.loadJson(this.DEMO_NAME, this.jsonURI);
+                this.assetManager.loadJson(assetTag, this.jsonURI);
 
                 let textureLoader = function(img) { return new spine.webgl.GLTexture(gl, img); };
 
@@ -135,10 +136,10 @@
                 {
                     this.pngURI = await this.runtime._assetManager.GetProjectFileUrl(assetPaths[i]);
                     this._sdkType._assetPaths[assetPaths[i]] = this.pngURI;
-                    this.assetManager.loadTexture(this.DEMO_NAME, textureLoader, this.pngURI);
+                    this.assetManager.loadTexture(assetTag, textureLoader, this.pngURI);
                 }
 
-                this.assetManager.loadText(this.DEMO_NAME, this.atlasURI);
+                this.assetManager.loadText(assetTag, this.atlasURI);
                 this._sdkType._skeletonData.initializing = false;
             }
             this.isSpineInitialized = true; 
@@ -181,7 +182,9 @@
         }
 
         loadSkeleton(name, animationName, sequenceSlots) {
+            this.assetManager = this._sdkType._assetManager;
             const assetManager = this.assetManager;
+            const assetTag = this._sdkType._assetTag;
             const self = this;
 
             if (this.debug) console.log("[Spine] Reading skeleton data:", this.uid, name, animationName);
@@ -189,20 +192,22 @@
             if (this._sdkType._skeletonData.notInitialized)
             {
                 this._sdkType._skeletonData.notInitialized = false;
-                const atlasURI = assetManager.get(this.DEMO_NAME, this.atlasURI);
+                const atlasURI = assetManager.get(assetTag, this.atlasURI);
                 this._sdkType._atlas = new spine.TextureAtlas(atlasURI, function(path) {
-                    return assetManager.get(self.DEMO_NAME, self._sdkType._assetPaths[path]);
+                    return assetManager.get(self._sdkType._assetTag, self._sdkType._assetPaths[path]);
                 });
                 this._sdkType._atlasLoader = new spine.AtlasAttachmentLoader(this._sdkType._atlas);
-                let skeletonJson = new spine.SkeletonJson(this._sdkType._atlasLoader);
-                skeletonJson.scale = this.skeletonRenderQuality;
+
+                this._sdkType._skeletonJson = new spine.SkeletonJson(this._sdkType._atlasLoader);
+                this._sdkType._skeletonJson.scale = this.skeletonRenderQuality;
                 // JSON file with one skeleton, no name
+                this._sdkType._jsonURI = this.jsonURI;
                 if (this.skeletonName == "")
                 {
-                    this._sdkType._skeletonData = skeletonJson.readSkeletonData(assetManager.get(this.DEMO_NAME, this.jsonURI));
+                    this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this.jsonURI));
                 } else
                 {
-                    this._sdkType._skeletonData = skeletonJson.readSkeletonData(assetManager.get(this.DEMO_NAME, this.jsonURI) [name] );
+                    this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this.jsonURI) [name] );
                 }
             }
 
@@ -400,6 +405,9 @@
         }
 
         IsSpineReady() {
+            const assetManager = this._sdkType._assetManager;
+            const assetTag = this._sdkType._assetTag;
+
             if (this.isSkeletonLoaded) {
                 return true;
             }
@@ -416,7 +424,7 @@
                 return false;
             }
 
-            if (!this.isSkeletonLoading && this.assetManager !== undefined && this.assetManager.isLoadingComplete(this._elementId)) {
+            if (!this.isSkeletonLoading && assetManager !== undefined && assetManager.isLoadingComplete(assetTag)) {
 
                 this.isSkeletonLoading = true;
                 // Init and start render
@@ -429,7 +437,6 @@
             spineBatcher.removeInstance(this.GetInstance().GetUID());
             super.Release();
             if (this.c3renderer && this._elementTexture) this.c3renderer.DeleteTexture(this._elementTexture);
-            this.DEMO_NAME = null;
             this.canvas = null;
             this.bgColor = null;
             this.isPlaying = null;
@@ -454,7 +461,6 @@
             this.isMirrored = null;
             this._elementId = null;
             this._elementTexture = null
-            this._newElementId = null;
             this.pngURI = null;
             this.atlasURI = null;
             this.jsonURI = null;
@@ -474,6 +480,7 @@
             this.customSkins = null;
             this.slotColors = null;
             this.slotDarkColors = null;
+            this.spineBoneControl = null;
         }
 
         Tick() {
@@ -554,13 +561,12 @@
             const quad = wi.GetBoundingQuad();
 
             // Create texture if it does not exist (could this be done in constructor?)
-            if (this._elementTexture === null || this._newElementId) {
+            if (this._elementTexture === null) {
 
                 if (this._elementTexture !== null) {
                     renderer.DeleteTexture(this._elementTexture);
                 }
                 this.c3renderer = renderer
-                this._newElementId = false;
 
                 var bounds = this.skeletonInfo.bounds;
                 this.textureWidth = bounds.size.x;
