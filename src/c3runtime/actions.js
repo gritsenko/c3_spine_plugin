@@ -397,6 +397,22 @@
         {
             let properties=['x','y','rotation','scaleX','scaleY'];
             this.spineBoneControl.removeBoneControl(bone, properties[propertyIndex]);
+        },
+
+        SetSkeletondataRenderQuality(renderQuality)
+        {
+            const assetManager = this._sdkType._assetManager;
+            const assetTag = this._sdkType._assetTag;
+            this._sdkType._skeletonJson.scale = renderQuality;
+            // JSON file with one skeleton, no name
+            if (this.skeletonName == "")
+            {
+                // this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(this.assetManager.get(this.DEMO_NAME, this.jsonURI));
+                this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this._sdkType._jsonURI));
+            } else
+            {
+                this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this._sdkType._jsonURI) [name] );
+            }            
         }
 
     };

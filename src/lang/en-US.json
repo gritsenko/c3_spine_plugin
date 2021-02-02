@@ -562,6 +562,21 @@
                 "desc": "Value of variable (string)."
               }
             }
+          },
+          "set-skeletondata-render-quality": {
+            "list-name": "Set skeltondata render quality",
+            "display-text": "Set render quality to {0}",
+            "description": "Set skeltondata render quality, requires layout restart.",
+            "params": {
+              "render-quality": {
+                "name": "Render quality",
+                "desc": "Render quality of skeletondata (1 is normal.)"
+              },
+              "track-index": {
+                "name": "Track index",
+                "desc": "Track index to set alpha to."
+              }
+            }
           }
         },
         "expressions": {
