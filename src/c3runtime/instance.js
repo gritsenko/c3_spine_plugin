@@ -535,10 +535,18 @@
                     this.animateOnce -= delta;
                     if (this.animateOnce <= 0)
                     {
-                        spineBatcher.setInstanceRenderOnce(false, this.uid);
+                        this.SetRenderOnce(0.0, false, this.uid);
                     }
                 }
             }
+        }
+
+        SetRenderOnce(delay, enable, uid)
+        {
+            // Set maximum delay between ongoing and new
+            if (delay > this.animateOnce) this.animateOnce = delay;
+
+            spineBatcher.setInstanceRenderOnce(enable, uid);
         }
 
         Draw(renderer) {
