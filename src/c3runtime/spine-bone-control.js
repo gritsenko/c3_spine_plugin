@@ -30,11 +30,20 @@ class SpineBoneControl {
         const bones = this.bones;
         for(let boneName in bones)
         {
-            let bone = skeleton.findBone(boneName);
-            if (!bone) {console.warn('[Spine] applyBoneControl bone not found', boneName);continue;}
+            if(!bones[boneName].hasOwnProperty('__boneControlReference'))
+            {
+                let boneControlReference = skeleton.findBone(boneName);
+                if (!boneControlReference) {console.warn('[Spine] applyBoneControl bone not found', boneName);continue;}
+                // Cache reference
+                bones[boneName].__boneControlReference = boneControlReference;
+            }
+
             for(const property in bones[boneName])
             {
-                bone[property] = bones[boneName][property];
+                // Ignore reference to bone
+                if (property == '__boneControlReference') continue;
+
+                bones[boneName].__boneControlReference[property] = bones[boneName][property];
             }
         }
     }

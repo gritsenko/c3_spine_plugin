@@ -105,15 +105,15 @@
             // this.assetManager = new spine.SharedAssetManager();
             // this.bgColor = new spine.Color(0.0, 0.0, 0.0, 0.0);
 
-            if (this._sdkType._skeletonData.notInitialized)
+            if (!this._sdkType._skeletonDataInitialized)
             {
+                this._sdkType._skeletonDataInitializing = true;
                 this._sdkType._assetManager = new spine.SharedAssetManager();
                 this._sdkType._assetTag = this.uid;
                 this.assetManager = this._sdkType._assetManager;
-                this._sdkType._skeletonData.initializing = true;
                 const assetTag = this._sdkType._assetTag;
                 
-                if (this.debug) console.log(this.GetInstance().GetUID(),'[Spine] Loading skeleton, textures, json, atlas');
+                if (this.debug) console.info(this.GetInstance().GetUID(),'[Spine] Loading skeleton, textures, json, atlas');
                 // Only load textures once for creation of skeletonData, not for each instance
                 // Disable PMA when loading Spine textures
                 spine.webgl.GLTexture.DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL = true;
@@ -140,7 +140,6 @@
                 }
 
                 this.assetManager.loadText(assetTag, this.atlasURI);
-                this._sdkType._skeletonData.initializing = false;
             }
             this.isSpineInitialized = true; 
         }
@@ -187,11 +186,10 @@
             const assetTag = this._sdkType._assetTag;
             const self = this;
 
-            if (this.debug) console.log("[Spine] Reading skeleton data:", this.uid, name, animationName);
+            if (this.debug) console.info("[Spine] Reading skeleton data:", this.uid, name, animationName);
             // If skeletonData not initialized, create it and stop other instances from creating it
-            if (this._sdkType._skeletonData.notInitialized)
+            if (!this._sdkType._skeletonDataInitialized)
             {
-                this._sdkType._skeletonData.notInitialized = false;
                 const atlasURI = assetManager.get(assetTag, this.atlasURI);
                 this._sdkType._atlas = new spine.TextureAtlas(atlasURI, function(path) {
                     return assetManager.get(self._sdkType._assetTag, self._sdkType._assetPaths[path]);
@@ -209,6 +207,8 @@
                 {
                     this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this.jsonURI) [name] );
                 }
+                this._sdkType._skeletonDataInitialized = true;
+                this._sdkType._skeletonDataInitializing = false;
             }
 
             var skeleton = new spine.Skeleton(this._sdkType._skeletonData);
@@ -240,7 +240,7 @@
                 }
             };
 
-            // if (this.debug) console.log('[Spine] track:', state.tracks[0]);
+            // if (this.debug) console.info('[Spine] track:', state.tracks[0]);
 
             state.apply(skeleton);
             skeleton.updateWorldTransform();
@@ -417,7 +417,7 @@
             }
 
             if (!this.isSpineInitialized) {
-                if (!this.initSpineInProgress && !this._sdkType._skeletonData.initializing)
+                if (!this.initSpineInProgress && !this._sdkType._skeletonDataInitializing)
                     {
                         this.initSpine();
                     }
@@ -497,7 +497,7 @@
             let layerRect = wi.GetLayer().GetViewport();
             let instanceRect = wi.GetBoundingBox();
             let onScreen = instanceRect.intersectsRect(layerRect);
-            // console.log('[Spine] onscreen, rects', onScreen, layerRect, instanceRect);
+            // console.info('[Spine] onscreen, rects', onScreen, layerRect, instanceRect);
             spineBatcher.setInstanceOnScreen(onScreen, this.uid);
 
             
@@ -575,7 +575,7 @@
                 let options =  { mipMap: false, sampling: sampling }
                 if (this.debug)
                 {
-                    console.log('[Spine] CreateDynamicTexture x,y:', Math.round(this.textureWidth), Math.round(this.textureHeight), this.uid, this.runtime.GetTickCount());
+                    console.info('[Spine] CreateDynamicTexture x,y:', Math.round(this.textureWidth), Math.round(this.textureHeight), this.uid, this.runtime.GetTickCount());
                 }
                 this._elementTexture = renderer.CreateDynamicTexture(this.textureWidth, this.textureHeight, options);
 

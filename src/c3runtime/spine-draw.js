@@ -305,6 +305,6 @@ class SpineBatch {
 
 if (!globalThis.spineBatcher)
 {
-    console.log('[Spine] SpineBatcher init, 1.34.0');
+    console.log('[Spine] SpineBatcher init, 1.34.1');
     globalThis.spineBatcher = new SpineBatch();
 }
