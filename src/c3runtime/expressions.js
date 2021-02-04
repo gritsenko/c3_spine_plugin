@@ -154,6 +154,7 @@
                 centerX+=points[i];
             }
             centerX = centerX/(points.length/2)+this.skeletonInfo.bounds.offset.x+this.skeletonInfo.bounds.size.x;
+            if (this.isMirrored) centerX = this.skeletonInfo.bounds.size.x - centerX;
 
             let wi = this.GetInstance().GetWorldInfo();
             let x = wi.GetX()-wi.GetWidth()/2+centerX/(this.textureWidth/wi.GetWidth());
@@ -196,6 +197,7 @@
                 centerX+=points[i];
             }
             centerX = centerX/(points.length/2)+this.skeletonInfo.bounds.offset.x+this.skeletonInfo.bounds.size.x;
+            if (this.isMirrored) centerX = this.skeletonInfo.bounds.size.x - centerX;
             let x = wi.GetX()-wi.GetWidth()/2+centerX/(this.textureWidth/wi.GetWidth());
             // If rotated, return rotate centerX by angle around center
             return Math.sin(wi.GetAngle()) * (x-wi.GetX()) + Math.cos(wi.GetAngle()) * (y-wi.GetY()) + wi.GetY();
@@ -233,8 +235,9 @@
             const points = Array.from(this.skeletonInfo.skeletonBounds.getPolygon(bBox));
             for(let i=0;i<points.length;i+=2)
             {
+                let offsetPointX = points[i]+offsetX+sizeX;
                 // X unroated
-                points[i] = points[i]+offsetX+sizeX;
+                points[i] = this.isMirrored ? sizeX - offsetPointX : offsetPointX;
                 points[i] = x-halfWidth+points[i]/(xScale);
                 // Y unroated
                 points[i+1] = sizeY-points[i+1]+offsetY;
