@@ -29,6 +29,7 @@
             this.animateOnce = 0;
             this.trackAnimations = {};
             this.skinNames = [];
+            this.delayedTrackListeners = [];
 
             this.atlasPath = "";
 
@@ -351,40 +352,14 @@
                 if (start == 0 || (start == 2 && currentRatio == 0))
                 // If starting from beginning or 0 ratio add listners so they'll trigger at 0
                 {
-                    state.tracks[trackIndex].listener = {
-                        complete: (trackEntry, count) => {
-                            this.completeAnimationName = this.trackAnimations[trackEntry.trackIndex];
-                            this.completeTrackIndex = trackEntry.trackIndex;
-                            this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
-                            this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
-                        },
-                        event: (trackEntry, event) => {
-                            this.completeEventName = event.data.name;
-                            this.completeEventTrackIndex = trackEntry.trackIndex;
-                            this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
-                        }
-                    };
-                    // state.apply(skeleton);
-                    // skeleton.updateWorldTransform();
-
+                    this.setTrackListeners(state, trackIndex);
                 } else
                 // If starting later, apply time, then enable listeners so they do not trigger on past events
                 {
                     // state.apply(skeleton);
                     // skeleton.updateWorldTransform();
-                    state.tracks[trackIndex].listener = {
-                        complete: (trackEntry, count) => {
-                            this.completeAnimationName = this.trackAnimations[trackEntry.trackIndex];
-                            this.completeTrackIndex = trackEntry.trackIndex;
-                            this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
-                            this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
-                        },
-                        event: (trackEntry, event) => {
-                            this.completeEventName = event.data.name;
-                            this.completeEventTrackIndex = trackEntry.trackIndex;
-                            this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
-                        }
-                    };    
+                    this.delayedTrackListeners.push(trackIndex);
+                    // this.setTrackListeners(state, trackIndex);
                 }
             } catch (ex) {
                 if (this.debug)
@@ -394,6 +369,23 @@
                 this.spineError = 'setAnimation error '+ex;
                 this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnError);
             }
+        }
+
+        setTrackListeners(state, trackIndex)
+        {
+            state.tracks[trackIndex].listener = {
+                complete: (trackEntry, count) => {
+                    this.completeAnimationName = this.trackAnimations[trackEntry.trackIndex];
+                    this.completeTrackIndex = trackEntry.trackIndex;
+                    this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
+                    this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
+                },
+                event: (trackEntry, event) => {
+                    this.completeEventName = event.data.name;
+                    this.completeEventTrackIndex = trackEntry.trackIndex;
+                    this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
+                }
+            };   
         }
 
         playAnimation() {
@@ -525,6 +517,19 @@
                 }
                 state.update(delta);
                 state.apply(active.skeleton);
+
+                // Set track listeners if needed for set animation done w/ current time or current ratio
+                // Set after update/apply so earlier events do not trigger
+                if (this.delayedTrackListeners.length > 0)
+                {
+                    for (const trackIndex of this.delayedTrackListeners)
+                    {
+                        this.setTrackListeners(state, trackIndex);
+                    }
+                    // Remove elements
+                    this.delayedTrackListeners.splice(0, this.setTrackListeners.length)
+                }
+
                 // Override bones under bone control
                 this.spineBoneControl.applyBoneControl(active.skeleton);
                 active.skeleton.updateWorldTransform();
