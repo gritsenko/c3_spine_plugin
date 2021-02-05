@@ -83,31 +83,18 @@
         // Initialize project files URIs
         async initSpine() {
             this.initSpineInProgress = true;
-            var uid = this.GetInstance().GetUID()
-            this._elementId = uid;
-
-            // Get C3 canvas gl context
-            // Context already exists and we want to use (for render to texture)
-            this.canvas = this.c3wgl._gl.canvas;
-            let config = {}
-            this.gl = this.canvas.getContext("webgl2", config) || this.canvas.getContext("webgl", config) || canvas.getContext("experimental-webgl", config);
-            let gl = this.gl
-
-            // Init spineBatcher (only initializes once), add here after canvas, etc. are ready, adding inside type.js OnCreate() was too early for iOS (canvas not ready)
-            spineBatcher.init(this.canvas, this.runtime);
-
+            this._elementId = 1; // XXX remove when possible
             // Init Spine elements
             this.mvp = new spine.webgl.Matrix4();
-            // this.shader = spine.webgl.Shader.newTwoColoredTextured(gl);
-            // this.batcher = new spine.webgl.PolygonBatcher(gl);
             this.mvp.ortho2d(0, 0, 0, 0); // Texture size unknown at this point
-            // this.renderer = new spine.webgl.SkeletonRenderer(gl);
-            // this.shapes = new spine.webgl.ShapeRenderer(gl);
-            // this.assetManager = new spine.SharedAssetManager();
-            // this.bgColor = new spine.Color(0.0, 0.0, 0.0, 0.0);
+            this.gl = this.runtime.GetWebGLRenderer()._gl;
+            this.canvas = this.gl._canvas;
 
+            // Async 
             if (!this._sdkType._skeletonDataInitialized)
             {
+                // Init spineBatcher (only initializes once)
+                spineBatcher.init(this.canvas, this.runtime);
                 await this.loadSkeletonTextures();
             }
             this.isSpineInitialized = true; 
@@ -217,9 +204,9 @@
 
         loadSkeleton(name, animationName, sequenceSlots) {
             this.assetManager = this._sdkType._assetManager;
-            const assetManager = this.assetManager;
-            const assetTag = this._sdkType._assetTag;
-            const self = this;
+            // const assetManager = this.assetManager;
+            // const assetTag = this._sdkType._assetTag;
+            // const self = this;
 
             if (this.debug) console.info("[Spine] Reading skeleton data:", this.uid, name, animationName);
             // If skeletonData not initialized, create it and stop other instances from creating it
