@@ -390,6 +390,13 @@
             this.SetRenderOnce(0.017, true, this.uid);
         },
 
+        RemoveAllBoneControl(bone)
+        {
+            this.spineBoneControl.removeAllBoneControl(bone);
+
+            this.SetRenderOnce(0.017, true, this.uid);
+        },
+
         SetSkeletondataRenderQuality(renderQuality)
         {
             const assetManager = this._sdkType._assetManager;
