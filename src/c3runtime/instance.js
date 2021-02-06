@@ -14,10 +14,7 @@
             this.isPlaying = true;
             this.instance = inst;
 
-            this.assetManager = null;
             this.isSkeletonLoaded = false;
-            this.isSkeletonLoading = false;
-            this.isSpineInitialized = false;
             this.skeletonInfo = null;
             this.renderer = null;
             this.gl = null;
@@ -81,7 +78,9 @@
 
         // spineDemos.log = true
         // Initialize project files URIs
-        async initSpine() {
+
+        initInstance()
+        {
             this.initSpineInProgress = true;
             this._elementId = 1; // XXX remove when possible
             // Init Spine elements
@@ -89,15 +88,16 @@
             this.mvp.ortho2d(0, 0, 0, 0); // Texture size unknown at this point
             this.gl = this.runtime.GetWebGLRenderer()._gl;
             this.canvas = this.gl._canvas;
+            // this.initTexturesBatcher();
+        }
 
-            // Async 
-            if (!this._sdkType._skeletonDataInitialized)
-            {
-                // Init spineBatcher (only initializes once)
-                spineBatcher.init(this.canvas, this.runtime);
-                await this.loadSkeletonTextures();
-            }
-            this.isSpineInitialized = true; 
+        async initTexturesBatcher() {
+            this._sdkType._texturesBatcherInitializing = true;
+            // Init spineBatcher (only initializes once)
+            spineBatcher.init(this.canvas, this.runtime);
+            await this.loadSkeletonTextures();
+            this._sdkType._texturesBatcherInitialized = true;
+            this._sdkType._texturesBatcherInitializing = false;
         }
 
         resize() {
@@ -116,32 +116,11 @@
             this.mvp.ortho2d(centerX - width / 2, centerY - height / 2, width, height);
         }
 
-        loadSkeletons() {
-
-            this.skeletonInfo = this.loadSkeleton(this.skeletonName, this.animationName);
-            this.skeletonInfo.premultipliedAlpha = this.premultipliedAlpha;
-
-            const skins = this.skeletonInfo.skeleton.data.skins;
-            this.skinNames = skins.map(x => x.name);
-
-            const animations = this.skeletonInfo.skeleton.data.animations;
-            this.animationNames = animations.map(x => x.name);
-
-            this.isSkeletonLoaded = true;
-            this.isSkeletonLoading = false;
-
-            this.resize();
-
-            spineBatcher.addInstance(this.skeletonInfo, this.skeletonScale, this.GetInstance().GetUID());
-            this.spineBoneControl = new SpineBoneControl(this.debug);
-        }
-
         async loadSkeletonTextures()
         {
-            this._sdkType._skeletonDataInitializing = true;
             this._sdkType._assetManager = new spine.SharedAssetManager();
             this._sdkType._assetTag = this.uid;
-            this.assetManager = this._sdkType._assetManager;
+            const assetManager = this._sdkType._assetManager;
             const assetTag = this._sdkType._assetTag;
             const gl = this.gl;
             
@@ -158,7 +137,7 @@
             this._sdkType._assetPaths[this.jsonURI] = this.jsonURI;
             this._sdkType._assetPaths[this.jsonPath] = this.jsonURI;
 
-            this.assetManager.loadJson(assetTag, this.jsonURI);
+            assetManager.loadJson(assetTag, this.jsonURI);
 
             let textureLoader = function(img) { return new spine.webgl.GLTexture(gl, img); };
 
@@ -168,16 +147,15 @@
             {
                 this.pngURI = await this.runtime._assetManager.GetProjectFileUrl(assetPaths[i]);
                 this._sdkType._assetPaths[assetPaths[i]] = this.pngURI;
-                this.assetManager.loadTexture(assetTag, textureLoader, this.pngURI);
+                assetManager.loadTexture(assetTag, textureLoader, this.pngURI);
             }
 
-            this.assetManager.loadText(assetTag, this.atlasURI);
+            assetManager.loadText(assetTag, this.atlasURI);
         }
 
         loadSkeletonData()
         {
-            this.assetManager = this._sdkType._assetManager;
-            const assetManager = this.assetManager;
+            const assetManager = this._sdkType._assetManager;;
             const assetTag = this._sdkType._assetTag;
             const self = this;
 
@@ -202,20 +180,30 @@
             this._sdkType._skeletonDataInitializing = false;
         }
 
-        loadSkeleton(name, animationName, sequenceSlots) {
-            this.assetManager = this._sdkType._assetManager;
-            // const assetManager = this.assetManager;
-            // const assetTag = this._sdkType._assetTag;
-            // const self = this;
+        loadSkeletons() {
 
+            this.skeletonInfo = this.loadSkeleton(this.skeletonName, this.animationName);
+            this.skeletonInfo.premultipliedAlpha = this.premultipliedAlpha;
+
+            const skins = this.skeletonInfo.skeleton.data.skins;
+            this.skinNames = skins.map(x => x.name);
+
+            const animations = this.skeletonInfo.skeleton.data.animations;
+            this.animationNames = animations.map(x => x.name);
+
+            this.isSkeletonLoaded = true;
+
+            this.resize();
+
+            spineBatcher.addInstance(this.skeletonInfo, this.skeletonScale, this.GetInstance().GetUID());
+            this.spineBoneControl = new SpineBoneControl(this.debug);
+        }
+
+        loadSkeleton(name, animationName, sequenceSlots) {
             if (this.debug) console.info("[Spine] Reading skeleton data:", this.uid, name, animationName);
             // If skeletonData not initialized, create it and stop other instances from creating it
-            if (!this._sdkType._skeletonDataInitialized)
-            {
-                this.loadSkeletonData();
-            }
 
-            var skeleton = new spine.Skeleton(this._sdkType._skeletonData);
+            let skeleton = new spine.Skeleton(this._sdkType._skeletonData);
             let subskin = skeleton.data.findSkin(this.skinName);
             if (subskin === undefined) {
                 subskin = skeleton.data.skins[0];
@@ -244,8 +232,6 @@
                 }
             };
 
-            // if (this.debug) console.info('[Spine] track:', state.tracks[0]);
-
             state.apply(skeleton);
             skeleton.updateWorldTransform();
             var offset = new spine.Vector2();
@@ -273,6 +259,36 @@
                 skeletonBounds: skeletonBounds,
                 stateData: stateData
             };
+        }
+
+        createInstanceTexture()
+        {
+            const renderer = this.runtime.GetWebGLRenderer();
+            const  gl  =  this.gl;
+
+            this.c3renderer = renderer
+
+            let bounds = this.skeletonInfo.bounds;
+            this.textureWidth = bounds.size.x;
+            this.textureHeight = bounds.size.y;
+            let sampling = this.runtime.GetSampling();
+            let options =  { mipMap: false, sampling: sampling }
+            if (this.debug)
+            {
+                console.info('[Spine] CreateDynamicTexture x,y:', Math.round(this.textureWidth), Math.round(this.textureHeight), this.uid, this.runtime.GetTickCount());
+            }
+            this._elementTexture = renderer.CreateDynamicTexture(this.textureWidth, this.textureHeight, options);
+
+            let oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
+            // Create FB and bind texture to spineFB
+            this.spineFB = gl.createFramebuffer();
+            gl.bindFramebuffer(gl.FRAMEBUFFER, this.spineFB);
+            // attach the texture as the first color attachment
+            const attachmentPoint = gl.COLOR_ATTACHMENT0;
+            gl.framebufferTexture2D(gl.FRAMEBUFFER, attachmentPoint, gl.TEXTURE_2D, this._elementTexture._texture, 0);
+            // Restore render to the canvas
+            gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
+            spineBatcher.setInstanceFB(this.spineFB, this.GetInstance().GetUID())
         }
 
         updateCurrentSkin() {
@@ -407,25 +423,50 @@
                 return true;
             }
 
-            if (this.isSkeletonLoading) {
+            // Init instance configuration
+            if (!this.initInstanceInitialized)
+            {
+                this.initInstance();
+            }
+
+            // Once per object, load texture assets, init spinebatcher
+            if (!this._sdkType._texturesBatcherInitialized)
+            {
+                if(!this._sdkType._texturesBatcherInitializing)
+                {
+                    this._sdkType._texturesBatcherInitializing = true;
+                    this.initTexturesBatcher();
+                }
                 return false;
             }
 
-            if (!this.isSpineInitialized) {
-                if (!this.initSpineInProgress && !this._sdkType._skeletonDataInitializing)
-                    {
-                        this.initSpine();
-                    }
+            // Once per object, wait for assets to complete loading
+            if (!assetManager.isLoadingComplete(assetTag))
+            {
                 return false;
             }
 
-            if (!this.isSkeletonLoading && assetManager !== undefined && assetManager.isLoadingComplete(assetTag)) {
-
-                this.isSkeletonLoading = true;
-                // Init and start render
-                this.loadSkeletons();
+            // Once per object, load skeletonData, load assets
+            if (!this._sdkType._skeletonDataInitialized)
+            {
+                if(!this._sdkType._skeletonDataInitializing)
+                {
+                    this._sdkType._skeletonDataInitializing = true;
+                    this.loadSkeletonData();
+                }
+                return false;
             }
-            return false;
+
+            // skeletonData ready to instantiate skelton instance
+            this.loadSkeletons();
+
+            // Create texture for Spine render
+            this.createInstanceTexture();
+
+            // Skeleton instance loading complete
+            spineBatcher.setInstanceInitialized(this.GetInstance().GetUID());
+            this.isLoaded = true;
+            this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnSkeletonLoaded);
         }
 
         Release() {
@@ -435,10 +476,7 @@
             this.canvas = null;
             this.bgColor = null;
             this.isPlaying = null;
-            this.assetManager = null;
             this.isSkeletonLoaded = null;
-            this.isSkeletonLoading = null;
-            this.isSpineInitialized = null;
             this.skeletonInfo = null;
             this.renderer = null;
             this.gl = null;
@@ -567,40 +605,6 @@
 
             const wi = this.GetWorldInfo();
             const quad = wi.GetBoundingQuad();
-
-            // Create texture if it does not exist (could this be done in constructor?)
-            if (this._elementTexture === null) {
-
-                if (this._elementTexture !== null) {
-                    renderer.DeleteTexture(this._elementTexture);
-                }
-                this.c3renderer = renderer
-
-                var bounds = this.skeletonInfo.bounds;
-                this.textureWidth = bounds.size.x;
-                this.textureHeight = bounds.size.y;
-                let sampling = this.runtime.GetSampling();
-                let options =  { mipMap: false, sampling: sampling }
-                if (this.debug)
-                {
-                    console.info('[Spine] CreateDynamicTexture x,y:', Math.round(this.textureWidth), Math.round(this.textureHeight), this.uid, this.runtime.GetTickCount());
-                }
-                this._elementTexture = renderer.CreateDynamicTexture(this.textureWidth, this.textureHeight, options);
-
-                var oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
-                // Create FB and bind texture to spineFB
-                this.spineFB = gl.createFramebuffer();
-                gl.bindFramebuffer(gl.FRAMEBUFFER, this.spineFB);
-                // attach the texture as the first color attachment
-                const attachmentPoint = gl.COLOR_ATTACHMENT0;
-                gl.framebufferTexture2D(gl.FRAMEBUFFER, attachmentPoint, gl.TEXTURE_2D, this._elementTexture._texture, 0);
-                // Restore render to the canvas
-                gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
-                spineBatcher.setInstanceFB(this.spineFB, this.GetInstance().GetUID())
-                spineBatcher.setInstanceInitialized(this.GetInstance().GetUID());
-                this.isLoaded = true;
-                this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnSkeletonLoaded);
-            }
 
             // Only call render once per tick for all instances
             if (spineBatcher.tickCount != this.runtime.GetTickCount())
