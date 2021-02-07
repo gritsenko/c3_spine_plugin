@@ -392,6 +392,8 @@
 
         setTrackListeners(state, trackIndex)
         {
+            if (!state || !state.tracks || !state.tracks[trackIndex]) {if(this.debug) {console.warn('[Spine] setTrackListners invalid', state, trackIndex)};return};
+
             state.tracks[trackIndex].listener = {
                 complete: (trackEntry, count) => {
                     this.completeAnimationName = this.trackAnimations[trackEntry.trackIndex];
