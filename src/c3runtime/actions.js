@@ -409,7 +409,7 @@
                 this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this._sdkType._jsonURI));
             } else
             {
-                this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this._sdkType._jsonURI) [name] );
+                this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this._sdkType._jsonURI) [this.skeletonName] );
             }            
         }
 
