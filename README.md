@@ -1,6 +1,6 @@
 # Spine add-on for Construct 3
 
-### Please support development of the C3 Spine plugin (thanks to those kind folks who have donated so far!)
+### Please support development of the C3 Spine plugin (thanks to all those kind folks who have donated so far!)
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T8VV6CJVP3X3S)
 
@@ -42,6 +42,16 @@
 - The UpdateBBoxes updates the bounding box to the current point in the animation. It should be done just once per tick per instance, before the SpineBBoxCenterX/Y expressions are used.
 - SpineBBoxGetPoly expression returns poly points in JSON format array of named slot/bounding box attachment. Use C3 JSON object to parse and use points. The points are returned in top level JSON array [x0,y0, x1, y1,...]
 - [Spine Bounding Box Attachment Documentation](http://en.esotericsoftware.com/spine-bounding-boxes)
+
+## Bone control ACEs
+- ACEs to override properties of bones (x,y,rotation, scale x, scale y), these are applied prior to IK transformation, but are useful for controlling 'endpoints' of IK, for example with an aim / crosshair bone.
+
+## Render quality ACE
+- Controls Spine render resolution
+- Only apply to one Spine instance per Spine object (e.g. use pick top instance).
+- Wait 0.1S after applying (caution for race condition, reviewing need.)
+- After done, destroy all Spine instance and then recreate as needed with the new render quality.
+
 ## Share your C3 and Spine plugin work!
 - Tweet your work @kindeyegames , @pix2d and #construct3, we'd be happy to see your work!
 
@@ -56,7 +66,7 @@
 Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Current Add-on, Release 1.27.2](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.27.2/Spine-v1.27.2.c3addon)
+[Current Add-on, Release 1.36.1](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.36.1/Spine-v1.36.1.c3addon)
 
 [Previous Add-on Releases](https://github.com/gritsenko/c3_spine_plugin/releases)
 
@@ -102,11 +112,24 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - C3 Module mode support.
 - Animation track support.
 - Disable render to texture when offscreen or animation is complete/stopped (perf optimization)
+- Bone control.
 
 ## Wishlist
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 1.36.1 setTracksListner guard clause (do not crash if skeleton is not initialized or removed.)
+- 1.36.0 Init refactor (internal clean up)
+- 1.35.0 Fix current time event regression, no apply() in setAnimation (save some CPU)
+- 1.34.2 Fix bbox ACEs w/ flipped animation
+- 1.34.1 bone control optimization, repeated init bug fix.
+- 1.34.0 Add ACE for render quality control 
+- 1.33.1 Add render once for Bone control actions
+- 1.33.0 Bone control Conditions and Expressions
+- 1.32.0 Bone control Actions
+- 1.31.0 Add gl parameter cache for future optimization to not get gl state parameters every tick.
+- 1.30.1 Disable idle animation updates (via debug variable control, set 'reduceAnimation' to 'enable'.
+- 1.27.3 Correct idle and offscreen detection
 - 1.27.2 Advance animation/slot render while off screen.
 - 1.27.1 Add updateCurrentAnimation check if animatioName exists and warn if not.
 - 1.27.0 Add parameters and UID to Action console warnings for debug.
