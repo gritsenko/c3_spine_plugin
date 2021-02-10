@@ -10,20 +10,25 @@ class SpineBoneControl {
     get bones() {return this._bones;}
     get debug() {return this._debug;}
 
-    setBoneControl(name, property, value) {
-        if (!this.bones[name])
+    setBoneControl(bone, property, value) {
+        if (!this.bones.hasOwnProperty(bone))
         {
-            this.bones[name] = {};
-            this.bones[name][property] = value;        
+            this.bones[bone] = {};
+            this.bones[bone][property] = value;        
         } else
         {
-            this.bones[name][property] = value;    
+            this.bones[bone][property] = value;    
         }
     }
 
     removeBoneControl(bone, property) {
-        if (!this.bones[bone] || !this.bones[bone][property]) {console.warn('[Spine] removeBoneConrtol, no control', bone, property);return}
+        if (!this.bones.hasOwnProperty(bone) || !this.bones[bone].hasOwnProperty(property)) {console.warn('[Spine] removeBoneConrtol, no control', bone, property);return}
         delete this.bones[bone][property];
+    }
+
+    removeAllBoneControl(bone, property) {
+        if (!this.bones.hasOwnProperty(bone)) {console.warn('[Spine] removeAllBoneConrtol, no contro', bone);return}
+        delete this.bones[bone];
     }
 
     applyBoneControl(skeleton) {

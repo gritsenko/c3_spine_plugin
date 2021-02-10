@@ -390,6 +390,13 @@
             this.SetRenderOnce(0.017, true, this.uid);
         },
 
+        RemoveAllBoneControl(bone)
+        {
+            this.spineBoneControl.removeAllBoneControl(bone);
+
+            this.SetRenderOnce(0.017, true, this.uid);
+        },
+
         SetSkeletondataRenderQuality(renderQuality)
         {
             const assetManager = this._sdkType._assetManager;
@@ -402,7 +409,7 @@
                 this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this._sdkType._jsonURI));
             } else
             {
-                this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this._sdkType._jsonURI) [name] );
+                this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this._sdkType._jsonURI) [this.skeletonName] );
             }            
         }
 

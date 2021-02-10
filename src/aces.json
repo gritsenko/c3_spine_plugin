@@ -494,6 +494,18 @@
         ]
       },
       {
+        "id": "remove-all-bone-control",
+        "scriptName": "RemoveAllBoneControl",
+        "highlight": false,
+        "params": [
+          {
+            "id": "bone",
+            "type": "string",
+            "initialValue" : "\"\""
+          }
+        ]
+      },
+      {
         "id": "set-skeletondata-render-quality",
         "scriptName": "SetSkeletondataRenderQuality",
         "highlight": false,
