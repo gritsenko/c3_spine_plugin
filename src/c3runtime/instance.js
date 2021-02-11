@@ -425,6 +425,17 @@
         }
 
         IsSpineReady() {
+            // Guard for case where sdkType does not exist (deleted on release)
+            if (this.sdkType === null || this.sdkType === undefined)
+            {
+                if (this.debug) console.warn('[Spine] IsSpineReady, sdkType not defined', this.sdkType);
+                if (globalThis.Sentry)
+                {
+                    globalThis.Sentry.captureException('[Spine] IsSpineReady, sdkType not defined:'+this.sdkType);
+                }
+                return false;
+            }
+
             if (this.isSkeletonLoaded) {
                 return true;
             }
