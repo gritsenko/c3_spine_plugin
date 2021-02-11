@@ -78,6 +78,8 @@ Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/
 
 [BoundingBoxMesh project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.18.0/SpineBBoxMesh.c3p)
 
+[AimBoneControl project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.36.1/SpineboyAimBoneControl.c3p)
+
 ## LIVE DEMO
 [Live Demo](https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html)
 
