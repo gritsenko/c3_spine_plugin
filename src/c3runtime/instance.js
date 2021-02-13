@@ -165,8 +165,15 @@
             // Sentry error reported
             if (atlasURI === undefined || atlasURI === null)
             {
-                console.warn('[Spine] loadSkeletonData, atlasURI not set', atlasURI, assetTag, this.atlasURI, assetManager.isLoadingComplete(assetTag), this.atlasPath);
+                console.warn('[Spine] loadSkeletonData, atlasURI not set', atlasURI, assetTag, this.atlasURI, assetManager.isLoadingComplete(assetTag), this.atlasPath, this.runtime.GetTickCount());
+                console.warn('[Spine] objectclass',this.GetInstance().GetObjectClass().GetName(), this.GetInstance().GetSDKType(), this.runtime.GetTickCount());
+                if (globalThis.Sentry)
+                {
+                    globalThis.Sentry.captureException('[Spine] loadSkeletonData, atlasURI not set, object:'+this.GetInstance().GetObjectClass().GetName());
+                }
+                return;
             }
+
             this.sdkType._atlas = new spine.TextureAtlas(atlasURI, function(path) {
                 return assetManager.get(self.sdkType._assetTag, self.sdkType._assetPaths[path]);
             });
@@ -207,7 +214,7 @@
         }
 
         loadSkeleton(name, animationName, sequenceSlots) {
-            if (this.debug) console.info("[Spine] Reading skeleton data:", this.uid, name, animationName);
+            if (this.debug) console.info("[Spine] Reading skeleton data:", this.uid, this.sdkType.GetObjectClass().GetName(), animationName);
             // If skeletonData not initialized, create it and stop other instances from creating it
 
             let skeleton = new spine.Skeleton(this.sdkType._skeletonData);

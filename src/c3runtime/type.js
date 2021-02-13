@@ -11,11 +11,13 @@
 
         Release()
         {
+            console.warn('[Spine] type.Release', this.GetObjectClass().GetName(), this._runtime.GetTickCount())
             super.Release();
         }
 
         OnCreate()
         {
+            console.info('[Spine] type.OnCreate', this.GetObjectClass().GetName(), this._runtime.GetTickCount())
             this.GetImageInfo().LoadAsset(this._runtime);
             this._skeletonDataInitialized = false;
             this._skeletonDataInitializing = false;
