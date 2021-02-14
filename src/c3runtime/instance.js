@@ -14,7 +14,6 @@
             this.isPlaying = true;
             this.instance = inst;
 
-            this.isSkeletonLoaded = false;
             this.skeletonInfo = null;
             this.renderer = null;
             this.gl = null;
@@ -30,6 +29,7 @@
             this.sdkType = this.GetSdkType();
 
             this.atlasPath = "";
+            this.objectName = this.GetInstance().GetObjectClass().GetName();
 
             if (properties) {
                 this.jsonPath = properties[0];
@@ -48,7 +48,6 @@
             }
 
             this.isMirrored = false;
-            this._elementId = "";
 
             this._elementTexture = null
 
@@ -83,7 +82,6 @@
         initInstance()
         {
             this.initSpineInProgress = true;
-            this._elementId = 1; // XXX remove when possible
             // Init Spine elements
             this.mvp = new spine.webgl.Matrix4();
             this.mvp.ortho2d(0, 0, 0, 0); // Texture size unknown at this point
@@ -166,10 +164,10 @@
             if (atlasURI === undefined || atlasURI === null)
             {
                 console.warn('[Spine] loadSkeletonData, atlasURI not set', atlasURI, assetTag, this.atlasURI, assetManager.isLoadingComplete(assetTag), this.atlasPath, this.runtime.GetTickCount());
-                console.warn('[Spine] objectclass',this.GetInstance().GetObjectClass().GetName(), this.GetInstance().GetSDKType(), this.runtime.GetTickCount());
+                console.warn('[Spine] objectclass',this.objectName, this.sdkType, this.runtime.GetTickCount());
                 if (globalThis.Sentry)
                 {
-                    globalThis.Sentry.captureException('[Spine] loadSkeletonData, atlasURI not set, object:'+this.GetInstance().GetObjectClass().GetName());
+                    globalThis.Sentry.captureException('[Spine] loadSkeletonData, atlasURI not set, object:'+this.objectName);
                 }
                 return;
             }
@@ -204,8 +202,6 @@
 
             const animations = this.skeletonInfo.skeleton.data.animations;
             this.animationNames = animations.map(x => x.name);
-
-            this.isSkeletonLoaded = true;
 
             this.resize();
 
@@ -431,7 +427,7 @@
             this.isPlaying = false;
         }
 
-        IsSpineReady() {
+        async IsSpineReady() {
             // Guard for case where sdkType does not exist (deleted on release)
             if (this.sdkType === null || this.sdkType === undefined)
             {
@@ -443,7 +439,7 @@
                 return false;
             }
 
-            if (this.isSkeletonLoaded) {
+            if (this.isLoaded) {
                 return true;
             }
 
@@ -459,7 +455,7 @@
                 if(!this.sdkType._texturesBatcherInitializing)
                 {
                     this.sdkType._texturesBatcherInitializing = true;
-                    this.initTexturesBatcher();
+                    await this.initTexturesBatcher();
                 }
                 return false;
             }
@@ -503,7 +499,6 @@
             this.canvas = null;
             this.bgColor = null;
             this.isPlaying = null;
-            this.isSkeletonLoaded = null;
             this.skeletonInfo = null;
             this.renderer = null;
             this.gl = null;
@@ -519,7 +514,6 @@
             this.collisionsEnabled = null;
             this.defaultMix = null;
             this.isMirrored = null;
-            this._elementId = null;
             this._elementTexture = null
             this.pngURI = null;
             this.atlasURI = null;
@@ -545,7 +539,10 @@
         }
 
         Tick() {
-            if (!this.IsSpineReady()) {
+            // Async function, set this.isLoaded on completion
+            this.IsSpineReady();
+
+            if (!this.isLoaded) {
                 return;
             }
 
@@ -627,7 +624,7 @@
 
             var  gl  =  renderer._gl
 
-            if (this._elementId == "" || !this.isSkeletonLoaded) return; // elementID not set, can't draw the element
+            if (!this.isLoaded) return; // Spine instance not loaded, can't draw
 
             var myCanvas = this.canvas;
 
