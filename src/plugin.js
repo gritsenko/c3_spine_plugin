@@ -3,7 +3,7 @@
     const C3 = self.C3;
     
     const PLUGIN_ID = "Gritsenko_Spine";
-    const PLUGIN_VERSION = "1.36.2";
+    const PLUGIN_VERSION = "1.36.5";
     const PLUGIN_CATEGORY = "general";
 
     const PLUGIN_CLASS = SDK.Plugins.Gritsenko_Spine = class SpinePlugin extends SDK.IPluginBase {
@@ -23,7 +23,7 @@
             this._info.SetIsRotatable(true); // allow to be rotated
             this._info.SetHasImage(true);
             this._info.SetSupportsEffects(true); // allow effects
-            this._info.SetMustPreDraw(true);
+            this._info.SetMustPreDraw(false);
             this._info.AddCommonPositionACEs();
             this._info.AddCommonAngleACEs();
             this._info.AddCommonAppearanceACEs();

@@ -247,6 +247,11 @@
             for(slotName in this.slotColors)
             {
                 let slot = skeleton.findSlot(slotName);
+                if (slot === null)
+                {
+                    console.warn("[Spine] ApplySlotColors, slot not found: ",slotName,this.uid,this.runtime.GetTickCount());
+                    continue;    
+                }             
                 let color = this.slotColors[slotName];
                 slot.color.set(
                     spineBatcher.getRValue(color),
@@ -259,6 +264,11 @@
             for(slotName in this.slotDarkColors)
             {
                 let slot = skeleton.findSlot(slotName);
+                if (slot === null)
+                {
+                    console.warn("[Spine] ApplySlotColors dark color, slot not found: ",slotName,this.uid,this.runtime.GetTickCount());
+                    continue;    
+                } 
                 // Set only if dark Color is available, (Tint Black must be applied to the slot in the project.)
                 if (slot.darkColor)
                 {
