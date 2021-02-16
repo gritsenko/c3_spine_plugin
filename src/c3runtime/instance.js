@@ -572,6 +572,8 @@
             let fullAnimation = this.isPlaying || this.animateOnce > 0;
             let reducededAnimation = this.animateOnce > 0 || (!tracksComplete && this.isPlaying);
             let animateFrame = animationReduce ? reducededAnimation : fullAnimation;
+            // Debug feature, disable all animation
+            animateFrame = animateFrame && !(spineBatcher.debugVariables.animationDisable === 'enable');
 
             if (animateFrame) {
                 var animationDuration = state.getCurrent(0).animation.duration;

@@ -14,7 +14,9 @@ class SpineBatch {
         this._spineGLCacheStored = false;
         this._debugVariables =  {
                                     animationReduce : "disable",
-                                    spineGLCache : "disable"
+                                    spineGLCache : "disable",
+                                    animationDisable : 'disable',
+                                    renderDisable : 'disable'
                                 };
     }
 
@@ -149,6 +151,12 @@ class SpineBatch {
     }
 
     drawBatch() {
+        if (this.debugVariables.renderDisable === 'enable')
+        {
+            this._rendered = true;
+            return;
+        }
+
         const spine = globalThis.spine;
 
         const gl = this.gl;
@@ -305,6 +313,6 @@ class SpineBatch {
 
 if (!globalThis.spineBatcher)
 {
-    console.log('[Spine] SpineBatcher init, 1.36.5');
+    console.log('[Spine] SpineBatcher init, 1.36.6');
     globalThis.spineBatcher = new SpineBatch();
 }
