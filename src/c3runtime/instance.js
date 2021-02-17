@@ -53,7 +53,7 @@
 
 
             this.pngURI = ""
-            this.atlasURI = ""
+            this.atlasURI = "*init-atlas-uri"
             this.jsonURI = ""
             this.c3renderer = null
             this.runtime = inst.GetRuntime();
@@ -94,7 +94,14 @@
             this.sdkType._texturesBatcherInitializing = true;
             // Init spineBatcher (only initializes once)
             spineBatcher.init(this.canvas, this.runtime);
-            await this.loadSkeletonTextures();
+            if (this.runtime.IsPreview() || this.runtime._assetManager._isCordova)
+            {
+                await this.loadSkeletonTextures();
+            } else
+            {
+                this.loadSkeletonTextures();
+            }
+
             this.sdkType._texturesBatcherInitialized = true;
             this.sdkType._texturesBatcherInitializing = false;
         }
@@ -129,10 +136,19 @@
             spine.webgl.GLTexture.DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL = true;
             
             // Path translation for json and atlast (1:1)
-            this.atlasURI = await this.runtime._assetManager.GetProjectFileUrl(this.atlasPath);
+            if (this.runtime.IsPreview() || this.runtime._assetManager._isCordova)
+            {
+                this.atlasURI = '*await-atlas-path*'
+                this.atlasURI = await this.runtime._assetManager.GetProjectFileUrl(this.atlasPath);
+                this.jsonURI = await this.runtime._assetManager.GetProjectFileUrl(this.jsonPath);
+            } else
+            {
+                this.atlasURI = this.atlasPath;
+                this.jsonURI = this.jsonPath;
+            }
+
             this.sdkType._assetPaths[this.atlasURI] = this.atlasURI;
             this.sdkType._assetPaths[this.atlasPath] = this.atlasURI;
-            this.jsonURI = await this.runtime._assetManager.GetProjectFileUrl(this.jsonPath);
             this.sdkType._assetPaths[this.jsonURI] = this.jsonURI;
             this.sdkType._assetPaths[this.jsonPath] = this.jsonURI;
 
@@ -144,7 +160,13 @@
             let assetPaths = this.pngPath.split(",");
             for(let i=0;i<assetPaths.length;i++)
             {
-                this.pngURI = await this.runtime._assetManager.GetProjectFileUrl(assetPaths[i]);
+                if (this.runtime.IsPreview() || this.runtime._assetManager._isCordova)
+                {    
+                    this.pngURI = await this.runtime._assetManager.GetProjectFileUrl(assetPaths[i]);
+                } else
+                {
+                    this.pngURI = assetPaths[i];
+                }
                 this.sdkType._assetPaths[assetPaths[i]] = this.pngURI;
                 assetManager.loadTexture(assetTag, textureLoader, this.pngURI);
             }
@@ -169,6 +191,7 @@
                 {
                     globalThis.Sentry.captureException('[Spine] loadSkeletonData, atlasURI not set, object:'+this.objectName);
                 }
+                this.sdkType._initFailed = true;
                 return;
             }
 
@@ -428,6 +451,8 @@
         }
 
         async IsSpineReady() {
+            if (this.sdkType._initFailed) return false;
+
             // Guard for case where sdkType does not exist (deleted on release)
             if (this.sdkType === null || this.sdkType === undefined)
             {
@@ -436,6 +461,7 @@
                 {
                     globalThis.Sentry.captureException('[Spine] IsSpineReady, sdkType not defined:'+this.sdkType);
                 }
+                this.sdkType._initFailed = true;
                 return false;
             }
 
@@ -455,7 +481,13 @@
                 if(!this.sdkType._texturesBatcherInitializing)
                 {
                     this.sdkType._texturesBatcherInitializing = true;
-                    await this.initTexturesBatcher();
+                    if (this.runtime.IsPreview() || this.runtime._assetManager._isCordova)
+                    {
+                        await this.initTexturesBatcher();
+                    } else
+                    {
+                        this.initTexturesBatcher();
+                    }
                 }
                 return false;
             }
