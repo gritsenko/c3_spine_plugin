@@ -53,7 +53,7 @@
 
 
             this.pngURI = ""
-            this.atlasURI = "*init-atlas-uri"
+            this.atlasURI = "*init-atlas-uri*"
             this.jsonURI = ""
             this.c3renderer = null
             this.runtime = inst.GetRuntime();
@@ -101,9 +101,6 @@
             {
                 this.loadSkeletonTextures();
             }
-
-            this.sdkType._texturesBatcherInitialized = true;
-            this.sdkType._texturesBatcherInitializing = false;
         }
 
         resize() {
@@ -145,6 +142,7 @@
             {
                 this.atlasURI = this.atlasPath;
                 this.jsonURI = this.jsonPath;
+                console.info('[Spine] loadSkeletonTextures, atlasURI, not preview', this.atlasURI, this.atlasPath, this.objectName, this.runtime.GetTickCount());
             }
 
             this.sdkType._assetPaths[this.atlasURI] = this.atlasURI;
@@ -172,10 +170,16 @@
             }
 
             assetManager.loadText(assetTag, this.atlasURI);
+
+            this.sdkType._texturesBatcherInitialized = true;
+            this.sdkType._texturesBatcherInitializing = false;
+            console.info('[Spine] loadSkeletonTextures, atlasURI', this.atlasURI, this.atlasPath, this.objectName, this.runtime.GetTickCount());
         }
 
         loadSkeletonData()
         {
+            console.info('[Spine] loadSkeletonData, atlasURI', this.atlasURI, this.atlasPath, this.objectName, this.sdkType._texturesBatcherInitialized, this.runtime.GetTickCount());
+
             const assetManager = this.sdkType._assetManager;;
             const assetTag = this.sdkType._assetTag;
             const self = this;
