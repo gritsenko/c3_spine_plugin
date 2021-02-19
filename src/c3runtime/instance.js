@@ -142,7 +142,7 @@
             {
                 this.atlasURI = this.atlasPath;
                 this.jsonURI = this.jsonPath;
-                console.info('[Spine] loadSkeletonTextures, atlasURI, not preview', this.atlasURI, this.atlasPath, this.objectName, this.runtime.GetTickCount());
+                console.info('[Spine] loadSkeletonTextures, atlasURI, not preview', this.atlasURI, this.atlasPath, this.uid, this.objectName, this.runtime.GetTickCount());
             }
 
             this.sdkType._assetPaths[this.atlasURI] = this.atlasURI;
@@ -173,12 +173,12 @@
 
             this.sdkType._texturesBatcherInitialized = true;
             this.sdkType._texturesBatcherInitializing = false;
-            console.info('[Spine] loadSkeletonTextures, atlasURI', this.atlasURI, this.atlasPath, this.objectName, this.runtime.GetTickCount());
+            console.info('[Spine] loadSkeletonTextures, atlasURI', this.atlasURI, this.atlasPath, this.uid, this.objectName, this.runtime.GetTickCount());
         }
 
         loadSkeletonData()
         {
-            console.info('[Spine] loadSkeletonData, atlasURI', this.atlasURI, this.atlasPath, this.objectName, this.sdkType._texturesBatcherInitialized, this.runtime.GetTickCount());
+            console.info('[Spine] loadSkeletonData, atlasURI', this.atlasURI, this.atlasPath, this.uid, this.objectName, this.sdkType._texturesBatcherInitialized, this.runtime.GetTickCount());
 
             const assetManager = this.sdkType._assetManager;;
             const assetTag = this.sdkType._assetTag;
@@ -189,8 +189,8 @@
             // Sentry error reported
             if (atlasURI === undefined || atlasURI === null)
             {
-                console.warn('[Spine] loadSkeletonData, atlasURI not set', atlasURI, assetTag, this.atlasURI, assetManager.isLoadingComplete(assetTag), this.atlasPath, this.runtime.GetTickCount());
-                console.warn('[Spine] objectclass',this.objectName, this.sdkType, this.runtime.GetTickCount());
+                console.warn('[Spine] loadSkeletonData, atlasURI not set', atlasURI, assetTag, this.uid, this.atlasURI, assetManager.isLoadingComplete(assetTag), this.atlasPath, this.runtime.GetTickCount());
+                console.warn('[Spine] objectclass',this.objectName, this.sdkType, this.uid, this.runtime.GetTickCount());
                 if (globalThis.Sentry)
                 {
                     globalThis.Sentry.captureException('[Spine] loadSkeletonData, atlasURI not set, object:'+this.objectName);
@@ -479,10 +479,17 @@
                 this.initInstance();
             }
 
+            // First instance to initialize becomes init owner
+            if(this.sdkType._initOwner == -1)
+            {
+                this.sdkType._initOwner = this.uid;
+                console.info('[Spine] IsSpineReady, initOwner', this.uid, this.objectName, this.runtime.GetTickCount());
+            }
+
             // Once per object, load texture assets, init spinebatcher
             if (!this.sdkType._texturesBatcherInitialized)
             {
-                if(!this.sdkType._texturesBatcherInitializing)
+                if(!this.sdkType._texturesBatcherInitializing && this.sdkType._initOwner == this.uid)
                 {
                     this.sdkType._texturesBatcherInitializing = true;
                     if (this.runtime.IsPreview() || this.runtime._assetManager._isCordova)
@@ -500,7 +507,7 @@
             const assetTag = this.sdkType._assetTag;
 
             // Once per object, wait for assets to complete loading
-            if (!assetManager.isLoadingComplete(assetTag))
+            if (!assetManager.isLoadingComplete(assetTag) && this.sdkType._initOwner == this.uid)
             {
                 return false;
             }
@@ -508,7 +515,7 @@
             // Once per object, load skeletonData, load assets
             if (!this.sdkType._skeletonDataInitialized)
             {
-                if(!this.sdkType._skeletonDataInitializing)
+                if(!this.sdkType._skeletonDataInitializing && this.sdkType._initOwner == this.uid)
                 {
                     this.sdkType._skeletonDataInitializing = true;
                     this.loadSkeletonData();

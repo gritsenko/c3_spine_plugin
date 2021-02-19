@@ -30,6 +30,7 @@
             this._tickCount = -1;
             this._assetPaths = {};
             this._initFailed = false;
+            this._initOwner = -1;
         }
 
         LoadTextures(renderer)
