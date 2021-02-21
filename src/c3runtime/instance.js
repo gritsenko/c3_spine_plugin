@@ -8,7 +8,7 @@
         constructor(inst, properties) {
             super(inst);
 
-
+            this.data = {key: "myValue"};
             this.canvas = null;
             this.bgColor = null;
             this.isPlaying = true;
@@ -727,5 +727,33 @@
             }];
         }
 
+        GetScriptInterfaceClass()
+		{
+			return self.ISpineInstance;
+		}
+
+        _getData()
+        {
+            return this.data;
+        }
+
     };
+
+	// Script interface. Use a WeakMap to safely hide the internal implementation details from the
+	// caller using the script interface.
+	const map = new WeakMap();
+    self.ISpineInstance = class ISpineInstance extends self.IWorldInstance {
+		constructor()
+		{
+			super();
+            // Map by SDK instance
+			map.set(this, self.IInstance._GetInitInst().GetSdkInstance());
+            console.log(self.IInstance._GetInitInst().GetSdkInstance());
+		}
+
+        get data()
+		{
+            return map.get(this)._getData();
+		}
+	};
 }
