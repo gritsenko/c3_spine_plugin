@@ -1,4 +1,42 @@
 {
+  "data": {
+    "conditions": [
+    ],
+    "actions": [
+      {
+        "id": "set-value",
+        "scriptName": "SetValue",
+        "highlight": true,
+        "params": [
+          {
+            "id": "value",
+            "type": "any"
+          },
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]        
+      }
+    ],
+    "expressions": [
+      {
+        "id": "get-value",
+        "scriptName": "GetValue",
+        "expressionName": "GetValue",
+        "returnType": "any",
+        "highlight": false,
+        "params": [
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]  
+      }
+    ]
+  },
   "spine": {
     "conditions": [
       {

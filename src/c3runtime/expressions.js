@@ -284,5 +284,12 @@
 
             return this.spineBoneControl.bones[bone].scaleY;
         },
+        GetValue(pathString){
+            if(pathString === '') return '';
+            let path = pathString.split('.');
+            let value = this.GetValuePath(path,false);
+            if (typeof value === 'object' || value === null) return '';
+            return value;
+        }
     };
 }

@@ -1,5 +1,7 @@
+// @ts-check
 "use strict";
 {
+    // @ts-ignore
     const C3 = self.C3;
     const spineBatcher = globalThis.spineBatcher;
     
@@ -17,6 +19,7 @@
             this.skeletonInfo = null;
             this.renderer = null;
             this.gl = null;
+            // @ts-ignore
             this.uid = this.GetInstance().GetUID();
             this.customSkins = {};
             this.slotColors = {};
@@ -26,9 +29,11 @@
             this.trackAnimations = {};
             this.skinNames = [];
             this.delayedTrackListeners = [];
+            // @ts-ignore
             this.sdkType = this.GetSdkType();
 
             this.atlasPath = "";
+            // @ts-ignore
             this.objectName = this.GetInstance().GetObjectClass().GetName();
 
             if (properties) {
@@ -68,10 +73,12 @@
             this.textureWidth = 0;
             this.textureHeight = 0;
 
+            // @ts-ignore
             const wi = this.GetWorldInfo();
             // Enable collisions based on property, add ACEs if needed
             wi.SetCollisionEnabled(this.collisionsEnabled);
 
+            // @ts-ignore
             this._StartTicking();
 
         }
@@ -83,6 +90,7 @@
         {
             this.initSpineInProgress = true;
             // Init Spine elements
+            // @ts-ignore
             this.mvp = new spine.webgl.Matrix4();
             this.mvp.ortho2d(0, 0, 0, 0); // Texture size unknown at this point
             this.gl = this.runtime.GetWebGLRenderer()._gl;
@@ -121,15 +129,18 @@
 
         async loadSkeletonTextures()
         {
+            // @ts-ignore
             this.sdkType._assetManager = new spine.SharedAssetManager();
             this.sdkType._assetTag = this.uid;
             const assetManager = this.sdkType._assetManager;
             const assetTag = this.sdkType._assetTag;
             const gl = this.gl;
             
+            // @ts-ignore
             if (this.debug) console.info(this.GetInstance().GetUID(),'[Spine] Loading skeleton, textures, json, atlas');
             // Only load textures once for creation of skeletonData, not for each instance
             // Disable PMA when loading Spine textures
+            // @ts-ignore
             spine.webgl.GLTexture.DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL = true;
             
             // Path translation for json and atlast (1:1)
@@ -151,7 +162,7 @@
             this.sdkType._assetPaths[this.jsonPath] = this.jsonURI;
 
             assetManager.loadJson(assetTag, this.jsonURI);
-
+            // @ts-ignore
             let textureLoader = function(img) { return new spine.webgl.GLTexture(gl, img); };
 
             // Load multiple textures and set up path translation (for C3 preview with 'blob' URIs)
@@ -199,11 +210,14 @@
                 return;
             }
 
+            // @ts-ignore
             this.sdkType._atlas = new spine.TextureAtlas(atlasURI, function(path) {
                 return assetManager.get(self.sdkType._assetTag, self.sdkType._assetPaths[path]);
             });
+            // @ts-ignore
             this.sdkType._atlasLoader = new spine.AtlasAttachmentLoader(this.sdkType._atlas);
 
+            // @ts-ignore
             this.sdkType._skeletonJson = new spine.SkeletonJson(this.sdkType._atlasLoader);
             this.sdkType._skeletonJson.scale = this.skeletonRenderQuality;
             // JSON file with one skeleton, no name
@@ -232,14 +246,16 @@
 
             this.resize();
 
+            // @ts-ignore
             spineBatcher.addInstance(this.skeletonInfo, this.skeletonScale, this.GetInstance().GetUID());
+            // @ts-ignore
             this.spineBoneControl = new SpineBoneControl(this.debug);
         }
 
         loadSkeleton(name, animationName, sequenceSlots) {
             if (this.debug) console.info("[Spine] Reading skeleton data:", this.uid, this.sdkType.GetObjectClass().GetName(), animationName);
             // If skeletonData not initialized, create it and stop other instances from creating it
-
+            // @ts-ignore
             let skeleton = new spine.Skeleton(this.sdkType._skeletonData);
             let subskin = skeleton.data.findSkin(this.skinName);
             if (subskin === undefined) {
@@ -248,9 +264,10 @@
 
             skeleton.setSkin(subskin);
 
+            // @ts-ignore
             let stateData = new spine.AnimationStateData(this.sdkType._skeletonData);
             stateData.defaultMix = this.defaultMix;
-
+            // @ts-ignore
             var state = new spine.AnimationState(stateData);
             state.setAnimation(0, animationName, true);
             // Record animation assigned for listener
@@ -259,25 +276,31 @@
                 complete: (trackEntry, count) => {
                     this.completeAnimationName = this.trackAnimations[0];
                     this.completeTrackIndex = trackEntry.trackIndex;
+                    // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
+                    // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
                 },
                 event: (trackEntry, event) => {
                     this.completeEventName = event.data.name;
                     this.completeEventTrackIndex = trackEntry.trackIndex;
+                    // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
                 }
             };
 
             state.apply(skeleton);
             skeleton.updateWorldTransform();
+            // @ts-ignore
             var offset = new spine.Vector2();
+            // @ts-ignore
             var size = new spine.Vector2();
             skeleton.getBounds(offset, size, []);
-
+            // @ts-ignore
             var skeletonBounds = new spine.SkeletonBounds();
 
             if(this.keepAspectRatio){
+                // @ts-ignore
                 var wi = this.GetWorldInfo();
                 offset = {x : offset.x - wi._w/2, y: offset.y};
                 size = {x : wi._w, y: wi._h};
@@ -325,6 +348,7 @@
             gl.framebufferTexture2D(gl.FRAMEBUFFER, attachmentPoint, gl.TEXTURE_2D, this._elementTexture._texture, 0);
             // Restore render to the canvas
             gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
+            // @ts-ignore
             spineBatcher.setInstanceFB(this.spineFB, this.GetInstance().GetUID())
         }
 
@@ -335,6 +359,7 @@
             let skins = [];
             if (this.skinName.indexOf(",") > -1) {
                 skins = this.skinName.split(",");
+                // @ts-ignore
                 const newSkin = new spine.Skin("compound-skin")
                 skins.forEach(element => {
                     const subskin = skeleton.data.findSkin(element);
@@ -355,7 +380,9 @@
             const skeleton = this.skeletonInfo.skeleton;
             state.apply(skeleton);
             skeleton.updateWorldTransform();
+            // @ts-ignore
             var offset = new spine.Vector2();
+            // @ts-ignore
             var size = new spine.Vector2();
             skeleton.getBounds(offset, size, []);
 
@@ -423,6 +450,7 @@
                     console.error('[Spine] setAnimation error', ex, trackIndex, animationName);
                 }
                 this.spineError = 'setAnimation error '+ex;
+                // @ts-ignore
                 this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnError);
             }
         }
@@ -435,12 +463,15 @@
                 complete: (trackEntry, count) => {
                     this.completeAnimationName = this.trackAnimations[trackEntry.trackIndex];
                     this.completeTrackIndex = trackEntry.trackIndex;
+                    // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
+                    // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
                 },
                 event: (trackEntry, event) => {
                     this.completeEventName = event.data.name;
                     this.completeEventTrackIndex = trackEntry.trackIndex;
+                    // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
                 }
             };   
@@ -474,6 +505,7 @@
             }
 
             // Init instance configuration
+            // @ts-ignore
             if (!this.initInstanceInitialized)
             {
                 this.initInstance();
@@ -530,12 +562,15 @@
             this.createInstanceTexture();
 
             // Skeleton instance loading complete
+            // @ts-ignore
             spineBatcher.setInstanceInitialized(this.GetInstance().GetUID());
             this.isLoaded = true;
+            // @ts-ignore
             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnSkeletonLoaded);
         }
 
         Release() {
+            // @ts-ignore
             spineBatcher.removeInstance(this.GetInstance().GetUID());
             super.Release();
             if (this.c3renderer && this._elementTexture) this.c3renderer.DeleteTexture(this._elementTexture);
@@ -594,6 +629,7 @@
             const state = this.skeletonInfo.state;
 
             // Check if onscreen
+            // @ts-ignore
             let wi = this.GetWorldInfo();
             let layerRect = wi.GetLayer().GetViewport();
             let instanceRect = wi.GetBoundingBox();
@@ -672,7 +708,7 @@
             if (!this.isLoaded) return; // Spine instance not loaded, can't draw
 
             var myCanvas = this.canvas;
-
+            // @ts-ignore
             const wi = this.GetWorldInfo();
             const quad = wi.GetBoundingQuad();
 
@@ -727,8 +763,49 @@
             }];
         }
 
+        GetValuePath(path, createPath)
+		{
+			let result = this.data;
+			for (const p of path)
+			{
+				if(typeof result === 'object' && result !== null)
+				{
+					if(result.hasOwnProperty(p))
+					{
+						result = result[p];
+					} else if (createPath)
+					{
+						let obj = {};
+						result[p] = obj;
+                        // @ts-ignore                        
+						result = obj;
+					} else
+					{
+						result = null;
+						break;
+					}
+				}
+			}
+			return result;
+		}
+
+		SetValuePath(value, path)
+		{
+			let key = path.pop();
+			if (key === '' || key === null) return false;
+			let result = this.GetValuePath(path, true);
+			if (typeof result === 'object' && result !== null)
+			{
+				result[key] = value;
+				return true;
+			}
+			return false;
+		}
+
+
         GetScriptInterfaceClass()
 		{
+            // @ts-ignore
 			return self.ISpineInstance;
 		}
 
@@ -742,12 +819,15 @@
 	// Script interface. Use a WeakMap to safely hide the internal implementation details from the
 	// caller using the script interface.
 	const map = new WeakMap();
+    // @ts-ignore
     self.ISpineInstance = class ISpineInstance extends self.IWorldInstance {
 		constructor()
 		{
 			super();
             // Map by SDK instance
+            // @ts-ignore
 			map.set(this, self.IInstance._GetInitInst().GetSdkInstance());
+            // @ts-ignore
             console.log(self.IInstance._GetInitInst().GetSdkInstance());
 		}
 
