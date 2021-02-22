@@ -62,7 +62,8 @@
           }
         },
         "aceCategories": {
-          "spine": "Spine"
+          "spine": "Spine",
+          "data": "Data"
         },
         "conditions": {
           "on-skeleton-loaded": {
@@ -584,6 +585,21 @@
                 "desc": "Track index to set alpha to."
               }
             }
+          },
+          "set-value": {
+            "list-name": "Set value",
+            "display-text": "Set {1} to {0}",
+            "description": "Set value at path. Create path if needed.",
+            "params": {
+              "value": {
+                "name": "Value",
+                "desc": "Value to set on path."
+              },
+              "path": {
+                "name": "Path",
+                "desc": "Path to set."
+              }
+            }
           }
         },
         "expressions": {
@@ -796,6 +812,16 @@
               "bone": {
                 "name": "Bone",
                 "desc": "Name of bone."
+              }
+            }
+          },
+          "get-value": {
+            "description": "Get value at path",
+            "translated-name": "GetValue",
+            "params": {
+              "path": {
+                "name": "Path",
+                "desc": "Path to get."
               }
             }
           }

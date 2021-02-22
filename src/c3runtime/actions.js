@@ -421,6 +421,12 @@
             {
                 this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this._sdkType._jsonURI) [this.skeletonName] );
             }            
+        },
+
+        SetValue(value, pathString)
+        {
+            let path = pathString.split(".");
+            this.SetValuePath(value, path);
         }
 
     };
