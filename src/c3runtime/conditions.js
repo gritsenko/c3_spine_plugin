@@ -45,6 +45,23 @@
             if (!this.spineBoneControl.bones[bone].hasOwnProperty(property)) return false;
 
             return true;
-        }
+        },
+
+        CompareValue(value, comparison, pathString){
+            if(pathString === '') return false;
+            let path = pathString.split('.');
+            let result = this.GetValuePath(path,false);
+            if (typeof result === 'object' || result === null) return false;
+            switch (comparison)
+            {
+                case 0: return value === result;
+                case 1: return value !== result;
+                case 2: return value < result;
+                case 3: return value <= result;
+                case 4: return value > result;
+                case 4: return value >= result;
+                default: return false;
+            }
+        }        
     };
 }

@@ -290,6 +290,12 @@
             let value = this.GetValuePath(path,false);
             if (typeof value === 'object' || value === null) return '';
             return value;
+        },
+        GetAsCompactString(pathString){
+            let path = pathString.split('.');
+            if (path[0] === "") path = [];
+            let value = this.GetValuePath(path,false);
+            return JSON.stringify(value);
         }
     };
 }

@@ -92,6 +92,26 @@
             }
 
           },
+          "compare-value": {
+            "list-name": "Compare value",
+            "display-text": "Key {0} value {1} {2}",
+            "description": "Compare the value of a key in the data.",
+            "params": {
+              "value": {
+                "name": "Value",
+                "desc": "Value"
+              },
+              "comparison": {
+                "name": "Comparison",
+                "desc": "Comparison"
+              },
+              "path": {
+                "name": "Path",
+                "desc": "Path"
+              }
+            }
+
+          },
           "on-any-animation-finished": {
             "list-name": "On any animation finished",
             "display-text": "On any animation finished",
@@ -600,9 +620,56 @@
                 "desc": "Path to set."
               }
             }
+          },
+          "set-null": {
+            "list-name": "Set null",
+            "display-text": "Set {0} to null",
+            "description": "Set null at path. Create path if needed.",
+            "params": {
+              "path": {
+                "name": "Path",
+                "desc": "Path to set."
+               }
+              }
+            },
+            "set-json": {
+              "list-name": "Set JSON",
+              "display-text": "Set {0} to JSON {1}",
+              "description": "Set JSON at path. Create path if needed.",
+              "params": {
+                "json-string": {
+                  "name": "JSON",
+                  "desc": "JSON string."
+                },
+                "path": {
+                  "name": "Path",
+                  "desc": "Path to set."
+                  }
+                }
+            },
+            "delete-key": {
+              "list-name": "Delete key",
+              "display-text": "Delete {0}",
+              "description": "Delete key at path..",
+              "params": {
+                "path": {
+                  "name": "Path",
+                  "desc": "Path to delete."
+                }
+              }
           }
         },
         "expressions": {
+          "get-as-compact-string": {
+            "description": "Get JSON as compact string.",
+            "translated-name": "GetAsCompactString",
+            "params": {
+              "path": {
+                "name": "Path",
+                "desc": "Path"
+              }
+            }
+          },
           "skins": {
             "description": "Get list of skins. separated by new lines",
             "translated-name": "Skins",

@@ -1,6 +1,27 @@
 {
   "data": {
     "conditions": [
+      {
+        "id": "compare-value",
+        "scriptName": "CompareValue",
+        "isTrigger": false,
+        "params": [
+          {
+            "id": "value",
+            "type": "any"
+          },
+          {
+            "id": "comparison",
+            "type": "cmp",
+            "initial-value": 0
+          },
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]
+      }
     ],
     "actions": [
       {
@@ -18,6 +39,47 @@
             "initial-value": ""
           }
         ]        
+      },
+      {
+        "id": "set-null",
+        "scriptName": "SetNull",
+        "highlight": false,
+        "params": [
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]        
+      },
+      {
+        "id": "delete-key",
+        "scriptName": "DeleteKey",
+        "highlight": false,
+        "params": [
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]        
+      },
+      {
+        "id": "set-json",
+        "scriptName": "SetJSON",
+        "highlight": false,
+        "params": [
+          {
+            "id": "json-string",
+            "type": "string",
+            "initial-value": ""
+          },
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]        
       }
     ],
     "expressions": [
@@ -26,6 +88,20 @@
         "scriptName": "GetValue",
         "expressionName": "GetValue",
         "returnType": "any",
+        "highlight": false,
+        "params": [
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]  
+      },
+      {
+        "id": "get-as-compact-string",
+        "scriptName": "GetAsCompactString",
+        "expressionName": "GetAsCompactString",
+        "returnType": "string",
         "highlight": false,
         "params": [
           {

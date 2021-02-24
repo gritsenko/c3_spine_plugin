@@ -427,7 +427,47 @@
         {
             let path = pathString.split(".");
             this.SetValuePath(value, path);
-        }
+        },
 
-    };
+        SetNull(pathString)
+        {
+            let path = pathString.split(".");
+            this.SetValuePath(null, path);
+        },
+
+        DeleteKey(pathString)
+        {
+            let path = pathString.split('.');
+            let key = path.pop();
+            let result = this.GetValuePath(path,false);
+            if (typeof result !== 'object' || result === null) return;
+            delete result[key];
+        },
+
+        SetJSON(jsonString, pathString)
+        {
+            debugger
+            try
+            {
+                if (pathString === "")
+                {
+                    this.data = JSON.parse(jsonString);
+                    return;
+                } 
+                let path = pathString.split('.');
+                let key = path.pop();
+                let result = this.GetValuePath(path,true);
+                if (typeof result === 'object')
+                {
+                        console.log('parse', JSON.parse(jsonString));
+                        result[key] = JSON.parse(jsonString);
+                }   
+            }
+            catch(err)
+            {
+                console.warn('[Spine] JSON parse error', err, jsonString);
+                return false;
+            }
+        }
+    }
 }
