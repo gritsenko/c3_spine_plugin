@@ -10,7 +10,9 @@
         constructor(inst, properties) {
             super(inst);
 
-            this.data = {key: "myValue"};
+            this.data = {};
+            this.currentKey = "";
+            this.currentValue = 0;
             this.canvas = null;
             this.bgColor = null;
             this.isPlaying = true;
@@ -570,6 +572,9 @@
         }
 
         Release() {
+            this.currentKey = null;
+            this.currentValue = null;
+            this.data = null;
             // @ts-ignore
             spineBatcher.removeInstance(this.GetInstance().GetUID());
             super.Release();

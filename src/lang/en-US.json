@@ -110,7 +110,17 @@
                 "desc": "Path"
               }
             }
-
+          },
+          "for-each": {
+            "list-name": "For each",
+            "display-text": "For each {0}",
+            "description": "Loop over path.",
+            "params": {
+              "path": {
+                "name": "Path",
+                "desc": "Path"
+              }
+            }
           },
           "on-any-animation-finished": {
             "list-name": "On any animation finished",
@@ -890,6 +900,18 @@
                 "name": "Path",
                 "desc": "Path to get."
               }
+            }
+          },
+          "current-value": {
+            "description": "Data loop current value",
+            "translated-name": "CurrentValue",
+            "params": {
+            }
+          },
+          "current-key": {
+            "description": "Data loop current key",
+            "translated-name": "CurrentKey",
+            "params": {
             }
           }
         }

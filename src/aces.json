@@ -21,6 +21,18 @@
             "initial-value": ""
           }
         ]
+      },
+      {
+        "id": "for-each",
+        "scriptName": "ForEach",
+        "isTrigger": false,
+        "params": [
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]
       }
     ],
     "actions": [
@@ -109,6 +121,24 @@
             "type": "string",
             "initial-value": ""
           }
+        ]  
+      },
+      {
+        "id": "current-key",
+        "scriptName": "CurrentKey",
+        "expressionName": "CurrentKey",
+        "returnType": "string",
+        "highlight": false,
+        "params": [
+        ]  
+      },
+      {
+        "id": "current-value",
+        "scriptName": "CurrentValue",
+        "expressionName": "CurrentValue",
+        "returnType": "any",
+        "highlight": false,
+        "params": [
         ]  
       }
     ]

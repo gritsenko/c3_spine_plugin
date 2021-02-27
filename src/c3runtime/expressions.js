@@ -296,6 +296,12 @@
             if (path[0] === "") path = [];
             let value = this.GetValuePath(path,false);
             return JSON.stringify(value);
-        }
+        },
+        CurrentKey(){
+             return this.currentKey;
+        },
+        CurrentValue(){
+            return this.currentValue;
+       }
     };
 }
