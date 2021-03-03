@@ -155,7 +155,7 @@
             {
                 this.atlasURI = this.atlasPath;
                 this.jsonURI = this.jsonPath;
-                console.info('[Spine] loadSkeletonTextures, atlasURI, not preview', this.atlasURI, this.atlasPath, this.uid, this.objectName, this.runtime.GetTickCount());
+                if (this.debug) console.info('[Spine] loadSkeletonTextures, atlasURI, not preview', this.atlasURI, this.atlasPath, this.uid, this.objectName, this.runtime.GetTickCount());
             }
 
             this.sdkType._assetPaths[this.atlasURI] = this.atlasURI;
@@ -186,12 +186,12 @@
 
             this.sdkType._texturesBatcherInitialized = true;
             this.sdkType._texturesBatcherInitializing = false;
-            console.info('[Spine] loadSkeletonTextures, atlasURI', this.atlasURI, this.atlasPath, this.uid, this.objectName, this.runtime.GetTickCount());
+            if (this.debug) console.info('[Spine] loadSkeletonTextures, atlasURI', this.atlasURI, this.atlasPath, this.uid, this.objectName, this.runtime.GetTickCount());
         }
 
         loadSkeletonData()
         {
-            console.info('[Spine] loadSkeletonData, atlasURI', this.atlasURI, this.atlasPath, this.uid, this.objectName, this.sdkType._texturesBatcherInitialized, this.runtime.GetTickCount());
+            if (this.debug) console.info('[Spine] loadSkeletonData, atlasURI', this.atlasURI, this.atlasPath, this.uid, this.objectName, this.sdkType._texturesBatcherInitialized, this.runtime.GetTickCount());
 
             const assetManager = this.sdkType._assetManager;;
             const assetTag = this.sdkType._assetTag;
@@ -335,10 +335,7 @@
             this.textureHeight = bounds.size.y;
             let sampling = this.runtime.GetSampling();
             let options =  { mipMap: false, sampling: sampling }
-            if (this.debug)
-            {
-                console.info('[Spine] CreateDynamicTexture x,y:', Math.round(this.textureWidth), Math.round(this.textureHeight), this.uid, this.runtime.GetTickCount());
-            }
+            if (this.debug) console.info('[Spine] CreateDynamicTexture x,y:', Math.round(this.textureWidth), Math.round(this.textureHeight), this.uid, this.runtime.GetTickCount());
             this._elementTexture = renderer.CreateDynamicTexture(this.textureWidth, this.textureHeight, options);
 
             let oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
@@ -517,7 +514,7 @@
             if(this.sdkType._initOwner == -1)
             {
                 this.sdkType._initOwner = this.uid;
-                console.info('[Spine] IsSpineReady, initOwner', this.uid, this.objectName, this.runtime.GetTickCount());
+                if (this.debug) console.info('[Spine] IsSpineReady, initOwner', this.uid, this.objectName, this.runtime.GetTickCount());
             }
 
             // Once per object, load texture assets, init spinebatcher
@@ -639,7 +636,6 @@
             let layerRect = wi.GetLayer().GetViewport();
             let instanceRect = wi.GetBoundingBox();
             let onScreen = instanceRect.intersectsRect(layerRect);
-            // console.info('[Spine] onscreen, rects', onScreen, layerRect, instanceRect);
             spineBatcher.setInstanceOnScreen(onScreen, this.uid);
 
             
@@ -833,7 +829,6 @@
             // @ts-ignore
 			map.set(this, self.IInstance._GetInitInst().GetSdkInstance());
             // @ts-ignore
-            console.log(self.IInstance._GetInitInst().GetSdkInstance());
 		}
 
         get data()
