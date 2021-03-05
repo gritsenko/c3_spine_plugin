@@ -146,6 +146,16 @@
   "spine": {
     "conditions": [
       {
+        "id": "on-web-gl-context-lost",
+        "scriptName": "OnWebGLContextLost",
+        "isTrigger": true
+      },
+      {
+        "id": "on-web-gl-context-restored",
+        "scriptName": "OnWebGLContextRestored",
+        "isTrigger": true
+      },
+      {
         "id": "on-skeleton-loaded",
         "scriptName": "OnSkeletonLoaded",
         "isTrigger": true

@@ -4,6 +4,14 @@
     
     C3.Plugins.Gritsenko_Spine.Cnds = {
 
+        OnWebGLContextLost() {
+            return true;
+        },
+
+        OnWebGLContextRestored() {
+            return true;
+        },
+
         OnSkeletonLoaded() {
             return true;
         },

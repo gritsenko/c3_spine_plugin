@@ -83,6 +83,35 @@
             // @ts-ignore
             this._StartTicking();
 
+            // Context loss/restore
+            // @ts-ignore
+            this.HandleWebGLContextLoss();
+            // @ts-ignore
+            this.OnWebGLContextRestored = function()
+            {
+                if (this.debug) console.warn('[Spine] Context restored.')
+            }
+
+            // @ts-ignore
+            this.OnWebGLContextLost = function()
+            {
+                console.warn('[Spine] Context lost.')
+                globalThis.spineBatcher.debugVariables.animationDisable = 'enable';
+                globalThis.spineBatcher.debugVariables.renderDisable = 'enable';
+                // @ts-ignore
+                this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnWebGLContextLost);
+            }
+
+            // @ts-ignore
+            this.OnWebGLContextRestored = function()
+            {
+                console.warn('[Spine] Context Restored.')
+                globalThis.spineBatcher.debugVariables.animationDisable = 'enable';
+                globalThis.spineBatcher.debugVariables.renderDisable = 'enable';
+                // @ts-ignore
+                this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnWebGLContextRestored);
+            }
+
         }
 
         // spineDemos.log = true

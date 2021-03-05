@@ -66,6 +66,16 @@
           "data": "Data"
         },
         "conditions": {
+          "on-web-gl-context-lost": {
+            "list-name": "On WebGL context lost",
+            "display-text": "On WebGL context lost",
+            "description": "Triggered On WebGL context lost."
+          },
+          "on-web-gl-context-restored": {
+            "list-name": "On WebGL context restored",
+            "display-text": "On WebGL context restored",
+            "description": "Triggered On WebGL context restored."
+          },
           "on-skeleton-loaded": {
             "list-name": "On skeleton loaded",
             "display-text": "On skeleton loaded",
