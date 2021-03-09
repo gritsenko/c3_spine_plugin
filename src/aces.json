@@ -670,6 +670,55 @@
             "initial-value": 1
           }
         ]
+      },
+      {
+        "id": "set-slot-palette-color",
+        "scriptName": "SetSlotPaletteColor",
+        "highlight": false,
+        "params": [
+          {
+            "id": "slot-name",
+            "type": "string"
+          },
+          {
+            "id": "index",
+            "type": "number"
+          },
+          {
+            "id": "color",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "set-slot-palette-default-colors",
+        "scriptName": "SetSlotPaletteDefaultColors",
+        "highlight": false,
+        "params": [
+          {
+            "id": "slot-name",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "enable-slot-palette-color",
+        "scriptName": "EnableSlotPaletteColor",
+        "highlight": false,
+        "params": [
+          {
+            "id": "slot-name",
+            "type": "string"
+          },
+          {
+            "id": "enable",
+            "type": "combo",
+            "items": [
+              "enabled",
+              "disabled"
+            ]
+          }
+        ]
       }
     ],
     "expressions": [

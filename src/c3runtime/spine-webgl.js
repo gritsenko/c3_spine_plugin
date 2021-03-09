@@ -7782,7 +7782,7 @@ var spine;
             return _this;
         }
         BoundingBoxAttachment.prototype.copy = function () {
-            var copy = new BoundingBoxAttachment(name);
+            var copy = new BoundingBoxAttachment(this.name);
             this.copyTo(copy);
             copy.color.setFromColor(this.color);
             return copy;
@@ -7801,7 +7801,7 @@ var spine;
             return _this;
         }
         ClippingAttachment.prototype.copy = function () {
-            var copy = new ClippingAttachment(name);
+            var copy = new ClippingAttachment(this.name);
             this.copyTo(copy);
             copy.endSlot = this.endSlot;
             copy.color.setFromColor(this.color);
@@ -7945,7 +7945,7 @@ var spine;
             return _this;
         }
         PathAttachment.prototype.copy = function () {
-            var copy = new PathAttachment(name);
+            var copy = new PathAttachment(this.name);
             this.copyTo(copy);
             copy.lengths = new Array(this.lengths.length);
             spine.Utils.arrayCopy(this.lengths, 0, copy.lengths, 0, this.lengths.length);
@@ -7979,7 +7979,7 @@ var spine;
             return Math.atan2(y, x) * spine.MathUtils.radDeg;
         };
         PointAttachment.prototype.copy = function () {
-            var copy = new PointAttachment(name);
+            var copy = new PointAttachment(this.name);
             copy.x = this.x;
             copy.y = this.y;
             copy.rotation = this.rotation;
@@ -9853,7 +9853,7 @@ var spine;
             };
             Shader.newTwoColoredTextured = function (context) {
                 var vs = "\n\t\t\t\tattribute vec4 " + Shader.POSITION + ";\n\t\t\t\tattribute vec4 " + Shader.COLOR + ";\n\t\t\t\tattribute vec4 " + Shader.COLOR2 + ";\n\t\t\t\tattribute vec2 " + Shader.TEXCOORDS + ";\n\t\t\t\tuniform mat4 " + Shader.MVP_MATRIX + ";\n\t\t\t\tvarying vec4 v_light;\n\t\t\t\tvarying vec4 v_dark;\n\t\t\t\tvarying vec2 v_texCoords;\n\n\t\t\t\tvoid main () {\n\t\t\t\t\tv_light = " + Shader.COLOR + ";\n\t\t\t\t\tv_dark = " + Shader.COLOR2 + ";\n\t\t\t\t\tv_texCoords = " + Shader.TEXCOORDS + ";\n\t\t\t\t\tgl_Position = " + Shader.MVP_MATRIX + " * " + Shader.POSITION + ";\n\t\t\t\t}\n\t\t\t";
-                var fs = "\n\t\t\t\t#ifdef GL_ES\n\t\t\t\t\t#define LOWP lowp\n\t\t\t\t\tprecision mediump float;\n\t\t\t\t#else\n\t\t\t\t\t#define LOWP\n\t\t\t\t#endif\n\t\t\t\tvarying LOWP vec4 v_light;\n\t\t\t\tvarying LOWP vec4 v_dark;\n\t\t\t\tvarying vec2 v_texCoords;\n\t\t\t\tuniform sampler2D u_texture;\n\n\t\t\t\tvoid main () {\n\t\t\t\t\tvec4 texColor = texture2D(u_texture, v_texCoords);\n\t\t\t\t\tgl_FragColor.a = texColor.a * v_light.a;\n\t\t\t\t\tgl_FragColor.rgb = ((texColor.a - 1.0) * v_dark.a + 1.0 - texColor.rgb) * v_dark.rgb + texColor.rgb * v_light.rgb;\n\t\t\t\t}\n\t\t\t";
+                var fs = "\n\t\t\t\t#ifdef GL_ES\n\t\t\t\t\t#define LOWP lowp\n\t\t\t\t\tprecision mediump float;\n\t\t\t\t#else\n\t\t\t\t\t#define LOWP\n\t\t\t\t#endif\n\t\t\t\tvarying LOWP vec4 v_light;\n\t\t\t\tvarying LOWP vec4 v_dark;\n\t\t\t\tvarying vec2 v_texCoords;\n\t\t\t\tuniform sampler2D u_texture;\n\t\t\t\tuniform float paletteEnable;\n\t\t\t\tuniform vec4 color0;\n\t\t\t\tuniform vec4 color1;\n\t\t\t\tuniform vec4 color2;\n\t\t\t\tuniform vec4 color3;\n\t\t\t\tuniform vec4 color4;\n\t\t\t\tuniform vec4 color5;\n\t\t\t\tuniform vec4 color6;\n\t\t\t\tuniform vec4 color7;\n\n\t\t\t\tvoid main () {\n\t\t\t\t\tvec4 texColor = texture2D(u_texture, v_texCoords);\n\t\t\t\t\tint index = int(texColor.r * 7.0);\n\t\t\t\t\tif (texColor.a == 0.0 || paletteEnable != 1.0)\n\t\t\t\t\t{\n\t\t\t\t\t\t// transparent, ignore index\n\t\t\t\t\t} else if (index == 0)\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color0;\n\t\t\t\t\t} else if (index == 1)\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color1;\n\t\t\t\t\t} else if (index == 2)\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color2;\n\t\t\t\t\t} else if (index == 3)\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color3;\n\t\t\t\t\t} else if (index == 4)\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color4;\n\t\t\t\t\t} else if (index == 5)\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color5;\n\t\t\t\t\t} else if (index == 6)\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color6;\n\t\t\t\t\t} else\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color7;\n\t\t\t\t\t}\n\t\t\t\t\tgl_FragColor.a = texColor.a * v_light.a;\n\t\t\t\t\tgl_FragColor.rgb = ((texColor.a - 1.0) * v_dark.a + 1.0 - texColor.rgb) * v_dark.rgb + texColor.rgb * v_light.rgb;\n\t\t\t\t}\n\t\t\t";
                 return new Shader(context, vs, fs);
             };
             Shader.newColored = function (context) {
@@ -10762,30 +10762,32 @@ var spine;
     (function (webgl) {
         var ManagedWebGLRenderingContext = (function () {
             function ManagedWebGLRenderingContext(canvasOrContext, contextConfig) {
-                var _this = this;
                 if (contextConfig === void 0) { contextConfig = { alpha: "true" }; }
                 this.restorables = new Array();
-                if (!((canvasOrContext instanceof WebGLRenderingContext) || (canvasOrContext instanceof WebGL2RenderingContext))) {
-                    var canvas = canvasOrContext;
-                    this.gl = (canvas.getContext("webgl2", contextConfig) || canvas.getContext("webgl", contextConfig));
-                    this.canvas = canvas;
-                    canvas.addEventListener("webglcontextlost", function (e) {
-                        var event = e;
-                        if (e) {
-                            e.preventDefault();
-                        }
-                    });
-                    canvas.addEventListener("webglcontextrestored", function (e) {
-                        for (var i = 0, n = _this.restorables.length; i < n; i++) {
-                            _this.restorables[i].restore();
-                        }
-                    });
+                if (canvasOrContext instanceof HTMLCanvasElement || canvasOrContext instanceof EventTarget) {
+                    this.setupCanvas(canvasOrContext, contextConfig);
                 }
                 else {
                     this.gl = canvasOrContext;
                     this.canvas = this.gl.canvas;
                 }
             }
+            ManagedWebGLRenderingContext.prototype.setupCanvas = function (canvas, contextConfig) {
+                var _this = this;
+                this.gl = (canvas.getContext("webgl2", contextConfig) || canvas.getContext("webgl", contextConfig));
+                this.canvas = canvas;
+                canvas.addEventListener("webglcontextlost", function (e) {
+                    var event = e;
+                    if (e) {
+                        e.preventDefault();
+                    }
+                });
+                canvas.addEventListener("webglcontextrestored", function (e) {
+                    for (var i = 0, n = _this.restorables.length; i < n; i++) {
+                        _this.restorables[i].restore();
+                    }
+                });
+            };
             ManagedWebGLRenderingContext.prototype.addRestorable = function (restorable) {
                 this.restorables.push(restorable);
             };
@@ -10833,4 +10835,4 @@ var spine;
         webgl.WebGLBlendModeConverter = WebGLBlendModeConverter;
     })(webgl = spine.webgl || (spine.webgl = {}));
 })(spine || (spine = {}));
-// (add # back behind comments to get this reference) sourceMappingURL=spine-webgl.js.map
+//# sourceMappingURL=spine-webgl.js.map

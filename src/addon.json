@@ -23,6 +23,7 @@
     "c3runtime/spine-webgl.js",
     "c3runtime/spine-draw.js",
     "c3runtime/spine-gl-cache.js",
+    "c3runtime/spine-palette.js",
     "c3runtime/spine-bone-control.js",
     "lang/en-US.json",
     "aces.json",

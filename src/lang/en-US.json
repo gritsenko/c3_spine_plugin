@@ -677,6 +677,55 @@
                   "desc": "Path to delete."
                 }
               }
+          },
+          "set-slot-palette-color": {
+            "list-name": "Set slot palette color",
+            "display-text": "Set slot {0} palette color index {1} to {2}",
+            "description": "Set slot palette color index  to RGBA value.",
+            "params": {
+              "slot-name": {
+                "name": "Slot name",
+                "desc": "Slot name"
+              },
+              "index": {
+                "name": "Index",
+                "desc": "Index"
+              },
+              "color": {
+                "name": "Color",
+                "desc": "Color (use rgba())."
+              }
+            }
+          },
+          "set-slot-palette-default-colors": {
+            "list-name": "Set slot palette to default colors",
+            "display-text": "Set slot {0} palette colors to default colors",
+            "description": "Set slot palette colors to default.",
+            "params": {
+              "slot-name": {
+                "name": "Slot name",
+                "desc": "Slot name"
+              }
+            }
+          },
+          "enable-slot-palette-color": {
+            "list-name": "Enable slot palette color",
+            "display-text": "Set enable slot {0} palette color to {1}",
+            "description": "Enable slot palette color.",
+            "params": {
+              "slot-name": {
+                "name": "Slot name",
+                "desc": "Slot name"
+              },
+              "enable": {
+                "name": "Enable",
+                "desc": "Enable",
+                "items": {
+                  "enabled": "enabled",
+                  "disabled": "disabled"
+                }
+              }
+            }
           }
         },
         "expressions": {
