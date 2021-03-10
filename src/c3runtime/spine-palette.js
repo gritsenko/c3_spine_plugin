@@ -14,13 +14,15 @@ class SpinePalette {
     get enable() { return this._enable;}
     set enable(value) {this._enable = value;}
 
-    setColor(index, r, g, b, a)
+    setColor(index, color)
     {
+        debugger
         if (index <0 || index*4 > this._palette.length-4) return;
-        this._palette[index*4] = r;
-        this._palette[index*4+1] = g;
-        this._palette[index*4+2] = b;
-        this._palette[index*4+3] = a;
+        const spineBatcher = globalThis.spineBatcher;
+        this._palette[index*4+0] = spineBatcher.getRValue(color);
+        this._palette[index*4+1] = spineBatcher.getGValue(color);
+        this._palette[index*4+2] = spineBatcher.getBValue(color);
+        this._palette[index*4+3] = spineBatcher.getAValue(color);
     }
 
     setDefaultColors()
@@ -57,7 +59,7 @@ class SpinePalette {
         return {r:r,g:g,b:b,a:a};
     }
 
-    applyToShader(shader)
+    apply(shader)
     {
         if (this._enable)
         {
@@ -66,10 +68,10 @@ class SpinePalette {
                 let uniformName = 'color'+i;
                 shader.setUniform4f(uniformName, this._palette[i*4+0], this._palette[i*4+1], this._palette[i*4+2], this._palette[i*4+3],);
             }
-            shader.setUniform4f('paletteEnable', 1.0);
+            shader.setUniformf('paletteEnable', 1.0);
         } else
         {
-            shader.setUniform4f('paletteEnable', 0.0);
+            shader.setUniformf('paletteEnable', 0.0);
         }
     }
     

@@ -9272,7 +9272,7 @@ var spine;
                 if (slotRangeEnd === void 0) { slotRangeEnd = -1; }
                 this.enableRenderer(this.batcher);
                 this.skeletonRenderer.premultipliedAlpha = premultipliedAlpha;
-                this.skeletonRenderer.draw(this.batcher, skeleton, slotRangeStart, slotRangeEnd);
+                this.skeletonRenderer.draw(this.batcher, skeleton, slotRangeStart, slotRangeEnd, {});
             };
             SceneRenderer.prototype.drawSkeletonDebug = function (skeleton, premultipliedAlpha, ignoredBones) {
                 if (premultipliedAlpha === void 0) { premultipliedAlpha = false; }
@@ -10427,7 +10427,7 @@ var spine;
                     this.vertexSize += 4;
                 this.vertices = spine.Utils.newFloatArray(this.vertexSize * 1024);
             }
-            SkeletonRenderer.prototype.draw = function (batcher, skeleton, slotRangeStart, slotRangeEnd) {
+            SkeletonRenderer.prototype.draw = function (batcher, skeleton, slotRangeStart, slotRangeEnd, slotPalettes) {
                 if (slotRangeStart === void 0) { slotRangeStart = -1; }
                 if (slotRangeEnd === void 0) { slotRangeEnd = -1; }
                 var clipper = this.clipper;
@@ -10464,6 +10464,16 @@ var spine;
                     }
                     if (slotRangeEnd >= 0 && slotRangeEnd == slot.data.index) {
                         inRange = false;
+                    }
+                    var slotName = slot.data.name;
+                    if (slotPalettes.hasOwnProperty(slotName)) {
+                        batcher.flush();
+                        if (slotPalettes[slotName].enable)
+                            slotPalettes[slotName].apply(batcher.shader);
+                    }
+                    else {
+                        batcher.flush();
+                        batcher.shader.setUniformf('paletteEnable', 0.0);
                     }
                     var attachment = slot.getAttachment();
                     var texture = null;

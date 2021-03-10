@@ -55,6 +55,11 @@
             filename: "c3runtime/spine-bone-control.js",
             type: "external-runtime-script"
            });
+
+           this._info.AddFileDependency({
+            filename: "c3runtime/spine-palette.js",
+            type: "external-runtime-script"
+           });
             // this._info.SetDOMSideScripts(["c3runtime/spine-webgl.js"]);
 
 

@@ -10,6 +10,8 @@
         constructor(inst, properties) {
             super(inst);
 
+            this.slotPalettes = {};
+            this.paletteSize = 8;
             this.data = {};
             this.currentKey = "";
             this.currentValue = 0;
@@ -348,7 +350,8 @@
                 },
                 atlasLoader : this.sdkType._atlasLoader,
                 skeletonBounds: skeletonBounds,
-                stateData: stateData
+                stateData: stateData,
+                slotPalettes: this.slotPalettes
             };
         }
 

@@ -231,7 +231,7 @@ class SpineBatch {
 
                 // Render
                 this.renderer.premultipliedAlpha = premultipliedAlpha;
-                this.renderer.draw(this.batcher, skeletonInstance.skeletonInfo.skeleton);
+                this.renderer.draw(this.batcher, skeletonInstance.skeletonInfo.skeleton, -1, -1, skeletonInstance.skeletonInfo.slotPalettes);
                 this.batcher.end();
                 this.shader.unbind();
             }

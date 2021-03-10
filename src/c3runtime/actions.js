@@ -446,7 +446,6 @@
 
         SetJSON(jsonString, pathString)
         {
-            debugger
             try
             {
                 if (pathString === "")
@@ -468,6 +467,88 @@
                 console.warn('[Spine] JSON parse error', err, jsonString);
                 return false;
             }
+        },
+
+        EnableSlotPaletteColor(slotName, enable)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine] SetCustomAttachmentColor, no skeleton', this.uid, this.runtime.GetTickCount());
+                return;
+            }
+
+            const skeleton = this.skeletonInfo.skeleton;
+            let slot = skeleton.data.findSlot(slotName);
+            if(!slot)
+            {
+                if (this.debug) console.warn('[Spine] EnableSlotPaletteColor, no slot', slotName, this.uid, this.runtime.GetTickCount());
+                return;                
+            }
+
+            // Add palette class entry to slot palettes if it does not exist
+            if(!this.slotPalettes.hasOwnProperty(slotName))
+            {
+                this.slotPalettes[slotName] = new globalThis.SpinePalette(8);
+            }
+
+            if(enable == 0)
+            {
+                this.slotPalettes[slotName].enable = true;
+            } else
+            {
+                this.slotPalettes[slotName].enable = false;
+            }
+        },
+
+        SetSlotPaletteDefaultColors(slotName)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine] SetCustomAttachmentColor, no skeleton', this.uid, this.runtime.GetTickCount());
+                return;
+            }
+
+            const skeleton = this.skeletonInfo.skeleton;
+            let slot = skeleton.data.findSlot(slotName);
+            if(!slot)
+            {
+                if (this.debug) console.warn('[Spine] EnableSlotPaletteColor, no slot', slotName, this.uid, this.runtime.GetTickCount());
+                return;                
+            }
+
+            // Add palette class entry to slot palettes if it does not exist
+            if(!this.slotPalettes.hasOwnProperty(slotName))
+            {
+                this.slotPalettes[slotName] = new globalThis.SpinePalette(this.paletteSize);
+            }
+
+            this.slotPalettes[slotName].setDefaultColors();
+        },
+
+        SetSlotPaletteColor(slotName, index, color)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine] SetCustomAttachmentColor, no skeleton', this.uid, this.runtime.GetTickCount());
+                return;
+            }
+
+            const skeleton = this.skeletonInfo.skeleton;
+            let slot = skeleton.data.findSlot(slotName);
+            if(!slot)
+            {
+                if (this.debug) console.warn('[Spine] EnableSlotPaletteColor, no slot', slotName, this.uid, this.runtime.GetTickCount());
+                return;                
+            }
+
+            // Add palette class entry to slot palettes if it does not exist
+            if(!this.slotPalettes.hasOwnProperty(slotName))
+            {
+                this.slotPalettes[slotName] = new globalThis.SpinePalette(this.paletteSize);
+            }
+
+            this.slotPalettes[slotName].setColor(index, color);
         }
+
     }
 }
