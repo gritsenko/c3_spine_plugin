@@ -9853,7 +9853,7 @@ var spine;
             };
             Shader.newTwoColoredTextured = function (context) {
                 var vs = "\n\t\t\t\tattribute vec4 " + Shader.POSITION + ";\n\t\t\t\tattribute vec4 " + Shader.COLOR + ";\n\t\t\t\tattribute vec4 " + Shader.COLOR2 + ";\n\t\t\t\tattribute vec2 " + Shader.TEXCOORDS + ";\n\t\t\t\tuniform mat4 " + Shader.MVP_MATRIX + ";\n\t\t\t\tvarying vec4 v_light;\n\t\t\t\tvarying vec4 v_dark;\n\t\t\t\tvarying vec2 v_texCoords;\n\n\t\t\t\tvoid main () {\n\t\t\t\t\tv_light = " + Shader.COLOR + ";\n\t\t\t\t\tv_dark = " + Shader.COLOR2 + ";\n\t\t\t\t\tv_texCoords = " + Shader.TEXCOORDS + ";\n\t\t\t\t\tgl_Position = " + Shader.MVP_MATRIX + " * " + Shader.POSITION + ";\n\t\t\t\t}\n\t\t\t";
-                var fs = "\n\t\t\t\t#ifdef GL_ES\n\t\t\t\t\t#define LOWP lowp\n\t\t\t\t\tprecision mediump float;\n\t\t\t\t#else\n\t\t\t\t\t#define LOWP\n\t\t\t\t#endif\n\t\t\t\tvarying LOWP vec4 v_light;\n\t\t\t\tvarying LOWP vec4 v_dark;\n\t\t\t\tvarying vec2 v_texCoords;\n\t\t\t\tuniform sampler2D u_texture;\n\t\t\t\tuniform float paletteEnable;\n\t\t\t\tuniform vec4 color0;\n\t\t\t\tuniform vec4 color1;\n\t\t\t\tuniform vec4 color2;\n\t\t\t\tuniform vec4 color3;\n\t\t\t\tuniform vec4 color4;\n\t\t\t\tuniform vec4 color5;\n\t\t\t\tuniform vec4 color6;\n\t\t\t\tuniform vec4 color7;\n\n\t\t\t\tvoid main () {\n\t\t\t\t\tvec4 texColor = texture2D(u_texture, v_texCoords);\n\t\t\t\t\tint index = int(texColor.r * 7.0);\n\t\t\t\t\tif (texColor.a == 0.0 || paletteEnable != 1.0)\n\t\t\t\t\t{\n\t\t\t\t\t\t// transparent, ignore index\n\t\t\t\t\t} else if (index == 0)\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color0;\n\t\t\t\t\t} else if (index == 1)\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color1;\n\t\t\t\t\t} else if (index == 2)\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color2;\n\t\t\t\t\t} else if (index == 3)\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color3;\n\t\t\t\t\t} else if (index == 4)\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color4;\n\t\t\t\t\t} else if (index == 5)\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color5;\n\t\t\t\t\t} else if (index == 6)\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color6;\n\t\t\t\t\t} else\n\t\t\t\t\t{\n\t\t\t\t\t\ttexColor = color7;\n\t\t\t\t\t}\n\t\t\t\t\tgl_FragColor.a = texColor.a * v_light.a;\n\t\t\t\t\tgl_FragColor.rgb = ((texColor.a - 1.0) * v_dark.a + 1.0 - texColor.rgb) * v_dark.rgb + texColor.rgb * v_light.rgb;\n\t\t\t\t}\n\t\t\t";
+                var fs = "\n\t\t\t\t#ifdef GL_ES\n\t\t\t\t\t#define LOWP lowp\n\t\t\t\t\tprecision mediump float;\n\t\t\t\t#else\n\t\t\t\t\t#define LOWP\n\t\t\t\t#endif\n\t\t\t\tvarying LOWP vec4 v_light;\n\t\t\t\tvarying LOWP vec4 v_dark;\n\t\t\t\tvarying vec2 v_texCoords;\n\t\t\t\tuniform sampler2D u_texture;\n\t\t\t\tuniform sampler2D u_palette;\n\t\t\t\tuniform float paletteEnable;\n\n\t\t\t\tvoid main () {\n\t\t\t\t\tvec4 texColor = texture2D(u_texture, v_texCoords);\n\t\t\t\t\t// if (texColor.a == 0.0 || paletteEnable != 1.0)\n\t\t\t\t\tif (v_light.a >= 0.0)\n\t\t\t\t\t{\n\t\t\t\t\t\tgl_FragColor.a = texColor.a * v_light.a;\n\t\t\t\t\t\tgl_FragColor.rgb = ((texColor.a - 1.0) * v_dark.a + 1.0 - texColor.rgb) * v_dark.rgb + texColor.rgb * v_light.rgb;\n\t\t\t\t\t} else\n\t\t\t\t\t{\n\t\t\t\t\t\tfloat index = ((texColor.r * 31.0)+0.5)/32.0;\n\t\t\t\t\t\tfloat paletteNumber = ((v_light.b * 63.0)+0.5)/64.0;\n\t\t\t\t\t\t// paletteColor\n\t\t\t\t\t\tgl_FragColor = texture2D(u_palette, vec2(index,paletteNumber)) * texColor.a;\n\t\t\t\t\t\t// gl_FragColor = texture2D(u_palette, vec2(index,0));\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t";
                 return new Shader(context, vs, fs);
             };
             Shader.newColored = function (context) {
@@ -10427,7 +10427,7 @@ var spine;
                     this.vertexSize += 4;
                 this.vertices = spine.Utils.newFloatArray(this.vertexSize * 1024);
             }
-            SkeletonRenderer.prototype.draw = function (batcher, skeleton, slotRangeStart, slotRangeEnd, slotPalettes) {
+            SkeletonRenderer.prototype.draw = function (batcher, skeleton, slotRangeStart, slotRangeEnd, palette) {
                 if (slotRangeStart === void 0) { slotRangeStart = -1; }
                 if (slotRangeEnd === void 0) { slotRangeEnd = -1; }
                 var clipper = this.clipper;
@@ -10451,6 +10451,12 @@ var spine;
                 for (var i = 0, n = drawOrder.length; i < n; i++) {
                     var clippedVertexSize = clipper.isClipping() ? 2 : vertexSize;
                     var slot = drawOrder[i];
+                    var paletteIndex = 0;
+                    if (palette.enable) {
+                        if (palette.slotPalette.hasOwnProperty(slot.data.name)) {
+                            paletteIndex = palette.slotPalette[slot.data.name] / palette.paletteNumber;
+                        }
+                    }
                     if (!slot.bone.active) {
                         clipper.clipEndWithSlot(slot);
                         continue;
@@ -10466,15 +10472,6 @@ var spine;
                         inRange = false;
                     }
                     var slotName = slot.data.name;
-                    if (slotPalettes.hasOwnProperty(slotName)) {
-                        batcher.flush();
-                        if (slotPalettes[slotName].enable)
-                            slotPalettes[slotName].apply(batcher.shader);
-                    }
-                    else {
-                        batcher.flush();
-                        batcher.shader.setUniformf('paletteEnable', 0.0);
-                    }
                     var attachment = slot.getAttachment();
                     var texture = null;
                     if (attachment instanceof spine.RegionAttachment) {
@@ -10656,8 +10653,14 @@ var spine;
                                     for (var v = 2, u = 0, n_9 = renderable.numFloats; v < n_9; v += vertexSize, u += 2) {
                                         verts[v] = finalColor.r;
                                         verts[v + 1] = finalColor.g;
-                                        verts[v + 2] = finalColor.b;
-                                        verts[v + 3] = finalColor.a;
+                                        if (palette.enable) {
+                                            verts[v + 2] = paletteIndex;
+                                            verts[v + 3] = -1.0;
+                                        }
+                                        else {
+                                            verts[v + 2] = finalColor.b;
+                                            verts[v + 3] = finalColor.a;
+                                        }
                                         verts[v + 4] = uvs[u];
                                         verts[v + 5] = uvs[u + 1];
                                         verts[v + 6] = darkColor.r;

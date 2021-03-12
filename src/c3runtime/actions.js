@@ -469,85 +469,51 @@
             }
         },
 
-        EnableSlotPaletteColor(slotName, enable)
+        EnablePaletteColor(enable)
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] SetCustomAttachmentColor, no skeleton', this.uid, this.runtime.GetTickCount());
+                if (this.debug) console.warn('[Spine] EnablePaletteColor, no skeleton', this.uid, this.runtime.GetTickCount());
                 return;
             }
 
-            const skeleton = this.skeletonInfo.skeleton;
-            let slot = skeleton.data.findSlot(slotName);
-            if(!slot)
+            if (enable === 0)
             {
-                if (this.debug) console.warn('[Spine] EnableSlotPaletteColor, no slot', slotName, this.uid, this.runtime.GetTickCount());
-                return;                
-            }
-
-            // Add palette class entry to slot palettes if it does not exist
-            if(!this.slotPalettes.hasOwnProperty(slotName))
-            {
-                this.slotPalettes[slotName] = new globalThis.SpinePalette(8);
-            }
-
-            if(enable == 0)
-            {
-                this.slotPalettes[slotName].enable = true;
+                this.palette.enable = true;
             } else
             {
-                this.slotPalettes[slotName].enable = false;
+                this.palette.enable = false;
             }
         },
 
-        SetSlotPaletteDefaultColors(slotName)
+        SetSlotPalette(slotName, paletteNumber)
         {
-            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
-            {
-                if (this.debug) console.warn('[Spine] SetCustomAttachmentColor, no skeleton', this.uid, this.runtime.GetTickCount());
-                return;
-            }
-
-            const skeleton = this.skeletonInfo.skeleton;
-            let slot = skeleton.data.findSlot(slotName);
-            if(!slot)
-            {
-                if (this.debug) console.warn('[Spine] EnableSlotPaletteColor, no slot', slotName, this.uid, this.runtime.GetTickCount());
-                return;                
-            }
-
-            // Add palette class entry to slot palettes if it does not exist
-            if(!this.slotPalettes.hasOwnProperty(slotName))
-            {
-                this.slotPalettes[slotName] = new globalThis.SpinePalette(this.paletteSize);
-            }
-
-            this.slotPalettes[slotName].setDefaultColors();
+            this.palette.setSlotPalette(slotName, paletteNumber);
         },
 
-        SetSlotPaletteColor(slotName, index, color)
+        SetPaletteDefaultColors(paletteNumber)
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] SetCustomAttachmentColor, no skeleton', this.uid, this.runtime.GetTickCount());
+                if (this.debug) console.warn('[Spine] SetPaletteDefaultColors, no skeleton', this.uid, this.runtime.GetTickCount());
                 return;
             }
 
-            const skeleton = this.skeletonInfo.skeleton;
-            let slot = skeleton.data.findSlot(slotName);
-            if(!slot)
+            this.palette.setDefaultColors(paletteNumber, 1.0, 1.0);
+        },
+
+        SetPaletteColor(paletteNumber, index, color)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
             {
-                if (this.debug) console.warn('[Spine] EnableSlotPaletteColor, no slot', slotName, this.uid, this.runtime.GetTickCount());
-                return;                
+                if (this.debug) console.warn('[Spine] SetPaletteColor, no skeleton', this.uid, this.runtime.GetTickCount());
+                return;
             }
 
-            // Add palette class entry to slot palettes if it does not exist
-            if(!this.slotPalettes.hasOwnProperty(slotName))
-            {
-                this.slotPalettes[slotName] = new globalThis.SpinePalette(this.paletteSize);
-            }
+            this.palette.setColor(paletteNumber, index, color)
 
-            this.slotPalettes[slotName].setColor(index, color);
+            // XXX Do in spinebatcher, set dirty
+            this.palette.upload(this.gl.TEXTURE1, this.gl);
         }
 
     }

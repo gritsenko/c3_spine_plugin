@@ -678,14 +678,14 @@
                 }
               }
           },
-          "set-slot-palette-color": {
-            "list-name": "Set slot palette color",
-            "display-text": "Set slot {0} palette color index {1} to {2}",
-            "description": "Set slot palette color index  to RGBA value.",
+          "set-palette-color": {
+            "list-name": "Set palette color",
+            "display-text": "Set palette {0} color index {1} to {2}",
+            "description": "Set palette color index  to RGBA value.",
             "params": {
-              "slot-name": {
-                "name": "Slot name",
-                "desc": "Slot name"
+              "palette-number": {
+                "name": "Palette number",
+                "desc": "Palette number"
               },
               "index": {
                 "name": "Index",
@@ -697,26 +697,37 @@
               }
             }
           },
-          "set-slot-palette-default-colors": {
-            "list-name": "Set slot palette to default colors",
-            "display-text": "Set slot {0} palette colors to default colors",
-            "description": "Set slot palette colors to default.",
+          "set-slot-palette": {
+            "list-name": "Set slot palette",
+            "display-text": "Set slot {0} to palette {1}",
+            "description": "Set slot palette.",
             "params": {
               "slot-name": {
                 "name": "Slot name",
                 "desc": "Slot name"
+              },              
+              "palette-number": {
+                "name": "Palette number",
+                "desc": "Palette number"
               }
             }
           },
-          "enable-slot-palette-color": {
-            "list-name": "Enable slot palette color",
-            "display-text": "Set enable slot {0} palette color to {1}",
-            "description": "Enable slot palette color.",
+          "set-palette-default-colors": {
+            "list-name": "Set palette to default colors",
+            "display-text": "Set palette {0} colors to default colors",
+            "description": "Set palette colors to default.",
             "params": {
-              "slot-name": {
-                "name": "Slot name",
-                "desc": "Slot name"
-              },
+              "palette-number": {
+                "name": "Palette number",
+                "desc": "Palette number"
+              }
+            }
+          },
+          "enable-palette-color": {
+            "list-name": "Enable palette color",
+            "display-text": "Enable palette color to {0}",
+            "description": "Enable palette color for all slots.",
+            "params": {
               "enable": {
                 "name": "Enable",
                 "desc": "Enable",

@@ -112,6 +112,12 @@ class SpineBatch {
         this._skeletonInstances[uid].spineFB = spineFB
     }
 
+    setInstancePalette(palette, uid)
+    {
+        if (!this._skeletonInstances[uid]) return
+        this._skeletonInstances[uid].palette = palette;
+    }
+
     setInstanceOnScreen(onScreen, uid)
     {
         if (!this._skeletonInstances[uid]) return
@@ -213,9 +219,16 @@ class SpineBatch {
                 gl.bindBuffer(gl.ARRAY_BUFFER, null);
                 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
+                // Bind palette texture to texture unit 1
+                gl.activeTexture(gl.TEXTURE1);
+                gl.bindTexture(gl.TEXTURE_2D, skeletonInstance.palette.paletteTexture);
+                gl.activeTexture(gl.TEXTURE0);
+
                 // Bind the shader and set the texture and model-view-projection matrix.
                 this.shader.bind();
                 this.shader.setUniformi(spine.webgl.Shader.SAMPLER, 0);
+                this.shader.setUniformi('u_palette', 1);
+
                 // Resize 
                 this.resize(bounds, skeletonInstance.skeletonScale);
                 this.shader.setUniform4x4f(spine.webgl.Shader.MVP_MATRIX, this.mvp.values);
@@ -231,7 +244,7 @@ class SpineBatch {
 
                 // Render
                 this.renderer.premultipliedAlpha = premultipliedAlpha;
-                this.renderer.draw(this.batcher, skeletonInstance.skeletonInfo.skeleton, -1, -1, skeletonInstance.skeletonInfo.slotPalettes);
+                this.renderer.draw(this.batcher, skeletonInstance.skeletonInfo.skeleton, -1, -1, skeletonInstance.palette);
                 this.batcher.end();
                 this.shader.unbind();
             }

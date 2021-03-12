@@ -672,13 +672,28 @@
         ]
       },
       {
-        "id": "set-slot-palette-color",
-        "scriptName": "SetSlotPaletteColor",
+        "id": "set-slot-palette",
+        "scriptName": "SetSlotPalette",
         "highlight": false,
         "params": [
           {
             "id": "slot-name",
             "type": "string"
+          },
+          {
+            "id": "palette-number",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "set-palette-color",
+        "scriptName": "SetPaletteColor",
+        "highlight": false,
+        "params": [
+          {
+            "id": "palette-number",
+            "type": "number"
           },
           {
             "id": "index",
@@ -691,25 +706,21 @@
         ]
       },
       {
-        "id": "set-slot-palette-default-colors",
-        "scriptName": "SetSlotPaletteDefaultColors",
+        "id": "set-palette-default-colors",
+        "scriptName": "SetPaletteDefaultColors",
         "highlight": false,
         "params": [
           {
-            "id": "slot-name",
-            "type": "string"
+            "id": "palette-number",
+            "type": "number"
           }
         ]
       },
       {
-        "id": "enable-slot-palette-color",
-        "scriptName": "EnableSlotPaletteColor",
+        "id": "enable-palette-color",
+        "scriptName": "EnablePaletteColor",
         "highlight": false,
         "params": [
-          {
-            "id": "slot-name",
-            "type": "string"
-          },
           {
             "id": "enable",
             "type": "combo",
