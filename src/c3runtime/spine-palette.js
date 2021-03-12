@@ -72,10 +72,16 @@ class SpinePalette {
         } else if(this.indexSize == 32)
         {
             // DB32 https://github.com/geoffb/dawnbringer-palettes/blob/master/DB32/db32.txt
-            defaultPalette = [  'FF000000','FF222034','FF45283C','FF663931','FF8F563B','FFDF7126','FFD9A066','FFEEC39A',
-                                'FFFBF236','FF99E550','FF6ABE30','FF37946E','FF4B692F','FF524B24','FF323C39','FF3F3F74',
-                                'FF306082','FF5B6EE1','FF639BFF','FF5FCDE4','FFCBDBFC','FFFFFFFF','FF9BADB7','FF847E87',
-                                'FF696A6A','FF595652','FF76428A','FFAC3232','FFD95763','FFD77BBA','FF8F974A','FF8A6F30'];
+            // defaultPalette = [  'FF000000','FF222034','FF45283C','FF663931','FF8F563B','FFDF7126','FFD9A066','FFEEC39A',
+            //                    'FFFBF236','FF99E550','FF6ABE30','FF37946E','FF4B692F','FF524B24','FF323C39','FF3F3F74',
+            //                    'FF306082','FF5B6EE1','FF639BFF','FF5FCDE4','FFCBDBFC','FFFFFFFF','FF9BADB7','FF847E87',
+            //                    'FF696A6A','FF595652','FF76428A','FFAC3232','FFD95763','FFD77BBA','FF8F974A','FF8A6F30'];
+
+            // ENDESGA 32 https://lospec.com/palette-list/endesga-32                    
+            defaultPalette = [  'FFbe4a2f','FFd77643','FFead4aa','FFe4a672','FFb86f50','FF733e39','FF3e2731','FFa22633',
+                                'FFe43b44','FFf77622','FFfeae34','FFfee761','FF63c74d','FF3e8948','FF265c42','FF193c3e',
+                                'FF124e89','FF0099db','FF2ce8f5','FFffffff','FFc0cbdc','FF8b9bb4','FF5a6988','FF3a4466',
+                                'FF262b44','FF181425','FFff0044','FF68386c','FFb55088','FFf6757a','FFe8b796','FFc28569'];
         }
 
         for(let i = 0; i<defaultPalette.length;i++)
