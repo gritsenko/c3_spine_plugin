@@ -515,17 +515,20 @@
             this.palette.uploadNeeded = true;
         },
 
-        SetPaletteColorFromJSON(jsonString)
+        SetAllPaletteColors(value)
         {
-            try
+            let length = value.length;
+            if (length/2 > this.palette.palette.length)
             {
-                let tempArray = JSON.parse(jsonString)
+                console.warn('[Spine] SetAllPaletteColorsFromString string too long:', length)
             }
-            catch(err)
+            for(let i=0;i<length;i+=2)
             {
-                console.warn('[Spine] SetPaletteColorFromJSON JSON parse error',this.uid, this.runtime.GetTickCount());
-                return;
+                debugger
+                this.palette.palette[i/2] = parseInt(value.substring(i,i+2), 16);
+                if (i<160) console.log('palette', i/2, parseInt(value.substring(i,i+2), 16), value.substring(i,i+2));
             }
+            this.palette.uploadNeeded = true;
         }
     }
 }

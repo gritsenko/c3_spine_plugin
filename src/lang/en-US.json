@@ -738,14 +738,14 @@
               }
             }
           },
-          "set-palette-color-from-json": {
-            "list-name": "Set palette colors from JSON",
-            "display-text": "Set palette colors from {0}",
-            "description": "Set all palette colors from JSON string.",
+          "set-all-palette-colors-from-string": {
+            "list-name": "Set all palette colors from string",
+            "display-text": "Set all palette colors from {0}",
+            "description": "Set all palette colors from hex string.",
             "params": {
-              "json": {
-                "name": "JSON string",
-                "desc": "JSON array string [10,10,150,255...]"
+              "value": {
+                "name": "String",
+                "desc": "Hex array string, RGBA order (FF12AB34CD...)"
               }
             }
           }
@@ -973,9 +973,9 @@
               }
             }
           },
-          "palette-color-json": {
-            "description": "Palette color JSON string",
-            "translated-name": "PaletteColorJSON",
+          "all-palette-color-string": {
+            "description": "All palette color string",
+            "translated-name": "AllPaletteColorString",
             "params": {
             }
           },

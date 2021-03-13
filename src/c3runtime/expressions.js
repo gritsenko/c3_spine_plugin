@@ -284,22 +284,15 @@
 
             return this.spineBoneControl.bones[bone].scaleY;
         },
-        PaletteColorJSON(){
+        AllPaletteColorString(){
             if (!this.palette) return "";
             let hexString = ""
             for(let i=0;i<this.palette.palette.length;i++)
             {
-                hexString = hexString + this.palette.palette[i].toString(16);
+                const hexValueString = this.palette.palette[i].toString(16).padStart(2, '0');
+                hexString = hexString + hexValueString;
             }
             return hexString;
-//            return "["+this.palette.palette.toString()+"]";
-            /*
-            let buf = this.palette.palette;
-            let binstr = Array.prototype.map.call(buf, function (ch) {
-                    return String.fromCharCode(ch);
-                }).join('');
-            return btoa(binstr);
-            */
         },
         GetValue(pathString){
             if(pathString === '') return '';
