@@ -730,6 +730,17 @@
             ]
           }
         ]
+      },
+      {
+        "id": "set-palette-color-from-json",
+        "scriptName": "SetPaletteColorFromJSON",
+        "highlight": false,
+        "params": [
+          {
+            "id": "json",
+            "type": "string"
+          }
+        ]
       }
     ],
     "expressions": [
@@ -1026,6 +1037,15 @@
             "type": "string",
             "initialValue" : "\"\""
           }
+        ]
+      },
+      {
+        "id": "palette-color-json",
+        "expressionName": "PaletteColorJSON",
+        "scriptName": "PaletteColorJSON",
+        "highlight": false,
+        "returnType": "string",
+        "params": [
         ]
       }
     ]

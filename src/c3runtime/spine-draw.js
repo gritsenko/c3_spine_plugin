@@ -195,6 +195,14 @@ class SpineBatch {
         for (const uid in skeletonInstances)
         {
             const skeletonInstance = skeletonInstances[uid];
+            const palette = skeletonInstance.palette;
+
+            if (skeletonInstance.initialized && palette.uploadNeeded)
+            {
+                palette.uploadNeeded = false;
+                palette.upload(gl.TEXTURE1, gl);
+            }
+
             if (skeletonInstance.initialized 
                 && (tickCount%this._renderRate == index%this._renderRate)
                 && (skeletonInstance.renderOnce ||
@@ -221,7 +229,7 @@ class SpineBatch {
 
                 // Bind palette texture to texture unit 1
                 gl.activeTexture(gl.TEXTURE1);
-                gl.bindTexture(gl.TEXTURE_2D, skeletonInstance.palette.paletteTexture);
+                gl.bindTexture(gl.TEXTURE_2D, palette.paletteTexture);
                 gl.activeTexture(gl.TEXTURE0);
 
                 // Bind the shader and set the texture and model-view-projection matrix.

@@ -3,7 +3,7 @@
 
 class SpinePalette {
     constructor(indexSize, paletteNumber) {
-        // 4 elements, RGBA
+        // 4 elements, RGBA order
         this._palette = new Uint8Array(paletteNumber*indexSize*4);
         this._enable = false;
         this._indexSize = indexSize;
@@ -11,6 +11,7 @@ class SpinePalette {
         this._slotPalette = {};
         this._paletteTexture = null;
         this._c3PaletteTexture = null;
+        this._uploadNeeded = false;
 
         this._palette.fill(255);
     }
@@ -22,6 +23,8 @@ class SpinePalette {
     set enable(value) { this._enable = value;}
     get slotPalette() { return this._slotPalette;}
     get paletteTexture() { return this._paletteTexture;}
+    get uploadNeeded() { return this._uploadNeeded;}
+    set uploadNeeded(value) { this._uploadNeeded = value;}
 
     createPaletteTexture(renderer)
     {
@@ -51,10 +54,11 @@ class SpinePalette {
         if (index < 0 || index > this.indexSize-1) return;
 
         const spineBatcher = globalThis.spineBatcher;
-        this._palette[paletteNumber*this.indexSize+index*4+0] = spineBatcher.getRValue(color)*255;
-        this._palette[paletteNumber*this.indexSize+index*4+1] = spineBatcher.getGValue(color)*255;
-        this._palette[paletteNumber*this.indexSize+index*4+2] = spineBatcher.getBValue(color)*255;
-        this._palette[paletteNumber*this.indexSize+index*4+3] = spineBatcher.getAValue(color)*255;
+        this._palette[paletteNumber*this.indexSize*4+index*4+0] = spineBatcher.getRValue(color)*255;
+        this._palette[paletteNumber*this.indexSize*4+index*4+1] = spineBatcher.getGValue(color)*255;
+        this._palette[paletteNumber*this.indexSize*4+index*4+2] = spineBatcher.getBValue(color)*255;
+        this._palette[paletteNumber*this.indexSize*4+index*4+3] = spineBatcher.getAValue(color)*255;
+        this.uploadNeeded = true;
     }
 
     setDefaultColors(paletteNumber, colorScale, alphaScale)
@@ -92,7 +96,7 @@ class SpinePalette {
             this._palette[paletteNumber*this.indexSize*4+i*4+2] = color.b * colorScale;
             this._palette[paletteNumber*this.indexSize*4+i*4+3] = color.a * alphaScale;
         }
-
+        this.uploadNeeded = true;
     }
 
     convertHexToDecimal(hex){

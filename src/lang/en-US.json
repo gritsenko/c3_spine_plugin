@@ -737,6 +737,17 @@
                 }
               }
             }
+          },
+          "set-palette-color-from-json": {
+            "list-name": "Set palette colors from JSON",
+            "display-text": "Set palette colors from {0}",
+            "description": "Set all palette colors from JSON string.",
+            "params": {
+              "json": {
+                "name": "JSON string",
+                "desc": "JSON array string [10,10,150,255...]"
+              }
+            }
           }
         },
         "expressions": {
@@ -960,6 +971,12 @@
                 "name": "Bone",
                 "desc": "Name of bone."
               }
+            }
+          },
+          "palette-color-json": {
+            "description": "Palette color JSON string",
+            "translated-name": "PaletteColorJSON",
+            "params": {
             }
           },
           "get-value": {

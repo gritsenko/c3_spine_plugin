@@ -604,6 +604,7 @@
             
             // XXX Could add to batcher instead, make list of dirty palettes to upload
             this.palette.upload(this.gl.TEXTURE1, this.gl);
+            this.palette.uploadNeeded = true;
             console.log('[Spine] palette', this.palette, this.c3renderer);
 
             // Skeleton instance loading complete

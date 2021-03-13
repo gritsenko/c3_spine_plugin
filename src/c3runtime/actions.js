@@ -512,9 +512,20 @@
 
             this.palette.setColor(paletteNumber, index, color)
 
-            // XXX Do in spinebatcher, set dirty
-            this.palette.upload(this.gl.TEXTURE1, this.gl);
-        }
+            this.palette.uploadNeeded = true;
+        },
 
+        SetPaletteColorFromJSON(jsonString)
+        {
+            try
+            {
+                let tempArray = JSON.parse(jsonString)
+            }
+            catch(err)
+            {
+                console.warn('[Spine] SetPaletteColorFromJSON JSON parse error',this.uid, this.runtime.GetTickCount());
+                return;
+            }
+        }
     }
 }
