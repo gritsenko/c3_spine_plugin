@@ -677,6 +677,92 @@
                   "desc": "Path to delete."
                 }
               }
+          },
+          "set-palette-color": {
+            "list-name": "Set palette color",
+            "display-text": "Set palette {0} color index {1} to {2}",
+            "description": "Set palette color index  to RGBA value.",
+            "params": {
+              "palette-number": {
+                "name": "Palette number",
+                "desc": "Palette number"
+              },
+              "index": {
+                "name": "Index",
+                "desc": "Index"
+              },
+              "color": {
+                "name": "Color",
+                "desc": "Color (use rgba())."
+              }
+            }
+          },
+          "set-slot-palette": {
+            "list-name": "Set slot palette",
+            "display-text": "Set slot {0} to palette {1}",
+            "description": "Set slot palette.",
+            "params": {
+              "slot-name": {
+                "name": "Slot name",
+                "desc": "Slot name"
+              },              
+              "palette-number": {
+                "name": "Palette number",
+                "desc": "Palette number"
+              }
+            }
+          },
+          "set-palette-default-colors": {
+            "list-name": "Set palette to default colors",
+            "display-text": "Set palette {0} colors to default colors",
+            "description": "Set palette colors to default.",
+            "params": {
+              "palette-number": {
+                "name": "Palette number",
+                "desc": "Palette number"
+              }
+            }
+          },
+          "enable-palette-color": {
+            "list-name": "Enable palette color",
+            "display-text": "Enable palette color to {0}",
+            "description": "Enable palette color for all slots.",
+            "params": {
+              "enable": {
+                "name": "Enable",
+                "desc": "Enable",
+                "items": {
+                  "enabled": "enabled",
+                  "disabled": "disabled"
+                }
+              }
+            }
+          },
+          "set-all-palette-colors-from-string": {
+            "list-name": "Set all palette colors from string",
+            "display-text": "Set all palette colors from {0}",
+            "description": "Set all palette colors from hex string.",
+            "params": {
+              "value": {
+                "name": "String",
+                "desc": "Hex array string, RGBA order (FF12AB34CD...)"
+              }
+            }
+          },
+          "set-entry-palette-colors-from-string": {
+            "list-name": "Set entry palette colors from string",
+            "display-text": "Set entry {0} palette colors from {1}",
+            "description": "Set entry palette colors from hex string.",
+            "params": {
+              "palette-number": {
+                "name": "Palette number",
+                "desc": "Palette number"
+              },
+              "value": {
+                "name": "String",
+                "desc": "Hex array string, RGBA order (FF12AB34CD...)"
+              }
+            }
           }
         },
         "expressions": {
@@ -900,6 +986,12 @@
                 "name": "Bone",
                 "desc": "Name of bone."
               }
+            }
+          },
+          "all-palette-color-string": {
+            "description": "All palette color string",
+            "translated-name": "AllPaletteColorString",
+            "params": {
             }
           },
           "get-value": {

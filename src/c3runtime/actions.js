@@ -446,7 +446,6 @@
 
         SetJSON(jsonString, pathString)
         {
-            debugger
             try
             {
                 if (pathString === "")
@@ -468,6 +467,81 @@
                 console.warn('[Spine] JSON parse error', err, jsonString);
                 return false;
             }
+        },
+
+        EnablePaletteColor(enable)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine] EnablePaletteColor, no skeleton', this.uid, this.runtime.GetTickCount());
+                return;
+            }
+
+            if (enable === 0)
+            {
+                this.palette.enable = true;
+            } else
+            {
+                this.palette.enable = false;
+            }
+        },
+
+        SetSlotPalette(slotName, paletteNumber)
+        {
+            this.palette.setSlotPalette(slotName, paletteNumber);
+        },
+
+        SetPaletteDefaultColors(paletteNumber)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine] SetPaletteDefaultColors, no skeleton', this.uid, this.runtime.GetTickCount());
+                return;
+            }
+
+            this.palette.setDefaultColors(paletteNumber, 1.0, 1.0);
+        },
+
+        SetPaletteColor(paletteNumber, index, color)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine] SetPaletteColor, no skeleton', this.uid, this.runtime.GetTickCount());
+                return;
+            }
+
+            this.palette.setColor(paletteNumber, index, color)
+
+            this.palette.uploadNeeded = true;
+        },
+
+        SetAllPaletteColors(value)
+        {
+            let length = value.length;
+            if (length/2 > this.palette.palette.length)
+            {
+                console.warn('[Spine] SetAllPaletteColorsFromString string too long:', length)
+            }
+            for(let i=0;i<length;i+=2)
+            {
+                this.palette.palette[i/2] = parseInt(value.substring(i,i+2), 16);
+            }
+            this.palette.uploadNeeded = true;
+        },
+
+        SetEntryPaletteColors(paletteNumber, value)
+        {
+            let length = value.length;
+            let indexSize = this.palette.indexSize;
+            if (length > indexSize*2*4)
+            {
+                console.warn('[Spine] SetEntryPaletteColorsFromString string too long:', length)
+            }
+            for(let i=0;i<length;i+=2)
+            {
+                this.palette.palette[indexSize*paletteNumber*4+i/2] = parseInt(value.substring(i,i+2), 16);
+            }
+            this.palette.uploadNeeded = true;
         }
     }
 }

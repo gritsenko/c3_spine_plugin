@@ -670,6 +670,92 @@
             "initial-value": 1
           }
         ]
+      },
+      {
+        "id": "set-slot-palette",
+        "scriptName": "SetSlotPalette",
+        "highlight": false,
+        "params": [
+          {
+            "id": "slot-name",
+            "type": "string"
+          },
+          {
+            "id": "palette-number",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "set-palette-color",
+        "scriptName": "SetPaletteColor",
+        "highlight": false,
+        "params": [
+          {
+            "id": "palette-number",
+            "type": "number"
+          },
+          {
+            "id": "index",
+            "type": "number"
+          },
+          {
+            "id": "color",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "set-palette-default-colors",
+        "scriptName": "SetPaletteDefaultColors",
+        "highlight": false,
+        "params": [
+          {
+            "id": "palette-number",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "enable-palette-color",
+        "scriptName": "EnablePaletteColor",
+        "highlight": false,
+        "params": [
+          {
+            "id": "enable",
+            "type": "combo",
+            "items": [
+              "enabled",
+              "disabled"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set-all-palette-colors-from-string",
+        "scriptName": "SetAllPaletteColors",
+        "highlight": false,
+        "params": [
+          {
+            "id": "value",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "set-entry-palette-colors-from-string",
+        "scriptName": "SetEntryPaletteColors",
+        "highlight": false,
+        "params": [
+          {
+            "id": "palette-number",
+            "type": "number"
+          },
+          {
+            "id": "value",
+            "type": "string"
+          }
+        ]
       }
     ],
     "expressions": [
@@ -966,6 +1052,15 @@
             "type": "string",
             "initialValue" : "\"\""
           }
+        ]
+      },
+      {
+        "id": "all-palette-color-string",
+        "expressionName": "AllPaletteColorString",
+        "scriptName": "AllPaletteColorString",
+        "highlight": false,
+        "returnType": "string",
+        "params": [
         ]
       }
     ]

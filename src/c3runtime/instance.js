@@ -10,6 +10,9 @@
         constructor(inst, properties) {
             super(inst);
 
+            this.paletteNumber = 64;
+            this.indexSize = 32;
+            this.palette = null;
             this.data = {};
             this.currentKey = "";
             this.currentValue = 0;
@@ -348,7 +351,8 @@
                 },
                 atlasLoader : this.sdkType._atlasLoader,
                 skeletonBounds: skeletonBounds,
-                stateData: stateData
+                stateData: stateData,
+                palette: this.palette
             };
         }
 
@@ -586,8 +590,20 @@
             // skeletonData ready to instantiate skelton instance
             this.loadSkeletons();
 
-            // Create texture for Spine render
+            // Create texture for Spine render and palette w/ texture
             this.createInstanceTexture();
+            // @ts-ignore
+            this.palette = new globalThis.SpinePalette(this.indexSize, this.paletteNumber);
+            this.palette.createPaletteTexture(this.c3renderer);
+            for(let i=0;i<this.paletteNumber;i++)
+            {
+                // Set default colors in each slot, scaling color shade down in each palette
+                this.palette.setDefaultColors(i, (this.paletteNumber-i)/this.paletteNumber, 1.0);
+            }
+            spineBatcher.setInstancePalette(this.palette, this.uid);
+            
+            this.palette.uploadNeeded = true;
+            console.log('[Spine] palette', this.palette, this.c3renderer);
 
             // Skeleton instance loading complete
             // @ts-ignore
@@ -644,6 +660,9 @@
             this.slotColors = null;
             this.slotDarkColors = null;
             this.spineBoneControl = null;
+            this.paletteNumber = null;
+            this.indexSize = null;
+            this.palette = null;
             this.sdkType = null;
         }
 

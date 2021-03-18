@@ -3,7 +3,7 @@
     const C3 = self.C3;
     
     const PLUGIN_ID = "Gritsenko_Spine";
-    const PLUGIN_VERSION = "1.40.0";
+    const PLUGIN_VERSION = "1.41.1";
     const PLUGIN_CATEGORY = "general";
 
     const PLUGIN_CLASS = SDK.Plugins.Gritsenko_Spine = class SpinePlugin extends SDK.IPluginBase {
@@ -53,6 +53,11 @@
 
            this._info.AddFileDependency({
             filename: "c3runtime/spine-bone-control.js",
+            type: "external-runtime-script"
+           });
+
+           this._info.AddFileDependency({
+            filename: "c3runtime/spine-palette.js",
             type: "external-runtime-script"
            });
             // this._info.SetDOMSideScripts(["c3runtime/spine-webgl.js"]);
