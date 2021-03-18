@@ -62,9 +62,20 @@
           }
         },
         "aceCategories": {
-          "spine": "Spine"
+          "spine": "Spine",
+          "data": "Data"
         },
         "conditions": {
+          "on-web-gl-context-lost": {
+            "list-name": "On WebGL context lost",
+            "display-text": "On WebGL context lost",
+            "description": "Triggered On WebGL context lost."
+          },
+          "on-web-gl-context-restored": {
+            "list-name": "On WebGL context restored",
+            "display-text": "On WebGL context restored",
+            "description": "Triggered On WebGL context restored."
+          },
           "on-skeleton-loaded": {
             "list-name": "On skeleton loaded",
             "display-text": "On skeleton loaded",
@@ -90,6 +101,36 @@
               }
             }
 
+          },
+          "compare-value": {
+            "list-name": "Compare value",
+            "display-text": "Key {0} value {1} {2}",
+            "description": "Compare the value of a key in the data.",
+            "params": {
+              "value": {
+                "name": "Value",
+                "desc": "Value"
+              },
+              "comparison": {
+                "name": "Comparison",
+                "desc": "Comparison"
+              },
+              "path": {
+                "name": "Path",
+                "desc": "Path"
+              }
+            }
+          },
+          "for-each": {
+            "list-name": "For each",
+            "display-text": "For each {0}",
+            "description": "Loop over path.",
+            "params": {
+              "path": {
+                "name": "Path",
+                "desc": "Path"
+              }
+            }
           },
           "on-any-animation-finished": {
             "list-name": "On any animation finished",
@@ -584,9 +625,157 @@
                 "desc": "Track index to set alpha to."
               }
             }
+          },
+          "set-value": {
+            "list-name": "Set value",
+            "display-text": "Set {1} to {0}",
+            "description": "Set value at path. Create path if needed.",
+            "params": {
+              "value": {
+                "name": "Value",
+                "desc": "Value to set on path."
+              },
+              "path": {
+                "name": "Path",
+                "desc": "Path to set."
+              }
+            }
+          },
+          "set-null": {
+            "list-name": "Set null",
+            "display-text": "Set {0} to null",
+            "description": "Set null at path. Create path if needed.",
+            "params": {
+              "path": {
+                "name": "Path",
+                "desc": "Path to set."
+               }
+              }
+            },
+            "set-json": {
+              "list-name": "Set JSON",
+              "display-text": "Set {0} to JSON {1}",
+              "description": "Set JSON at path. Create path if needed.",
+              "params": {
+                "json-string": {
+                  "name": "JSON",
+                  "desc": "JSON string."
+                },
+                "path": {
+                  "name": "Path",
+                  "desc": "Path to set."
+                  }
+                }
+            },
+            "delete-key": {
+              "list-name": "Delete key",
+              "display-text": "Delete {0}",
+              "description": "Delete key at path..",
+              "params": {
+                "path": {
+                  "name": "Path",
+                  "desc": "Path to delete."
+                }
+              }
+          },
+          "set-palette-color": {
+            "list-name": "Set palette color",
+            "display-text": "Set palette {0} color index {1} to {2}",
+            "description": "Set palette color index  to RGBA value.",
+            "params": {
+              "palette-number": {
+                "name": "Palette number",
+                "desc": "Palette number"
+              },
+              "index": {
+                "name": "Index",
+                "desc": "Index"
+              },
+              "color": {
+                "name": "Color",
+                "desc": "Color (use rgba())."
+              }
+            }
+          },
+          "set-slot-palette": {
+            "list-name": "Set slot palette",
+            "display-text": "Set slot {0} to palette {1}",
+            "description": "Set slot palette.",
+            "params": {
+              "slot-name": {
+                "name": "Slot name",
+                "desc": "Slot name"
+              },              
+              "palette-number": {
+                "name": "Palette number",
+                "desc": "Palette number"
+              }
+            }
+          },
+          "set-palette-default-colors": {
+            "list-name": "Set palette to default colors",
+            "display-text": "Set palette {0} colors to default colors",
+            "description": "Set palette colors to default.",
+            "params": {
+              "palette-number": {
+                "name": "Palette number",
+                "desc": "Palette number"
+              }
+            }
+          },
+          "enable-palette-color": {
+            "list-name": "Enable palette color",
+            "display-text": "Enable palette color to {0}",
+            "description": "Enable palette color for all slots.",
+            "params": {
+              "enable": {
+                "name": "Enable",
+                "desc": "Enable",
+                "items": {
+                  "enabled": "enabled",
+                  "disabled": "disabled"
+                }
+              }
+            }
+          },
+          "set-all-palette-colors-from-string": {
+            "list-name": "Set all palette colors from string",
+            "display-text": "Set all palette colors from {0}",
+            "description": "Set all palette colors from hex string.",
+            "params": {
+              "value": {
+                "name": "String",
+                "desc": "Hex array string, RGBA order (FF12AB34CD...)"
+              }
+            }
+          },
+          "set-entry-palette-colors-from-string": {
+            "list-name": "Set entry palette colors from string",
+            "display-text": "Set entry {0} palette colors from {1}",
+            "description": "Set entry palette colors from hex string.",
+            "params": {
+              "palette-number": {
+                "name": "Palette number",
+                "desc": "Palette number"
+              },
+              "value": {
+                "name": "String",
+                "desc": "Hex array string, RGBA order (FF12AB34CD...)"
+              }
+            }
           }
         },
         "expressions": {
+          "get-as-compact-string": {
+            "description": "Get JSON as compact string.",
+            "translated-name": "GetAsCompactString",
+            "params": {
+              "path": {
+                "name": "Path",
+                "desc": "Path"
+              }
+            }
+          },
           "skins": {
             "description": "Get list of skins. separated by new lines",
             "translated-name": "Skins",
@@ -797,6 +986,34 @@
                 "name": "Bone",
                 "desc": "Name of bone."
               }
+            }
+          },
+          "all-palette-color-string": {
+            "description": "All palette color string",
+            "translated-name": "AllPaletteColorString",
+            "params": {
+            }
+          },
+          "get-value": {
+            "description": "Get value at path",
+            "translated-name": "GetValue",
+            "params": {
+              "path": {
+                "name": "Path",
+                "desc": "Path to get."
+              }
+            }
+          },
+          "current-value": {
+            "description": "Data loop current value",
+            "translated-name": "CurrentValue",
+            "params": {
+            }
+          },
+          "current-key": {
+            "description": "Data loop current key",
+            "translated-name": "CurrentKey",
+            "params": {
             }
           }
         }

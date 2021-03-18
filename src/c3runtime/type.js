@@ -17,7 +17,6 @@
 
         OnCreate()
         {
-            console.info('[Spine] type.OnCreate', this.GetObjectClass().GetName(), this._runtime.GetTickCount())
             this.GetImageInfo().LoadAsset(this._runtime);
             this._skeletonDataInitialized = false;
             this._skeletonDataInitializing = false;
@@ -29,6 +28,8 @@
             this._rendered = false;
             this._tickCount = -1;
             this._assetPaths = {};
+            this._initFailed = false;
+            this._initOwner = -1;
         }
 
         LoadTextures(renderer)

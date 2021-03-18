@@ -1,5 +1,7 @@
+// @ts-check
 "use strict";
 {
+    // @ts-ignore
     const C3 = self.C3;
     const spineBatcher = globalThis.spineBatcher;
     
@@ -8,7 +10,12 @@
         constructor(inst, properties) {
             super(inst);
 
-
+            this.paletteNumber = 64;
+            this.indexSize = 32;
+            this.palette = null;
+            this.data = {};
+            this.currentKey = "";
+            this.currentValue = 0;
             this.canvas = null;
             this.bgColor = null;
             this.isPlaying = true;
@@ -17,6 +24,7 @@
             this.skeletonInfo = null;
             this.renderer = null;
             this.gl = null;
+            // @ts-ignore
             this.uid = this.GetInstance().GetUID();
             this.customSkins = {};
             this.slotColors = {};
@@ -26,9 +34,11 @@
             this.trackAnimations = {};
             this.skinNames = [];
             this.delayedTrackListeners = [];
+            // @ts-ignore
             this.sdkType = this.GetSdkType();
 
             this.atlasPath = "";
+            // @ts-ignore
             this.objectName = this.GetInstance().GetObjectClass().GetName();
 
             if (properties) {
@@ -53,7 +63,7 @@
 
 
             this.pngURI = ""
-            this.atlasURI = ""
+            this.atlasURI = "*init-atlas-uri*"
             this.jsonURI = ""
             this.c3renderer = null
             this.runtime = inst.GetRuntime();
@@ -68,11 +78,42 @@
             this.textureWidth = 0;
             this.textureHeight = 0;
 
+            // @ts-ignore
             const wi = this.GetWorldInfo();
             // Enable collisions based on property, add ACEs if needed
             wi.SetCollisionEnabled(this.collisionsEnabled);
 
+            // @ts-ignore
             this._StartTicking();
+
+            // Context loss/restore
+            // @ts-ignore
+            this.HandleWebGLContextLoss();
+            // @ts-ignore
+            this.OnWebGLContextRestored = function()
+            {
+                if (this.debug) console.warn('[Spine] Context restored.')
+            }
+
+            // @ts-ignore
+            this.OnWebGLContextLost = function()
+            {
+                console.warn('[Spine] Context lost.')
+                globalThis.spineBatcher.debugVariables.animationDisable = 'enable';
+                globalThis.spineBatcher.debugVariables.renderDisable = 'enable';
+                // @ts-ignore
+                this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnWebGLContextLost);
+            }
+
+            // @ts-ignore
+            this.OnWebGLContextRestored = function()
+            {
+                console.warn('[Spine] Context Restored.')
+                globalThis.spineBatcher.debugVariables.animationDisable = 'enable';
+                globalThis.spineBatcher.debugVariables.renderDisable = 'enable';
+                // @ts-ignore
+                this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnWebGLContextRestored);
+            }
 
         }
 
@@ -83,6 +124,7 @@
         {
             this.initSpineInProgress = true;
             // Init Spine elements
+            // @ts-ignore
             this.mvp = new spine.webgl.Matrix4();
             this.mvp.ortho2d(0, 0, 0, 0); // Texture size unknown at this point
             this.gl = this.runtime.GetWebGLRenderer()._gl;
@@ -94,9 +136,13 @@
             this.sdkType._texturesBatcherInitializing = true;
             // Init spineBatcher (only initializes once)
             spineBatcher.init(this.canvas, this.runtime);
-            await this.loadSkeletonTextures();
-            this.sdkType._texturesBatcherInitialized = true;
-            this.sdkType._texturesBatcherInitializing = false;
+            if (this.runtime.IsPreview() || this.runtime._assetManager._isCordova)
+            {
+                await this.loadSkeletonTextures();
+            } else
+            {
+                this.loadSkeletonTextures();
+            }
         }
 
         resize() {
@@ -117,43 +163,68 @@
 
         async loadSkeletonTextures()
         {
+            // @ts-ignore
             this.sdkType._assetManager = new spine.SharedAssetManager();
             this.sdkType._assetTag = this.uid;
             const assetManager = this.sdkType._assetManager;
             const assetTag = this.sdkType._assetTag;
             const gl = this.gl;
             
+            // @ts-ignore
             if (this.debug) console.info(this.GetInstance().GetUID(),'[Spine] Loading skeleton, textures, json, atlas');
             // Only load textures once for creation of skeletonData, not for each instance
             // Disable PMA when loading Spine textures
+            // @ts-ignore
             spine.webgl.GLTexture.DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL = true;
             
             // Path translation for json and atlast (1:1)
-            this.atlasURI = await this.runtime._assetManager.GetProjectFileUrl(this.atlasPath);
+            if (this.runtime.IsPreview() || this.runtime._assetManager._isCordova)
+            {
+                this.atlasURI = '*await-atlas-path*'
+                this.atlasURI = await this.runtime._assetManager.GetProjectFileUrl(this.atlasPath);
+                this.jsonURI = await this.runtime._assetManager.GetProjectFileUrl(this.jsonPath);
+            } else
+            {
+                this.atlasURI = this.atlasPath;
+                this.jsonURI = this.jsonPath;
+                if (this.debug) console.info('[Spine] loadSkeletonTextures, atlasURI, not preview', this.atlasURI, this.atlasPath, this.uid, this.objectName, this.runtime.GetTickCount());
+            }
+
             this.sdkType._assetPaths[this.atlasURI] = this.atlasURI;
             this.sdkType._assetPaths[this.atlasPath] = this.atlasURI;
-            this.jsonURI = await this.runtime._assetManager.GetProjectFileUrl(this.jsonPath);
             this.sdkType._assetPaths[this.jsonURI] = this.jsonURI;
             this.sdkType._assetPaths[this.jsonPath] = this.jsonURI;
 
             assetManager.loadJson(assetTag, this.jsonURI);
-
+            // @ts-ignore
             let textureLoader = function(img) { return new spine.webgl.GLTexture(gl, img); };
 
             // Load multiple textures and set up path translation (for C3 preview with 'blob' URIs)
             let assetPaths = this.pngPath.split(",");
             for(let i=0;i<assetPaths.length;i++)
             {
-                this.pngURI = await this.runtime._assetManager.GetProjectFileUrl(assetPaths[i]);
+                if (this.runtime.IsPreview() || this.runtime._assetManager._isCordova)
+                {    
+                    this.pngURI = await this.runtime._assetManager.GetProjectFileUrl(assetPaths[i]);
+                } else
+                {
+                    this.pngURI = assetPaths[i];
+                }
                 this.sdkType._assetPaths[assetPaths[i]] = this.pngURI;
                 assetManager.loadTexture(assetTag, textureLoader, this.pngURI);
             }
 
             assetManager.loadText(assetTag, this.atlasURI);
+
+            this.sdkType._texturesBatcherInitialized = true;
+            this.sdkType._texturesBatcherInitializing = false;
+            if (this.debug) console.info('[Spine] loadSkeletonTextures, atlasURI', this.atlasURI, this.atlasPath, this.uid, this.objectName, this.runtime.GetTickCount());
         }
 
         loadSkeletonData()
         {
+            if (this.debug) console.info('[Spine] loadSkeletonData, atlasURI', this.atlasURI, this.atlasPath, this.uid, this.objectName, this.sdkType._texturesBatcherInitialized, this.runtime.GetTickCount());
+
             const assetManager = this.sdkType._assetManager;;
             const assetTag = this.sdkType._assetTag;
             const self = this;
@@ -163,20 +234,24 @@
             // Sentry error reported
             if (atlasURI === undefined || atlasURI === null)
             {
-                console.warn('[Spine] loadSkeletonData, atlasURI not set', atlasURI, assetTag, this.atlasURI, assetManager.isLoadingComplete(assetTag), this.atlasPath, this.runtime.GetTickCount());
-                console.warn('[Spine] objectclass',this.objectName, this.sdkType, this.runtime.GetTickCount());
+                console.warn('[Spine] loadSkeletonData, atlasURI not set', atlasURI, assetTag, this.uid, this.atlasURI, assetManager.isLoadingComplete(assetTag), this.atlasPath, this.runtime.GetTickCount());
+                console.warn('[Spine] objectclass',this.objectName, this.sdkType, this.uid, this.runtime.GetTickCount());
                 if (globalThis.Sentry)
                 {
                     globalThis.Sentry.captureException('[Spine] loadSkeletonData, atlasURI not set, object:'+this.objectName);
                 }
+                this.sdkType._initFailed = true;
                 return;
             }
 
+            // @ts-ignore
             this.sdkType._atlas = new spine.TextureAtlas(atlasURI, function(path) {
                 return assetManager.get(self.sdkType._assetTag, self.sdkType._assetPaths[path]);
             });
+            // @ts-ignore
             this.sdkType._atlasLoader = new spine.AtlasAttachmentLoader(this.sdkType._atlas);
 
+            // @ts-ignore
             this.sdkType._skeletonJson = new spine.SkeletonJson(this.sdkType._atlasLoader);
             this.sdkType._skeletonJson.scale = this.skeletonRenderQuality;
             // JSON file with one skeleton, no name
@@ -205,14 +280,16 @@
 
             this.resize();
 
+            // @ts-ignore
             spineBatcher.addInstance(this.skeletonInfo, this.skeletonScale, this.GetInstance().GetUID());
+            // @ts-ignore
             this.spineBoneControl = new SpineBoneControl(this.debug);
         }
 
         loadSkeleton(name, animationName, sequenceSlots) {
             if (this.debug) console.info("[Spine] Reading skeleton data:", this.uid, this.sdkType.GetObjectClass().GetName(), animationName);
             // If skeletonData not initialized, create it and stop other instances from creating it
-
+            // @ts-ignore
             let skeleton = new spine.Skeleton(this.sdkType._skeletonData);
             let subskin = skeleton.data.findSkin(this.skinName);
             if (subskin === undefined) {
@@ -221,9 +298,10 @@
 
             skeleton.setSkin(subskin);
 
+            // @ts-ignore
             let stateData = new spine.AnimationStateData(this.sdkType._skeletonData);
             stateData.defaultMix = this.defaultMix;
-
+            // @ts-ignore
             var state = new spine.AnimationState(stateData);
             state.setAnimation(0, animationName, true);
             // Record animation assigned for listener
@@ -232,25 +310,31 @@
                 complete: (trackEntry, count) => {
                     this.completeAnimationName = this.trackAnimations[0];
                     this.completeTrackIndex = trackEntry.trackIndex;
+                    // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
+                    // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
                 },
                 event: (trackEntry, event) => {
                     this.completeEventName = event.data.name;
                     this.completeEventTrackIndex = trackEntry.trackIndex;
+                    // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
                 }
             };
 
             state.apply(skeleton);
             skeleton.updateWorldTransform();
+            // @ts-ignore
             var offset = new spine.Vector2();
+            // @ts-ignore
             var size = new spine.Vector2();
             skeleton.getBounds(offset, size, []);
-
+            // @ts-ignore
             var skeletonBounds = new spine.SkeletonBounds();
 
             if(this.keepAspectRatio){
+                // @ts-ignore
                 var wi = this.GetWorldInfo();
                 offset = {x : offset.x - wi._w/2, y: offset.y};
                 size = {x : wi._w, y: wi._h};
@@ -267,7 +351,8 @@
                 },
                 atlasLoader : this.sdkType._atlasLoader,
                 skeletonBounds: skeletonBounds,
-                stateData: stateData
+                stateData: stateData,
+                palette: this.palette
             };
         }
 
@@ -283,10 +368,7 @@
             this.textureHeight = bounds.size.y;
             let sampling = this.runtime.GetSampling();
             let options =  { mipMap: false, sampling: sampling }
-            if (this.debug)
-            {
-                console.info('[Spine] CreateDynamicTexture x,y:', Math.round(this.textureWidth), Math.round(this.textureHeight), this.uid, this.runtime.GetTickCount());
-            }
+            if (this.debug) console.info('[Spine] CreateDynamicTexture x,y:', Math.round(this.textureWidth), Math.round(this.textureHeight), this.uid, this.runtime.GetTickCount());
             this._elementTexture = renderer.CreateDynamicTexture(this.textureWidth, this.textureHeight, options);
 
             let oldFrameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
@@ -298,6 +380,7 @@
             gl.framebufferTexture2D(gl.FRAMEBUFFER, attachmentPoint, gl.TEXTURE_2D, this._elementTexture._texture, 0);
             // Restore render to the canvas
             gl.bindFramebuffer(gl.FRAMEBUFFER, oldFrameBuffer);
+            // @ts-ignore
             spineBatcher.setInstanceFB(this.spineFB, this.GetInstance().GetUID())
         }
 
@@ -308,6 +391,7 @@
             let skins = [];
             if (this.skinName.indexOf(",") > -1) {
                 skins = this.skinName.split(",");
+                // @ts-ignore
                 const newSkin = new spine.Skin("compound-skin")
                 skins.forEach(element => {
                     const subskin = skeleton.data.findSkin(element);
@@ -328,7 +412,9 @@
             const skeleton = this.skeletonInfo.skeleton;
             state.apply(skeleton);
             skeleton.updateWorldTransform();
+            // @ts-ignore
             var offset = new spine.Vector2();
+            // @ts-ignore
             var size = new spine.Vector2();
             skeleton.getBounds(offset, size, []);
 
@@ -396,6 +482,7 @@
                     console.error('[Spine] setAnimation error', ex, trackIndex, animationName);
                 }
                 this.spineError = 'setAnimation error '+ex;
+                // @ts-ignore
                 this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnError);
             }
         }
@@ -408,12 +495,15 @@
                 complete: (trackEntry, count) => {
                     this.completeAnimationName = this.trackAnimations[trackEntry.trackIndex];
                     this.completeTrackIndex = trackEntry.trackIndex;
+                    // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
+                    // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyAnimationFinished);
                 },
                 event: (trackEntry, event) => {
                     this.completeEventName = event.data.name;
                     this.completeEventTrackIndex = trackEntry.trackIndex;
+                    // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
                 }
             };   
@@ -428,6 +518,8 @@
         }
 
         async IsSpineReady() {
+            if (this.sdkType._initFailed) return false;
+
             // Guard for case where sdkType does not exist (deleted on release)
             if (this.sdkType === null || this.sdkType === undefined)
             {
@@ -436,6 +528,7 @@
                 {
                     globalThis.Sentry.captureException('[Spine] IsSpineReady, sdkType not defined:'+this.sdkType);
                 }
+                this.sdkType._initFailed = true;
                 return false;
             }
 
@@ -444,18 +537,32 @@
             }
 
             // Init instance configuration
+            // @ts-ignore
             if (!this.initInstanceInitialized)
             {
                 this.initInstance();
             }
 
+            // First instance to initialize becomes init owner
+            if(this.sdkType._initOwner == -1)
+            {
+                this.sdkType._initOwner = this.uid;
+                if (this.debug) console.info('[Spine] IsSpineReady, initOwner', this.uid, this.objectName, this.runtime.GetTickCount());
+            }
+
             // Once per object, load texture assets, init spinebatcher
             if (!this.sdkType._texturesBatcherInitialized)
             {
-                if(!this.sdkType._texturesBatcherInitializing)
+                if(!this.sdkType._texturesBatcherInitializing && this.sdkType._initOwner == this.uid)
                 {
                     this.sdkType._texturesBatcherInitializing = true;
-                    await this.initTexturesBatcher();
+                    if (this.runtime.IsPreview() || this.runtime._assetManager._isCordova)
+                    {
+                        await this.initTexturesBatcher();
+                    } else
+                    {
+                        this.initTexturesBatcher();
+                    }
                 }
                 return false;
             }
@@ -464,7 +571,7 @@
             const assetTag = this.sdkType._assetTag;
 
             // Once per object, wait for assets to complete loading
-            if (!assetManager.isLoadingComplete(assetTag))
+            if (!assetManager.isLoadingComplete(assetTag) && this.sdkType._initOwner == this.uid)
             {
                 return false;
             }
@@ -472,7 +579,7 @@
             // Once per object, load skeletonData, load assets
             if (!this.sdkType._skeletonDataInitialized)
             {
-                if(!this.sdkType._skeletonDataInitializing)
+                if(!this.sdkType._skeletonDataInitializing && this.sdkType._initOwner == this.uid)
                 {
                     this.sdkType._skeletonDataInitializing = true;
                     this.loadSkeletonData();
@@ -483,16 +590,34 @@
             // skeletonData ready to instantiate skelton instance
             this.loadSkeletons();
 
-            // Create texture for Spine render
+            // Create texture for Spine render and palette w/ texture
             this.createInstanceTexture();
+            // @ts-ignore
+            this.palette = new globalThis.SpinePalette(this.indexSize, this.paletteNumber);
+            this.palette.createPaletteTexture(this.c3renderer);
+            for(let i=0;i<this.paletteNumber;i++)
+            {
+                // Set default colors in each slot, scaling color shade down in each palette
+                this.palette.setDefaultColors(i, (this.paletteNumber-i)/this.paletteNumber, 1.0);
+            }
+            spineBatcher.setInstancePalette(this.palette, this.uid);
+            
+            this.palette.uploadNeeded = true;
+            console.log('[Spine] palette', this.palette, this.c3renderer);
 
             // Skeleton instance loading complete
+            // @ts-ignore
             spineBatcher.setInstanceInitialized(this.GetInstance().GetUID());
             this.isLoaded = true;
+            // @ts-ignore
             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnSkeletonLoaded);
         }
 
         Release() {
+            this.currentKey = null;
+            this.currentValue = null;
+            this.data = null;
+            // @ts-ignore
             spineBatcher.removeInstance(this.GetInstance().GetUID());
             super.Release();
             if (this.c3renderer && this._elementTexture) this.c3renderer.DeleteTexture(this._elementTexture);
@@ -535,6 +660,9 @@
             this.slotColors = null;
             this.slotDarkColors = null;
             this.spineBoneControl = null;
+            this.paletteNumber = null;
+            this.indexSize = null;
+            this.palette = null;
             this.sdkType = null;
         }
 
@@ -551,11 +679,11 @@
             const state = this.skeletonInfo.state;
 
             // Check if onscreen
+            // @ts-ignore
             let wi = this.GetWorldInfo();
             let layerRect = wi.GetLayer().GetViewport();
             let instanceRect = wi.GetBoundingBox();
             let onScreen = instanceRect.intersectsRect(layerRect);
-            // console.info('[Spine] onscreen, rects', onScreen, layerRect, instanceRect);
             spineBatcher.setInstanceOnScreen(onScreen, this.uid);
 
             
@@ -572,6 +700,8 @@
             let fullAnimation = this.isPlaying || this.animateOnce > 0;
             let reducededAnimation = this.animateOnce > 0 || (!tracksComplete && this.isPlaying);
             let animateFrame = animationReduce ? reducededAnimation : fullAnimation;
+            // Debug feature, disable all animation
+            animateFrame = animateFrame && !(spineBatcher.debugVariables.animationDisable === 'enable');
 
             if (animateFrame) {
                 var animationDuration = state.getCurrent(0).animation.duration;
@@ -627,7 +757,7 @@
             if (!this.isLoaded) return; // Spine instance not loaded, can't draw
 
             var myCanvas = this.canvas;
-
+            // @ts-ignore
             const wi = this.GetWorldInfo();
             const quad = wi.GetBoundingQuad();
 
@@ -682,5 +812,76 @@
             }];
         }
 
+        GetValuePath(path, createPath)
+		{
+			let result = this.data;
+			for (const p of path)
+			{
+				if(typeof result === 'object' && result !== null)
+				{
+					if(result.hasOwnProperty(p))
+					{
+						result = result[p];
+					} else if (createPath)
+					{
+						let obj = {};
+						result[p] = obj;
+                        // @ts-ignore                        
+						result = obj;
+					} else
+					{
+						result = null;
+						break;
+					}
+				}
+			}
+			return result;
+		}
+
+		SetValuePath(value, path)
+		{
+			let key = path.pop();
+			if (key === '' || key === null) return false;
+			let result = this.GetValuePath(path, true);
+			if (typeof result === 'object' && result !== null)
+			{
+				result[key] = value;
+				return true;
+			}
+			return false;
+		}
+
+
+        GetScriptInterfaceClass()
+		{
+            // @ts-ignore
+			return self.ISpineInstance;
+		}
+
+        _getData()
+        {
+            return this.data;
+        }
+
     };
+
+	// Script interface. Use a WeakMap to safely hide the internal implementation details from the
+	// caller using the script interface.
+	const map = new WeakMap();
+    // @ts-ignore
+    self.ISpineInstance = class ISpineInstance extends self.IWorldInstance {
+		constructor()
+		{
+			super();
+            // Map by SDK instance
+            // @ts-ignore
+			map.set(this, self.IInstance._GetInitInst().GetSdkInstance());
+            // @ts-ignore
+		}
+
+        get data()
+		{
+            return map.get(this)._getData();
+		}
+	};
 }

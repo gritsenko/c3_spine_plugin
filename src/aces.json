@@ -1,6 +1,160 @@
 {
+  "data": {
+    "conditions": [
+      {
+        "id": "compare-value",
+        "scriptName": "CompareValue",
+        "isTrigger": false,
+        "params": [
+          {
+            "id": "value",
+            "type": "any"
+          },
+          {
+            "id": "comparison",
+            "type": "cmp",
+            "initial-value": 0
+          },
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]
+      },
+      {
+        "id": "for-each",
+        "scriptName": "ForEach",
+        "isTrigger": false,
+        "params": [
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "set-value",
+        "scriptName": "SetValue",
+        "highlight": true,
+        "params": [
+          {
+            "id": "value",
+            "type": "any"
+          },
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]        
+      },
+      {
+        "id": "set-null",
+        "scriptName": "SetNull",
+        "highlight": false,
+        "params": [
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]        
+      },
+      {
+        "id": "delete-key",
+        "scriptName": "DeleteKey",
+        "highlight": false,
+        "params": [
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]        
+      },
+      {
+        "id": "set-json",
+        "scriptName": "SetJSON",
+        "highlight": false,
+        "params": [
+          {
+            "id": "json-string",
+            "type": "string",
+            "initial-value": ""
+          },
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]        
+      }
+    ],
+    "expressions": [
+      {
+        "id": "get-value",
+        "scriptName": "GetValue",
+        "expressionName": "GetValue",
+        "returnType": "any",
+        "highlight": false,
+        "params": [
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]  
+      },
+      {
+        "id": "get-as-compact-string",
+        "scriptName": "GetAsCompactString",
+        "expressionName": "GetAsCompactString",
+        "returnType": "string",
+        "highlight": false,
+        "params": [
+          {
+            "id": "path",
+            "type": "string",
+            "initial-value": ""
+          }
+        ]  
+      },
+      {
+        "id": "current-key",
+        "scriptName": "CurrentKey",
+        "expressionName": "CurrentKey",
+        "returnType": "string",
+        "highlight": false,
+        "params": [
+        ]  
+      },
+      {
+        "id": "current-value",
+        "scriptName": "CurrentValue",
+        "expressionName": "CurrentValue",
+        "returnType": "any",
+        "highlight": false,
+        "params": [
+        ]  
+      }
+    ]
+  },
   "spine": {
     "conditions": [
+      {
+        "id": "on-web-gl-context-lost",
+        "scriptName": "OnWebGLContextLost",
+        "isTrigger": true
+      },
+      {
+        "id": "on-web-gl-context-restored",
+        "scriptName": "OnWebGLContextRestored",
+        "isTrigger": true
+      },
       {
         "id": "on-skeleton-loaded",
         "scriptName": "OnSkeletonLoaded",
@@ -516,6 +670,92 @@
             "initial-value": 1
           }
         ]
+      },
+      {
+        "id": "set-slot-palette",
+        "scriptName": "SetSlotPalette",
+        "highlight": false,
+        "params": [
+          {
+            "id": "slot-name",
+            "type": "string"
+          },
+          {
+            "id": "palette-number",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "set-palette-color",
+        "scriptName": "SetPaletteColor",
+        "highlight": false,
+        "params": [
+          {
+            "id": "palette-number",
+            "type": "number"
+          },
+          {
+            "id": "index",
+            "type": "number"
+          },
+          {
+            "id": "color",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "set-palette-default-colors",
+        "scriptName": "SetPaletteDefaultColors",
+        "highlight": false,
+        "params": [
+          {
+            "id": "palette-number",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "enable-palette-color",
+        "scriptName": "EnablePaletteColor",
+        "highlight": false,
+        "params": [
+          {
+            "id": "enable",
+            "type": "combo",
+            "items": [
+              "enabled",
+              "disabled"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set-all-palette-colors-from-string",
+        "scriptName": "SetAllPaletteColors",
+        "highlight": false,
+        "params": [
+          {
+            "id": "value",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "set-entry-palette-colors-from-string",
+        "scriptName": "SetEntryPaletteColors",
+        "highlight": false,
+        "params": [
+          {
+            "id": "palette-number",
+            "type": "number"
+          },
+          {
+            "id": "value",
+            "type": "string"
+          }
+        ]
       }
     ],
     "expressions": [
@@ -812,6 +1052,15 @@
             "type": "string",
             "initialValue" : "\"\""
           }
+        ]
+      },
+      {
+        "id": "all-palette-color-string",
+        "expressionName": "AllPaletteColorString",
+        "scriptName": "AllPaletteColorString",
+        "highlight": false,
+        "returnType": "string",
+        "params": [
         ]
       }
     ]

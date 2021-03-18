@@ -7782,7 +7782,7 @@ var spine;
             return _this;
         }
         BoundingBoxAttachment.prototype.copy = function () {
-            var copy = new BoundingBoxAttachment(name);
+            var copy = new BoundingBoxAttachment(this.name);
             this.copyTo(copy);
             copy.color.setFromColor(this.color);
             return copy;
@@ -7801,7 +7801,7 @@ var spine;
             return _this;
         }
         ClippingAttachment.prototype.copy = function () {
-            var copy = new ClippingAttachment(name);
+            var copy = new ClippingAttachment(this.name);
             this.copyTo(copy);
             copy.endSlot = this.endSlot;
             copy.color.setFromColor(this.color);
@@ -7945,7 +7945,7 @@ var spine;
             return _this;
         }
         PathAttachment.prototype.copy = function () {
-            var copy = new PathAttachment(name);
+            var copy = new PathAttachment(this.name);
             this.copyTo(copy);
             copy.lengths = new Array(this.lengths.length);
             spine.Utils.arrayCopy(this.lengths, 0, copy.lengths, 0, this.lengths.length);
@@ -7979,7 +7979,7 @@ var spine;
             return Math.atan2(y, x) * spine.MathUtils.radDeg;
         };
         PointAttachment.prototype.copy = function () {
-            var copy = new PointAttachment(name);
+            var copy = new PointAttachment(this.name);
             copy.x = this.x;
             copy.y = this.y;
             copy.rotation = this.rotation;
@@ -9272,7 +9272,7 @@ var spine;
                 if (slotRangeEnd === void 0) { slotRangeEnd = -1; }
                 this.enableRenderer(this.batcher);
                 this.skeletonRenderer.premultipliedAlpha = premultipliedAlpha;
-                this.skeletonRenderer.draw(this.batcher, skeleton, slotRangeStart, slotRangeEnd);
+                this.skeletonRenderer.draw(this.batcher, skeleton, slotRangeStart, slotRangeEnd, {});
             };
             SceneRenderer.prototype.drawSkeletonDebug = function (skeleton, premultipliedAlpha, ignoredBones) {
                 if (premultipliedAlpha === void 0) { premultipliedAlpha = false; }
@@ -9853,7 +9853,7 @@ var spine;
             };
             Shader.newTwoColoredTextured = function (context) {
                 var vs = "\n\t\t\t\tattribute vec4 " + Shader.POSITION + ";\n\t\t\t\tattribute vec4 " + Shader.COLOR + ";\n\t\t\t\tattribute vec4 " + Shader.COLOR2 + ";\n\t\t\t\tattribute vec2 " + Shader.TEXCOORDS + ";\n\t\t\t\tuniform mat4 " + Shader.MVP_MATRIX + ";\n\t\t\t\tvarying vec4 v_light;\n\t\t\t\tvarying vec4 v_dark;\n\t\t\t\tvarying vec2 v_texCoords;\n\n\t\t\t\tvoid main () {\n\t\t\t\t\tv_light = " + Shader.COLOR + ";\n\t\t\t\t\tv_dark = " + Shader.COLOR2 + ";\n\t\t\t\t\tv_texCoords = " + Shader.TEXCOORDS + ";\n\t\t\t\t\tgl_Position = " + Shader.MVP_MATRIX + " * " + Shader.POSITION + ";\n\t\t\t\t}\n\t\t\t";
-                var fs = "\n\t\t\t\t#ifdef GL_ES\n\t\t\t\t\t#define LOWP lowp\n\t\t\t\t\tprecision mediump float;\n\t\t\t\t#else\n\t\t\t\t\t#define LOWP\n\t\t\t\t#endif\n\t\t\t\tvarying LOWP vec4 v_light;\n\t\t\t\tvarying LOWP vec4 v_dark;\n\t\t\t\tvarying vec2 v_texCoords;\n\t\t\t\tuniform sampler2D u_texture;\n\n\t\t\t\tvoid main () {\n\t\t\t\t\tvec4 texColor = texture2D(u_texture, v_texCoords);\n\t\t\t\t\tgl_FragColor.a = texColor.a * v_light.a;\n\t\t\t\t\tgl_FragColor.rgb = ((texColor.a - 1.0) * v_dark.a + 1.0 - texColor.rgb) * v_dark.rgb + texColor.rgb * v_light.rgb;\n\t\t\t\t}\n\t\t\t";
+                var fs = "\n\t\t\t\t#ifdef GL_ES\n\t\t\t\t\t#define LOWP lowp\n\t\t\t\t\tprecision mediump float;\n\t\t\t\t#else\n\t\t\t\t\t#define LOWP\n\t\t\t\t#endif\n\t\t\t\tvarying LOWP vec4 v_light;\n\t\t\t\tvarying LOWP vec4 v_dark;\n\t\t\t\tvarying vec2 v_texCoords;\n\t\t\t\tuniform sampler2D u_texture;\n\t\t\t\tuniform sampler2D u_palette;\n\t\t\t\tuniform float paletteEnable;\n\n\t\t\t\tvoid main () {\n\t\t\t\t\tvec4 texColor = texture2D(u_texture, v_texCoords);\n\t\t\t\t\t// if (texColor.a == 0.0 || paletteEnable != 1.0)\n\t\t\t\t\tif (v_light.a >= 0.0)\n\t\t\t\t\t{\n\t\t\t\t\t\tgl_FragColor.a = texColor.a * v_light.a;\n\t\t\t\t\t\tgl_FragColor.rgb = ((texColor.a - 1.0) * v_dark.a + 1.0 - texColor.rgb) * v_dark.rgb + texColor.rgb * v_light.rgb;\n\t\t\t\t\t} else\n\t\t\t\t\t{\n\t\t\t\t\t\tfloat index = ((texColor.r * 31.0)+0.5)/32.0;\n\t\t\t\t\t\tfloat paletteNumber = ((v_light.b * 63.0)+0.5)/64.0;\n\t\t\t\t\t\t// paletteColor\n\t\t\t\t\t\tgl_FragColor = texture2D(u_palette, vec2(index,paletteNumber)) * texColor.a;\n\t\t\t\t\t\t// gl_FragColor = texture2D(u_palette, vec2(index,0));\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t";
                 return new Shader(context, vs, fs);
             };
             Shader.newColored = function (context) {
@@ -10427,7 +10427,7 @@ var spine;
                     this.vertexSize += 4;
                 this.vertices = spine.Utils.newFloatArray(this.vertexSize * 1024);
             }
-            SkeletonRenderer.prototype.draw = function (batcher, skeleton, slotRangeStart, slotRangeEnd) {
+            SkeletonRenderer.prototype.draw = function (batcher, skeleton, slotRangeStart, slotRangeEnd, palette) {
                 if (slotRangeStart === void 0) { slotRangeStart = -1; }
                 if (slotRangeEnd === void 0) { slotRangeEnd = -1; }
                 var clipper = this.clipper;
@@ -10451,6 +10451,12 @@ var spine;
                 for (var i = 0, n = drawOrder.length; i < n; i++) {
                     var clippedVertexSize = clipper.isClipping() ? 2 : vertexSize;
                     var slot = drawOrder[i];
+                    var paletteIndex = 0;
+                    if (palette.enable) {
+                        if (palette.slotPalette.hasOwnProperty(slot.data.name)) {
+                            paletteIndex = palette.slotPalette[slot.data.name] / palette.paletteNumber;
+                        }
+                    }
                     if (!slot.bone.active) {
                         clipper.clipEndWithSlot(slot);
                         continue;
@@ -10465,6 +10471,7 @@ var spine;
                     if (slotRangeEnd >= 0 && slotRangeEnd == slot.data.index) {
                         inRange = false;
                     }
+                    var slotName = slot.data.name;
                     var attachment = slot.getAttachment();
                     var texture = null;
                     if (attachment instanceof spine.RegionAttachment) {
@@ -10646,8 +10653,14 @@ var spine;
                                     for (var v = 2, u = 0, n_9 = renderable.numFloats; v < n_9; v += vertexSize, u += 2) {
                                         verts[v] = finalColor.r;
                                         verts[v + 1] = finalColor.g;
-                                        verts[v + 2] = finalColor.b;
-                                        verts[v + 3] = finalColor.a;
+                                        if (palette.enable) {
+                                            verts[v + 2] = paletteIndex;
+                                            verts[v + 3] = -1.0;
+                                        }
+                                        else {
+                                            verts[v + 2] = finalColor.b;
+                                            verts[v + 3] = finalColor.a;
+                                        }
                                         verts[v + 4] = uvs[u];
                                         verts[v + 5] = uvs[u + 1];
                                         verts[v + 6] = darkColor.r;
@@ -10762,30 +10775,32 @@ var spine;
     (function (webgl) {
         var ManagedWebGLRenderingContext = (function () {
             function ManagedWebGLRenderingContext(canvasOrContext, contextConfig) {
-                var _this = this;
                 if (contextConfig === void 0) { contextConfig = { alpha: "true" }; }
                 this.restorables = new Array();
-                if (!((canvasOrContext instanceof WebGLRenderingContext) || (canvasOrContext instanceof WebGL2RenderingContext))) {
-                    var canvas = canvasOrContext;
-                    this.gl = (canvas.getContext("webgl2", contextConfig) || canvas.getContext("webgl", contextConfig));
-                    this.canvas = canvas;
-                    canvas.addEventListener("webglcontextlost", function (e) {
-                        var event = e;
-                        if (e) {
-                            e.preventDefault();
-                        }
-                    });
-                    canvas.addEventListener("webglcontextrestored", function (e) {
-                        for (var i = 0, n = _this.restorables.length; i < n; i++) {
-                            _this.restorables[i].restore();
-                        }
-                    });
+                if (canvasOrContext instanceof HTMLCanvasElement || canvasOrContext instanceof EventTarget) {
+                    this.setupCanvas(canvasOrContext, contextConfig);
                 }
                 else {
                     this.gl = canvasOrContext;
                     this.canvas = this.gl.canvas;
                 }
             }
+            ManagedWebGLRenderingContext.prototype.setupCanvas = function (canvas, contextConfig) {
+                var _this = this;
+                this.gl = (canvas.getContext("webgl2", contextConfig) || canvas.getContext("webgl", contextConfig));
+                this.canvas = canvas;
+                canvas.addEventListener("webglcontextlost", function (e) {
+                    var event = e;
+                    if (e) {
+                        e.preventDefault();
+                    }
+                });
+                canvas.addEventListener("webglcontextrestored", function (e) {
+                    for (var i = 0, n = _this.restorables.length; i < n; i++) {
+                        _this.restorables[i].restore();
+                    }
+                });
+            };
             ManagedWebGLRenderingContext.prototype.addRestorable = function (restorable) {
                 this.restorables.push(restorable);
             };
@@ -10833,4 +10848,4 @@ var spine;
         webgl.WebGLBlendModeConverter = WebGLBlendModeConverter;
     })(webgl = spine.webgl || (spine.webgl = {}));
 })(spine || (spine = {}));
-// (add # back behind comments to get this reference) sourceMappingURL=spine-webgl.js.map
+//# sourceMappingURL=spine-webgl.js.map

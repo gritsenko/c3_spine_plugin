@@ -421,7 +421,127 @@
             {
                 this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this._sdkType._jsonURI) [this.skeletonName] );
             }            
-        }
+        },
 
-    };
+        SetValue(value, pathString)
+        {
+            let path = pathString.split(".");
+            this.SetValuePath(value, path);
+        },
+
+        SetNull(pathString)
+        {
+            let path = pathString.split(".");
+            this.SetValuePath(null, path);
+        },
+
+        DeleteKey(pathString)
+        {
+            let path = pathString.split('.');
+            let key = path.pop();
+            let result = this.GetValuePath(path,false);
+            if (typeof result !== 'object' || result === null) return;
+            delete result[key];
+        },
+
+        SetJSON(jsonString, pathString)
+        {
+            try
+            {
+                if (pathString === "")
+                {
+                    this.data = JSON.parse(jsonString);
+                    return;
+                } 
+                let path = pathString.split('.');
+                let key = path.pop();
+                let result = this.GetValuePath(path,true);
+                if (typeof result === 'object')
+                {
+                        console.log('parse', JSON.parse(jsonString));
+                        result[key] = JSON.parse(jsonString);
+                }   
+            }
+            catch(err)
+            {
+                console.warn('[Spine] JSON parse error', err, jsonString);
+                return false;
+            }
+        },
+
+        EnablePaletteColor(enable)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine] EnablePaletteColor, no skeleton', this.uid, this.runtime.GetTickCount());
+                return;
+            }
+
+            if (enable === 0)
+            {
+                this.palette.enable = true;
+            } else
+            {
+                this.palette.enable = false;
+            }
+        },
+
+        SetSlotPalette(slotName, paletteNumber)
+        {
+            this.palette.setSlotPalette(slotName, paletteNumber);
+        },
+
+        SetPaletteDefaultColors(paletteNumber)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine] SetPaletteDefaultColors, no skeleton', this.uid, this.runtime.GetTickCount());
+                return;
+            }
+
+            this.palette.setDefaultColors(paletteNumber, 1.0, 1.0);
+        },
+
+        SetPaletteColor(paletteNumber, index, color)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine] SetPaletteColor, no skeleton', this.uid, this.runtime.GetTickCount());
+                return;
+            }
+
+            this.palette.setColor(paletteNumber, index, color)
+
+            this.palette.uploadNeeded = true;
+        },
+
+        SetAllPaletteColors(value)
+        {
+            let length = value.length;
+            if (length/2 > this.palette.palette.length)
+            {
+                console.warn('[Spine] SetAllPaletteColorsFromString string too long:', length)
+            }
+            for(let i=0;i<length;i+=2)
+            {
+                this.palette.palette[i/2] = parseInt(value.substring(i,i+2), 16);
+            }
+            this.palette.uploadNeeded = true;
+        },
+
+        SetEntryPaletteColors(paletteNumber, value)
+        {
+            let length = value.length;
+            let indexSize = this.palette.indexSize;
+            if (length > indexSize*2*4)
+            {
+                console.warn('[Spine] SetEntryPaletteColorsFromString string too long:', length)
+            }
+            for(let i=0;i<length;i+=2)
+            {
+                this.palette.palette[indexSize*paletteNumber*4+i/2] = parseInt(value.substring(i,i+2), 16);
+            }
+            this.palette.uploadNeeded = true;
+        }
+    }
 }

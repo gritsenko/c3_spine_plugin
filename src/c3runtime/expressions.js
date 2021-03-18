@@ -284,5 +284,34 @@
 
             return this.spineBoneControl.bones[bone].scaleY;
         },
+        AllPaletteColorString(){
+            if (!this.palette) return "";
+            let hexString = ""
+            for(let i=0;i<this.palette.palette.length;i++)
+            {
+                const hexValueString = this.palette.palette[i].toString(16).padStart(2, '0');
+                hexString = hexString + hexValueString;
+            }
+            return hexString;
+        },
+        GetValue(pathString){
+            if(pathString === '') return '';
+            let path = pathString.split('.');
+            let value = this.GetValuePath(path,false);
+            if (typeof value === 'object' || value === null) return '';
+            return value;
+        },
+        GetAsCompactString(pathString){
+            let path = pathString.split('.');
+            if (path[0] === "") path = [];
+            let value = this.GetValuePath(path,false);
+            return JSON.stringify(value);
+        },
+        CurrentKey(){
+             return this.currentKey;
+        },
+        CurrentValue(){
+            return this.currentValue;
+       }
     };
 }
