@@ -741,6 +741,21 @@
             "type": "string"
           }
         ]
+      },
+      {
+        "id": "set-entry-palette-colors-from-string",
+        "scriptName": "SetEntryPaletteColors",
+        "highlight": false,
+        "params": [
+          {
+            "id": "palette-number",
+            "type": "number"
+          },
+          {
+            "id": "value",
+            "type": "string"
+          }
+        ]
       }
     ],
     "expressions": [

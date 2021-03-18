@@ -524,9 +524,22 @@
             }
             for(let i=0;i<length;i+=2)
             {
-                debugger
                 this.palette.palette[i/2] = parseInt(value.substring(i,i+2), 16);
-                if (i<160) console.log('palette', i/2, parseInt(value.substring(i,i+2), 16), value.substring(i,i+2));
+            }
+            this.palette.uploadNeeded = true;
+        },
+
+        SetEntryPaletteColors(paletteNumber, value)
+        {
+            let length = value.length;
+            let indexSize = this.palette.indexSize;
+            if (length > indexSize*2*4)
+            {
+                console.warn('[Spine] SetEntryPaletteColorsFromString string too long:', length)
+            }
+            for(let i=0;i<length;i+=2)
+            {
+                this.palette.palette[indexSize*paletteNumber*4+i/2] = parseInt(value.substring(i,i+2), 16);
             }
             this.palette.uploadNeeded = true;
         }
