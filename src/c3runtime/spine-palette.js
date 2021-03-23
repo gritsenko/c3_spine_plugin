@@ -124,6 +124,7 @@ class SpinePalette {
         let oldActive = gl.getParameter(gl.ACTIVE_TEXTURE);            
         let oldTex = gl.getParameter(gl.TEXTURE_BINDING_2D);  
         gl.activeTexture(textureUnit);
+        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
         gl.bindTexture(gl.TEXTURE_2D, this._paletteTexture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.indexSize, this.paletteNumber, 0, gl.RGBA, gl.UNSIGNED_BYTE, this._palette);
         gl.activeTexture(oldActive);

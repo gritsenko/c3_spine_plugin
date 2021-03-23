@@ -294,6 +294,17 @@
             }
             return hexString;
         },
+        EntryPaletteColorString(paletteNumber){
+            if (!this.palette) return "";
+            let hexString = ""
+            let paletteEntryOffset = this.palette.indexSize*paletteNumber*4;
+            for(let i=0;i<this.palette.paletteNumber;i++)
+            {
+                const hexValueString = this.palette.palette[paletteEntryOffset+i].toString(16).padStart(2, '0');
+                hexString = hexString + hexValueString;
+            }
+            return hexString;
+        },
         GetValue(pathString){
             if(pathString === '') return '';
             let path = pathString.split('.');

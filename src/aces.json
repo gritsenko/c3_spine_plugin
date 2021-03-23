@@ -1062,6 +1062,19 @@
         "returnType": "string",
         "params": [
         ]
+      },
+      {
+        "id": "entry-palette-color-string",
+        "expressionName": "EntryPaletteColorString",
+        "scriptName": "EntryPaletteColorString",
+        "highlight": false,
+        "returnType": "string",
+        "params": [
+          {
+            "id": "palette-number",
+            "type": "number"
+          }
+        ]
       }
     ]
   }

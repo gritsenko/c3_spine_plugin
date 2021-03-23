@@ -994,6 +994,16 @@
             "params": {
             }
           },
+          "entry-palette-color-string": {
+            "description": "Entry palette color string",
+            "translated-name": "EntryPaletteColorString",
+            "params": {
+              "palette-number": {
+                "name": "Palette number",
+                "desc": "Palette number"
+              }
+            }
+          },
           "get-value": {
             "description": "Get value at path",
             "translated-name": "GetValue",
