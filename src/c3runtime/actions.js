@@ -491,6 +491,11 @@
             this.palette.setSlotPalette(slotName, paletteNumber);
         },
 
+        SetSlotPaletteOffset(slotName, paletteOffset)
+        {
+            this.palette.setSlotPaletteOffset(slotName, paletteOffset);
+        },
+
         SetPaletteDefaultColors(paletteNumber)
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)

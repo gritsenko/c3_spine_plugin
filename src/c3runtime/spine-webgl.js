@@ -9853,7 +9853,7 @@ var spine;
             };
             Shader.newTwoColoredTextured = function (context) {
                 var vs = "\n\t\t\t\tattribute vec4 " + Shader.POSITION + ";\n\t\t\t\tattribute vec4 " + Shader.COLOR + ";\n\t\t\t\tattribute vec4 " + Shader.COLOR2 + ";\n\t\t\t\tattribute vec2 " + Shader.TEXCOORDS + ";\n\t\t\t\tuniform mat4 " + Shader.MVP_MATRIX + ";\n\t\t\t\tvarying vec4 v_light;\n\t\t\t\tvarying vec4 v_dark;\n\t\t\t\tvarying vec2 v_texCoords;\n\n\t\t\t\tvoid main () {\n\t\t\t\t\tv_light = " + Shader.COLOR + ";\n\t\t\t\t\tv_dark = " + Shader.COLOR2 + ";\n\t\t\t\t\tv_texCoords = " + Shader.TEXCOORDS + ";\n\t\t\t\t\tgl_Position = " + Shader.MVP_MATRIX + " * " + Shader.POSITION + ";\n\t\t\t\t}\n\t\t\t";
-                var fs = "\n\t\t\t\t#ifdef GL_ES\n\t\t\t\t\t#define LOWP lowp\n\t\t\t\t\tprecision mediump float;\n\t\t\t\t#else\n\t\t\t\t\t#define LOWP\n\t\t\t\t#endif\n\t\t\t\tvarying LOWP vec4 v_light;\n\t\t\t\tvarying LOWP vec4 v_dark;\n\t\t\t\tvarying vec2 v_texCoords;\n\t\t\t\tuniform sampler2D u_texture;\n\t\t\t\tuniform sampler2D u_palette;\n\t\t\t\tuniform float paletteEnable;\n\n\t\t\t\tvoid main () {\n\t\t\t\t\tvec4 texColor = texture2D(u_texture, v_texCoords);\n\t\t\t\t\tif (v_light.a >= 0.0)\n\t\t\t\t\t{\n\t\t\t\t\t\tgl_FragColor.a = texColor.a * v_light.a;\n\t\t\t\t\t\tgl_FragColor.rgb = ((texColor.a - 1.0) * v_dark.a + 1.0 - texColor.rgb) * v_dark.rgb + texColor.rgb * v_light.rgb;\n\t\t\t\t\t} else\n\t\t\t\t\t{\n\t\t\t\t\t\t// float index = ((texColor.r * 31.0)+0.5)/32.0;\n\t\t\t\t\t\tmediump float index = texColor.r;\n\t\t\t\t\t\tmediump float paletteNumber = ((v_light.b * 63.0)+0.5)/64.0;\n\t\t\t\t\t\t// paletteColor\n\t\t\t\t\t\tgl_FragColor = texture2D(u_palette, vec2(index,paletteNumber));\n\t\t\t\t\t\t// gl_FragColor = texture2D(u_palette, vec2(index,0));\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t";
+                var fs = "\n\t\t\t\t#ifdef GL_ES\n\t\t\t\t\t#define LOWP lowp\n\t\t\t\t\tprecision mediump float;\n\t\t\t\t#else\n\t\t\t\t\t#define LOWP\n\t\t\t\t#endif\n\t\t\t\tvarying LOWP vec4 v_light;\n\t\t\t\tvarying LOWP vec4 v_dark;\n\t\t\t\tvarying vec2 v_texCoords;\n\t\t\t\tuniform sampler2D u_texture;\n\t\t\t\tuniform sampler2D u_palette;\n\t\t\t\tuniform float paletteEnable;\n\n\t\t\t\tvoid main () {\n\t\t\t\t\tvec4 texColor = texture2D(u_texture, v_texCoords);\n\t\t\t\t\tif (v_light.a >= 0.0)\n\t\t\t\t\t{\n\t\t\t\t\t\tgl_FragColor.a = texColor.a * v_light.a;\n\t\t\t\t\t\tgl_FragColor.rgb = ((texColor.a - 1.0) * v_dark.a + 1.0 - texColor.rgb) * v_dark.rgb + texColor.rgb * v_light.rgb;\n\t\t\t\t\t} else\n\t\t\t\t\t{\n\t\t\t\t\t\t// float index = ((texColor.r * 31.0)+0.5)/32.0;\n\t\t\t\t\t\tmediump float index = texColor.r + v_light.g;\n\t\t\t\t\t\tmediump float paletteNumber = ((v_light.b * 63.0)+0.5)/64.0;\n\t\t\t\t\t\t// paletteColor\n\t\t\t\t\t\tgl_FragColor = texture2D(u_palette, vec2(index,paletteNumber));\n\t\t\t\t\t\t// gl_FragColor = texture2D(u_palette, vec2(index,0));\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t";
                 return new Shader(context, vs, fs);
             };
             Shader.newColored = function (context) {
@@ -10452,9 +10452,13 @@ var spine;
                     var clippedVertexSize = clipper.isClipping() ? 2 : vertexSize;
                     var slot = drawOrder[i];
                     var paletteIndex = 0;
+                    var paletteOffset = 0;
                     if (palette.enable) {
                         if (palette.slotPalette.hasOwnProperty(slot.data.name)) {
                             paletteIndex = palette.slotPalette[slot.data.name] / palette.paletteNumber;
+                        }
+                        if (palette.slotPaletteOffset.hasOwnProperty(slot.data.name)) {
+                            paletteOffset = palette.slotPaletteOffset[slot.data.name] / palette.indexSize;
                         }
                     }
                     if (!slot.bone.active) {
@@ -10654,6 +10658,7 @@ var spine;
                                         verts[v] = finalColor.r;
                                         verts[v + 1] = finalColor.g;
                                         if (palette.enable) {
+                                            verts[v + 1] = paletteOffset;
                                             verts[v + 2] = paletteIndex;
                                             verts[v + 3] = -1.0;
                                         }

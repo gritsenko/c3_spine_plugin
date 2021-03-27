@@ -603,7 +603,6 @@
             spineBatcher.setInstancePalette(this.palette, this.uid);
             
             this.palette.uploadNeeded = true;
-            console.log('[Spine] palette', this.palette, this.c3renderer);
 
             // Skeleton instance loading complete
             // @ts-ignore

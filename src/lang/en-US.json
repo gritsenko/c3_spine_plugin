@@ -712,6 +712,21 @@
               }
             }
           },
+          "set-slot-palette-offset": {
+            "list-name": "Set slot palette offset",
+            "display-text": "Set slot {0} palette offset to {1}",
+            "description": "Set slot palette offset.",
+            "params": {
+              "slot-name": {
+                "name": "Slot name",
+                "desc": "Slot name"
+              },              
+              "palette-offset": {
+                "name": "Palette offset",
+                "desc": "Palette offset"
+              }
+            }
+          },
           "set-palette-default-colors": {
             "list-name": "Set palette to default colors",
             "display-text": "Set palette {0} colors to default colors",

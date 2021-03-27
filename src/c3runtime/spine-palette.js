@@ -9,6 +9,7 @@ class SpinePalette {
         this._indexSize = indexSize;
         this._paletteNumber = paletteNumber;
         this._slotPalette = {};
+        this._slotPaletteOffset = {};
         this._paletteTexture = null;
         this._c3PaletteTexture = null;
         this._uploadNeeded = false;
@@ -22,13 +23,14 @@ class SpinePalette {
     get paletteNumber() { return this._paletteNumber;}
     set enable(value) { this._enable = value;}
     get slotPalette() { return this._slotPalette;}
+    get slotPaletteOffset() { return this._slotPaletteOffset;}
     get paletteTexture() { return this._paletteTexture;}
     get uploadNeeded() { return this._uploadNeeded;}
     set uploadNeeded(value) { this._uploadNeeded = value;}
 
     createPaletteTexture(renderer)
     {
-        let options =  { mipMap: false, sampling: 'nearest', pixelFormat:'rgba8' }
+        let options =  { mipMap: false, sampling: 'nearest', pixelFormat:'rgba8', wrapX: "repeat", wrapY: "repeat" }
         this._c3PaletteTexture = renderer.CreateDynamicTexture(this.indexSize, this.paletteNumber, options);
         this._paletteTexture = this._c3PaletteTexture._texture;      
     }
@@ -37,6 +39,11 @@ class SpinePalette {
     {
         if (paletteNumber < 0 || paletteNumber >= this.paletteNumber) paletteNumber = 0;
         this._slotPalette[slotName] = Math.floor(paletteNumber);
+    }
+
+    setSlotPaletteOffset(slotName, paletteOffset)
+    {
+        this._slotPaletteOffset[slotName] = Math.floor(paletteOffset);
     }
 
     getSlotPalette(slotName)

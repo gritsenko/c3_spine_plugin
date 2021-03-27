@@ -687,6 +687,21 @@
         ]
       },
       {
+        "id": "set-slot-palette-offset",
+        "scriptName": "SetSlotPaletteOffset",
+        "highlight": false,
+        "params": [
+          {
+            "id": "slot-name",
+            "type": "string"
+          },
+          {
+            "id": "palette-offset",
+            "type": "number"
+          }
+        ]
+      },
+      {
         "id": "set-palette-color",
         "scriptName": "SetPaletteColor",
         "highlight": false,
