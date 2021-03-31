@@ -167,3 +167,11 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - 1.8.0: Instances of a spine object will use the original objects skelton info, reducing texture requirements and faster creation of an instance. Add render quality property. Add TextureHeight and TextureWidth ACEs.
 - 1.7.0: Add event trigger ACE (trigger when animation event occurs.)
 - 1.6.0: Add Set region action (change region(texture) of an attachment in a slot on the current skin. Useful for character customization.
+
+## Scripting interface
+
+### setAnimation(animationName, loop, start, trackIndex)
+- animationName: string (animation name)
+- loop: boolean (loop animation)
+- start: number (0: beginning, 1: current-time, 2: current-ratio)
+- trackIndex: number (track index)
