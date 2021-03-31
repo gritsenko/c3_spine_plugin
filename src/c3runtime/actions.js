@@ -25,16 +25,7 @@
         },
 
         SetAnimation(animationName, loop, start, trackIndex){
-            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
-            {
-                if (this.debug) console.warn('[Spine] SetAnimation, no skeleton.', animationName, loop, start, trackIndex, this.uid, this.runtime.GetTickCount());
-                return;
-            }
-
-            this.animationName = animationName;
-
-            this.updateCurrentAnimation(loop, start, trackIndex, animationName);
-            this.SetRenderOnce(1.0, true, this.uid);
+            this._setAnimation(animationName, loop, start, trackIndex);
         },
 
         SetAlpha(alpha, trackIndex){

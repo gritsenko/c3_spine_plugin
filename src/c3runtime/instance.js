@@ -862,6 +862,20 @@
             return this.data;
         }
 
+        _setAnimation(animationName, loop, start, trackIndex)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine] SetAnimation, no skeleton.', animationName, loop, start, trackIndex, this.uid, this.runtime.GetTickCount());
+                return;
+            }
+
+            this.animationName = animationName;
+
+            this.updateCurrentAnimation(loop, start, trackIndex, animationName);
+            this.SetRenderOnce(1.0, true, this.uid);
+        }
+
     };
 
 	// Script interface. Use a WeakMap to safely hide the internal implementation details from the
@@ -882,5 +896,10 @@
 		{
             return map.get(this)._getData();
 		}
+
+        setAnimation(animationName, loop, start, trackIndex)
+        {
+            map.get(this)._setAnimation(animationName, loop, start, trackIndex);
+        }
 	};
 }
