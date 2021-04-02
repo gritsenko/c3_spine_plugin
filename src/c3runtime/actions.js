@@ -496,6 +496,9 @@
             }
 
             this.palette.setDefaultColors(paletteNumber, 1.0, 1.0);
+
+            this.palette.entryUploadNeeded[paletteNumber] = true;
+            this.palette.uploadNeeded = true;
         },
 
         SetPaletteColor(paletteNumber, index, color)
@@ -508,6 +511,7 @@
 
             this.palette.setColor(paletteNumber, index, color)
 
+            this.palette.entryUploadNeeded[paletteNumber] = true;
             this.palette.uploadNeeded = true;
         },
 
@@ -522,6 +526,8 @@
             {
                 this.palette.palette[i/2] = parseInt(value.substring(i,i+2), 16);
             }
+
+            this.palette.entryUploadNeeded.fill(true);
             this.palette.uploadNeeded = true;
         },
 
@@ -537,6 +543,8 @@
             {
                 this.palette.palette[indexSize*paletteNumber*4+i/2] = parseInt(value.substring(i,i+2), 16);
             }
+ 
+            this.palette.entryUploadNeeded[paletteNumber] = true;
             this.palette.uploadNeeded = true;
         }
     }

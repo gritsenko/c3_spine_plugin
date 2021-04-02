@@ -120,6 +120,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 1.44.0 Palette loading optimization (if only a few palette entries need update, just update those areas of the palette texture, otherwise update entire palette texture.)
 - 1.36.1 setTracksListner guard clause (do not crash if skeleton is not initialized or removed.)
 - 1.36.0 Init refactor (internal clean up)
 - 1.35.0 Fix current time event regression, no apply() in setAnimation (save some CPU)
