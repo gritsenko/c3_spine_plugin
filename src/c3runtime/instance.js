@@ -876,6 +876,47 @@
             this.SetRenderOnce(1.0, true, this.uid);
         }
 
+        _setAnimationTime(units, time, trackIndex)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.state)
+            {
+                if (this.debug) console.warn('[Spine] SetAninationTime, no state.',units, time, trackIndex, this.uid, this.runtime.GetTickCount());
+                return;
+            } 
+
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return;
+
+            const track = state.tracks[trackIndex];
+            if(!track) return; 
+
+            if (units == 0)
+            // time in ms
+            {
+                if (time < track.animationStart || time > track.animationEnd)
+                {
+                    if (this.debug) console.warn('[Spine] SetAnimationTime time out of bounds:', units, time, trackIndex, this.uid, this.runtime.GetTickCount());
+                    return;
+                }
+                track.trackTime = time;
+            } else
+            // time in ratio
+            {
+                if (time < 0 || time > 1)
+                {
+                    if (this.debug) console.warn('[Spine] SetAnimationTime ratio out of bounds:', units, time, trackIndex, this.uid, this.runtime.GetTickCount());
+                    return;
+                }
+                track.trackTime = time * (track.animationEnd - track.animationStart);
+            }
+
+            this.SetRenderOnce(1.0, true, this.uid);
+        }
+
+        _setAnimationSpeed(speed){
+            this.animationSpeed = speed;
+        }
+
     };
 
 	// Script interface. Use a WeakMap to safely hide the internal implementation details from the
@@ -900,6 +941,16 @@
         setAnimation(animationName, loop, start, trackIndex)
         {
             map.get(this)._setAnimation(animationName, loop, start, trackIndex);
+        }
+
+        setAnimationTime(units, time, trackIndex)
+        {
+            map.get(this)._setAnimationTime(units, time, trackIndex);
+        }
+
+        setAnimationSpeed(speed)
+        {
+            map.get(this)._setAnimationSpeed(speed);
         }
 	};
 }
