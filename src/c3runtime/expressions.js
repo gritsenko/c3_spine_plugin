@@ -43,15 +43,7 @@
         },
 
         CurrentAnimation(trackIndex){
-
-            if (!this.isLoaded) return "";
-
-            const state = this.skeletonInfo.state;
-            if(!state || !state.tracks) return "";
-            const track = state.tracks[trackIndex];
-            if(!track) return "";
-
-            return track.animation.name;
+            return this._currentAnimation(trackIndex)
         },
 
         AnimationsCount(){

@@ -917,6 +917,18 @@
             this.animationSpeed = speed;
         }
 
+        _currentAnimation(trackIndex){
+
+            if (!this.isLoaded) return "";
+
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return "";
+            const track = state.tracks[trackIndex];
+            if(!track) return "";
+
+            return track.animation.name;
+        }
+
     };
 
 	// Script interface. Use a WeakMap to safely hide the internal implementation details from the
@@ -951,6 +963,11 @@
         setAnimationSpeed(speed)
         {
             map.get(this)._setAnimationSpeed(speed);
+        }
+
+        currentAnimation(trackIndex)
+        {
+            return map.get(this)._currentAnimation(trackIndex);
         }
 	};
 }
