@@ -929,6 +929,41 @@
             return track.animation.name;
         }
 
+        _setAnimationMix(fromName, toName, duration)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.stateData)
+            {
+                if (this.debug) console.warn('[Spine] SetAnimationMix, no stateData.', fromName, toName, duration, this.uid, this.runtime.GetTickCount());
+                return;
+            } 
+
+            const stateData = this.skeletonInfo.stateData;
+            try
+            {
+                stateData.setMix(fromName, toName, duration);
+            }
+            catch (error)
+            {
+                console.error('[Spine] SetAnimationMix:', error);
+            }
+        }
+
+        _deleteAnimation(trackIndex, mixDuration) {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine] DeleteAnimation, no skelton.', trackIndex, mixDuration, this.uid, this.runtime.GetTickCount());
+                return;
+            }
+
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return;
+            const track = state.tracks[trackIndex];
+            if(!track) return;
+
+            state.setEmptyAnimation(trackIndex, mixDuration);
+            this.SetRenderOnce(1.0, true, this.uid);
+        }
+
     };
 
 	// Script interface. Use a WeakMap to safely hide the internal implementation details from the
@@ -969,5 +1004,16 @@
         {
             return map.get(this)._currentAnimation(trackIndex);
         }
+
+        setAnimationMix(fromName, toName, duration)
+        {
+            map.get(this)._setAnimationMix(fromName, toName, duration);
+        }
+
+        deleteAnimation(trackIndex, mixDuration)
+        {
+            map.get(this)._deleteAnimation(trackIndex, mixDuration);
+        }
+
 	};
 }
