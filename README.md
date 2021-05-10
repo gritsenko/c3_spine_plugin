@@ -120,6 +120,8 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 1.46.0 More animation scripting interfaces
+- 1.45.0 Animation scripting interfaces
 - 1.44.0 Palette loading optimization (if only a few palette entries need update, just update those areas of the palette texture, otherwise update entire palette texture.)
 - 1.36.1 setTracksListner guard clause (do not crash if skeleton is not initialized or removed.)
 - 1.36.0 Init refactor (internal clean up)
@@ -171,8 +173,24 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 
 ## Scripting interface
 
+### currentAnimation(trackIndex)
+- returns the value of the currentAnimation on trackIndex
+- trackIndex: number (track index)
+### deleteAnimation(trackIndex, mixDuration)
+- trackIndex: number (track index)
+- mixDuration: number (mix duration in seconds)
 ### setAnimation(animationName, loop, start, trackIndex)
 - animationName: string (animation name)
 - loop: boolean (loop animation)
 - start: number (0: beginning, 1: current-time, 2: current-ratio)
+- trackIndex: number (track index)
+### setAnimationMix(fromName, toName, duration)
+- fromName: string (animation name)
+- toName: string (animation name)
+- duration: number (mix duration in seconds)
+### setAnimationSpeed(speed)
+- speed: number (speed multiplier)
+### setAnimationTime(units, time, trackIndex)
+- units: number (0: time in ms, 1: ratio)
+- time: number (based on units)
 - trackIndex: number (track index)
