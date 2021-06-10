@@ -55,6 +55,11 @@
                 this.skeletonRenderQuality = properties[10];
                 this.keepAspectRatio = properties[11];
                 this.debug = properties[12];
+                this.bboxOverride = properties[13];
+                this.bboxOffsetX = properties[14];
+                this.bboxOffsetY = properties[15];
+                this.bboxSizeX = properties[16];
+                this.bboxSizeY = properties[17];
             }
 
             this.isMirrored = false;
@@ -338,6 +343,12 @@
                 var wi = this.GetWorldInfo();
                 offset = {x : offset.x - wi._w/2, y: offset.y};
                 size = {x : wi._w, y: wi._h};
+            }
+
+            if (this.bboxOverride)
+            {
+                offset = {x: this.bboxOffsetX, y: this.bboxOffsetY};
+                size = {x: this.bboxSizeX, y: this.bboxSizeY};
             }
 
             return {

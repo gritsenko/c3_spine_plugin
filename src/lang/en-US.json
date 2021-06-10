@@ -59,6 +59,26 @@
           "debug": {
             "name": "Debug",
             "desc": "Enable debug messages to dev console."
+          },
+          "bbox-override": {
+            "name": "BBox override",
+            "desc": "Override skeleton bounding box."
+          },
+          "bbox-offset-x": {
+            "name": "BBox offset x",
+            "desc": "Bounding box offset X."
+          },
+          "bbox-offset-y": {
+            "name": "BBox offset y",
+            "desc": "Bounding box offset Y."
+          },
+          "bbox-size-x": {
+            "name": "BBox size x",
+            "desc": "Bounding box size x."
+          },
+          "bbox-size-y": {
+            "name": "BBox size y",
+            "desc": "Bounding box size y."
           }
         },
         "aceCategories": {

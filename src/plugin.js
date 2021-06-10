@@ -3,7 +3,7 @@
     const C3 = self.C3;
     
     const PLUGIN_ID = "Gritsenko_Spine";
-    const PLUGIN_VERSION = "1.46.0";
+    const PLUGIN_VERSION = "1.47.0";
     const PLUGIN_CATEGORY = "general";
 
     const PLUGIN_CLASS = SDK.Plugins.Gritsenko_Spine = class SpinePlugin extends SDK.IPluginBase {
@@ -80,7 +80,12 @@
                 new SDK.PluginProperty("float", "default-mix", 0.0),
                 new SDK.PluginProperty("float", "render-quality", 1.0),
                 new SDK.PluginProperty("check", "keep-aspect-ratio", false),
-                new SDK.PluginProperty("check", "debug", false)
+                new SDK.PluginProperty("check", "debug", false),
+                new SDK.PluginProperty("check", "bbox-override", false),
+                new SDK.PluginProperty("float", "bbox-offset-x", -64.0),
+                new SDK.PluginProperty("float", "bbox-offset-y", -64.0),
+                new SDK.PluginProperty("float", "bbox-size-x", 128.0),
+                new SDK.PluginProperty("float", "bbox-size-y", 128.0)
             ]);
             SDK.Lang.PopContext(); //.properties
             SDK.Lang.PopContext();
