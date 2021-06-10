@@ -30,6 +30,7 @@
             this._assetPaths = {};
             this._initFailed = false;
             this._initOwner = -1;
+            this._skeletonRenderQuality = 1;
         }
 
         LoadTextures(renderer)

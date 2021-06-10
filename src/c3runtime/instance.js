@@ -259,6 +259,7 @@
             // @ts-ignore
             this.sdkType._skeletonJson = new spine.SkeletonJson(this.sdkType._atlasLoader);
             this.sdkType._skeletonJson.scale = this.skeletonRenderQuality;
+            this.sdkType._skeletonRenderQuality = this.skeletonRenderQuality;
             // JSON file with one skeleton, no name
             this.sdkType._jsonURI = this.jsonURI;
             if (this.skeletonName == "")
@@ -347,7 +348,7 @@
 
             if (this.bboxOverride)
             {
-                let rQ = this.skeletonRenderQuality;
+                let rQ = this.sdkType._skeletonRenderQuality;
                 offset = {x: this.bboxOffsetX*rQ, y: this.bboxOffsetY*rQ};
                 size = {x: this.bboxSizeX*rQ, y: this.bboxSizeY*rQ};
             }

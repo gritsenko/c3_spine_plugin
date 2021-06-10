@@ -342,7 +342,7 @@
 
         SetSkeletondataRenderQuality(renderQuality)
         {
-            this.skeletonRenderQuality = renderQuality;
+            this.sdkType._skeletonRenderQuality = renderQuality;
             const assetManager = this._sdkType._assetManager;
             const assetTag = this._sdkType._assetTag;
             this._sdkType._skeletonJson.scale = renderQuality;
