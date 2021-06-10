@@ -347,8 +347,9 @@
 
             if (this.bboxOverride)
             {
-                offset = {x: this.bboxOffsetX, y: this.bboxOffsetY};
-                size = {x: this.bboxSizeX, y: this.bboxSizeY};
+                let rQ = this.skeletonRenderQuality;
+                offset = {x: this.bboxOffsetX*rQ, y: this.bboxOffsetY*rQ};
+                size = {x: this.bboxSizeX*rQ, y: this.bboxSizeY*rQ};
             }
 
             return {
