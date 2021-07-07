@@ -69,6 +69,10 @@
 
             this.pngURI = ""
             this.atlasURI = "*init-atlas-uri*"
+            // Create random ID for owner, so that global layers / instances don't clash w/ same UID
+            // @ts-ignore
+            this.initOwnerId = this.uid+Math.random();
+            if (this.debug) console.log('[Spine] instance constructor, uid', this.initOwnerId);
             this.jsonURI = ""
             this.c3renderer = null
             this.runtime = inst.GetRuntime();
@@ -559,14 +563,16 @@
             // First instance to initialize becomes init owner
             if(this.sdkType._initOwner == -1)
             {
-                this.sdkType._initOwner = this.uid;
-                if (this.debug) console.info('[Spine] IsSpineReady, initOwner', this.uid, this.objectName, this.runtime.GetTickCount());
+                // @ts-ignore
+                this.sdkType._initOwner = this.initOwnerId;
+                if (this.debug) console.info('[Spine] IsSpineReady, initOwner', this.sdkType._initOwner, this.objectName, this.runtime.GetTickCount());
             }
 
             // Once per object, load texture assets, init spinebatcher
             if (!this.sdkType._texturesBatcherInitialized)
             {
-                if(!this.sdkType._texturesBatcherInitializing && this.sdkType._initOwner == this.uid)
+                // @ts-ignore
+                if(!this.sdkType._texturesBatcherInitializing && this.sdkType._initOwner == this.initOwnerId)
                 {
                     this.sdkType._texturesBatcherInitializing = true;
                     if (this.runtime.IsPreview() || this.runtime._assetManager._isCordova)
@@ -584,7 +590,7 @@
             const assetTag = this.sdkType._assetTag;
 
             // Once per object, wait for assets to complete loading
-            if (!assetManager.isLoadingComplete(assetTag) && this.sdkType._initOwner == this.uid)
+            if (!assetManager.isLoadingComplete(assetTag) && this.sdkType._initOwner ==  this.initOwnerId)
             {
                 return false;
             }
@@ -592,7 +598,7 @@
             // Once per object, load skeletonData, load assets
             if (!this.sdkType._skeletonDataInitialized)
             {
-                if(!this.sdkType._skeletonDataInitializing && this.sdkType._initOwner == this.uid)
+                if(!this.sdkType._skeletonDataInitializing && this.sdkType._initOwner ==  this.initOwnerId)
                 {
                     this.sdkType._skeletonDataInitializing = true;
                     this.loadSkeletonData();
