@@ -489,6 +489,12 @@
  
             this.palette.entryUploadNeeded[paletteNumber] = true;
             this.palette.uploadNeeded = true;
+        },
+
+        // For ProUI scrollview control of object blend mode
+        SetEffect(effect) {
+            this.GetWorldInfo().SetBlendMode(effect);
+            this.runtime.UpdateRender()
         }
     }
 }
