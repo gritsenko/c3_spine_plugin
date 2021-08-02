@@ -123,8 +123,14 @@
             }
 
             const skeleton = this.skeletonInfo.skeleton;
-            
-            this.customSkins[skinName] = new spine.Skin(skinName);
+            // If already exists, just clear
+            if (this.customSkins[skinName])
+            {
+                this.customSkins[skinName].clear();
+            } else 
+            {
+                this.customSkins[skinName] = new spine.Skin(skinName);
+            }
         },
 
         AddCustomSkin(skinName,addSkinName)
@@ -142,7 +148,7 @@
                 let addSkin = skeleton.data.findSkin(addSkinName);
                 if (addSkin)
                 {
-                    this.customSkins[skinName].addSkin(skeleton.data.findSkin(addSkinName));
+                    this.customSkins[skinName].addSkin(addSkin);
                 } else
                 {
                     if (this.debug) console.warn('[Spine] AddCustomSkin, add skin does not exist',skinName,addSkinName, this.uid, this.runtime.GetTickCount());
@@ -164,7 +170,6 @@
 
             this.skinName = skinName
             const skeleton = this.skeletonInfo.skeleton;
-            this.customSkins[this.skinName]
             skeleton.setSkin(this.customSkins[this.skinName]);
             skeleton.setSlotsToSetupPose();
             
@@ -214,53 +219,7 @@
 
         ApplySlotColors()
         {
-            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
-            {
-                if (this.debug) console.warn('[Spine] ApplySlotColors, no skeleton.', this.uid, this.runtime.GetTickCount());
-                return;
-            } 
-
-            const skeleton = this.skeletonInfo.skeleton;
-            // Set regular colors to slots
-            let slotName;
-            for(slotName in this.slotColors)
-            {
-                let slot = skeleton.findSlot(slotName);
-                if (slot === null)
-                {
-                    console.warn("[Spine] ApplySlotColors, slot not found: ",slotName,this.uid,this.runtime.GetTickCount());
-                    continue;    
-                }             
-                let color = this.slotColors[slotName];
-                slot.color.set(
-                    spineBatcher.getRValue(color),
-                    spineBatcher.getGValue(color),
-                    spineBatcher.getBValue(color),
-                    spineBatcher.getAValue(color));               
-            }
-
-            // Set dark colors to slots
-            for(slotName in this.slotDarkColors)
-            {
-                let slot = skeleton.findSlot(slotName);
-                if (slot === null)
-                {
-                    console.warn("[Spine] ApplySlotColors dark color, slot not found: ",slotName,this.uid,this.runtime.GetTickCount());
-                    continue;    
-                } 
-                // Set only if dark Color is available, (Tint Black must be applied to the slot in the project.)
-                if (slot.darkColor)
-                {
-                    let color = this.slotDarkColors[slotName];
-                    slot.darkColor.set(
-                        spineBatcher.getRValue(color),
-                        spineBatcher.getGValue(color),
-                        spineBatcher.getBValue(color),
-                        spineBatcher.getAValue(color));
-                }                
-            }
-
-            this.SetRenderOnce(1.0, true, this.uid);
+            this._applySlotColors()
         },
 
         ResetSlotColors()
