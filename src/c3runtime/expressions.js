@@ -43,15 +43,7 @@
         },
 
         CurrentAnimation(trackIndex){
-
-            if (!this.isLoaded) return "";
-
-            const state = this.skeletonInfo.state;
-            if(!state || !state.tracks) return "";
-            const track = state.tracks[trackIndex];
-            if(!track) return "";
-
-            return track.animation.name;
+            return this._currentAnimation(trackIndex)
         },
 
         AnimationsCount(){
@@ -290,6 +282,17 @@
             for(let i=0;i<this.palette.palette.length;i++)
             {
                 const hexValueString = this.palette.palette[i].toString(16).padStart(2, '0');
+                hexString = hexString + hexValueString;
+            }
+            return hexString;
+        },
+        EntryPaletteColorString(paletteNumber){
+            if (!this.palette) return "";
+            let hexString = ""
+            let paletteEntryOffset = this.palette.indexSize*paletteNumber*4;
+            for(let i=0;i<this.palette.paletteNumber;i++)
+            {
+                const hexValueString = this.palette.palette[paletteEntryOffset+i].toString(16).padStart(2, '0');
                 hexString = hexString + hexValueString;
             }
             return hexString;

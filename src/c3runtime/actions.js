@@ -25,16 +25,7 @@
         },
 
         SetAnimation(animationName, loop, start, trackIndex){
-            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
-            {
-                if (this.debug) console.warn('[Spine] SetAnimation, no skeleton.', animationName, loop, start, trackIndex, this.uid, this.runtime.GetTickCount());
-                return;
-            }
-
-            this.animationName = animationName;
-
-            this.updateCurrentAnimation(loop, start, trackIndex, animationName);
-            this.SetRenderOnce(1.0, true, this.uid);
+            this._setAnimation(animationName, loop, start, trackIndex);
         },
 
         SetAlpha(alpha, trackIndex){
@@ -55,19 +46,7 @@
        },
 
         DeleteAnimation(trackIndex, mixDuration) {
-            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
-            {
-                if (this.debug) console.warn('[Spine] DeleteAnimation, no skelton.', trackIndex, mixDuration, this.uid, this.runtime.GetTickCount());
-                return;
-            }
-
-            const state = this.skeletonInfo.state;
-            if(!state || !state.tracks) return;
-            const track = state.tracks[trackIndex];
-            if(!track) return;
-
-            state.setEmptyAnimation(trackIndex, mixDuration);
-            this.SetRenderOnce(1.0, true, this.uid);
+            this._deleteAnimation(trackIndex, mixDuration);
         },
 
         Play(){
@@ -84,7 +63,7 @@
             this.updateBounds();
         },
         SetAnimationSpeed(speed){
-            this.animationSpeed = speed;
+            this._setAnimationSpeed(speed);
         },
         
         SetRegion(slotName, attachmentName, regionName){
@@ -144,8 +123,14 @@
             }
 
             const skeleton = this.skeletonInfo.skeleton;
-            
-            this.customSkins[skinName] = new spine.Skin(skinName);
+            // If already exists, just clear
+            if (this.customSkins[skinName])
+            {
+                this.customSkins[skinName].clear();
+            } else 
+            {
+                this.customSkins[skinName] = new spine.Skin(skinName);
+            }
         },
 
         AddCustomSkin(skinName,addSkinName)
@@ -163,7 +148,7 @@
                 let addSkin = skeleton.data.findSkin(addSkinName);
                 if (addSkin)
                 {
-                    this.customSkins[skinName].addSkin(skeleton.data.findSkin(addSkinName));
+                    this.customSkins[skinName].addSkin(addSkin);
                 } else
                 {
                     if (this.debug) console.warn('[Spine] AddCustomSkin, add skin does not exist',skinName,addSkinName, this.uid, this.runtime.GetTickCount());
@@ -185,7 +170,6 @@
 
             this.skinName = skinName
             const skeleton = this.skeletonInfo.skeleton;
-            this.customSkins[this.skinName]
             skeleton.setSkin(this.customSkins[this.skinName]);
             skeleton.setSlotsToSetupPose();
             
@@ -235,53 +219,7 @@
 
         ApplySlotColors()
         {
-            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
-            {
-                if (this.debug) console.warn('[Spine] ApplySlotColors, no skeleton.', this.uid, this.runtime.GetTickCount());
-                return;
-            } 
-
-            const skeleton = this.skeletonInfo.skeleton;
-            // Set regular colors to slots
-            let slotName;
-            for(slotName in this.slotColors)
-            {
-                let slot = skeleton.findSlot(slotName);
-                if (slot === null)
-                {
-                    console.warn("[Spine] ApplySlotColors, slot not found: ",slotName,this.uid,this.runtime.GetTickCount());
-                    continue;    
-                }             
-                let color = this.slotColors[slotName];
-                slot.color.set(
-                    spineBatcher.getRValue(color),
-                    spineBatcher.getGValue(color),
-                    spineBatcher.getBValue(color),
-                    spineBatcher.getAValue(color));               
-            }
-
-            // Set dark colors to slots
-            for(slotName in this.slotDarkColors)
-            {
-                let slot = skeleton.findSlot(slotName);
-                if (slot === null)
-                {
-                    console.warn("[Spine] ApplySlotColors dark color, slot not found: ",slotName,this.uid,this.runtime.GetTickCount());
-                    continue;    
-                } 
-                // Set only if dark Color is available, (Tint Black must be applied to the slot in the project.)
-                if (slot.darkColor)
-                {
-                    let color = this.slotDarkColors[slotName];
-                    slot.darkColor.set(
-                        spineBatcher.getRValue(color),
-                        spineBatcher.getGValue(color),
-                        spineBatcher.getBValue(color),
-                        spineBatcher.getAValue(color));
-                }                
-            }
-
-            this.SetRenderOnce(1.0, true, this.uid);
+            this._applySlotColors()
         },
 
         ResetSlotColors()
@@ -302,39 +240,7 @@
 
         SetAnimationTime(units, time, trackIndex)
         {
-            if (!this.skeletonInfo || !this.skeletonInfo.state)
-            {
-                if (this.debug) console.warn('[Spine] SetAninationTime, no state.',units, time, trackIndex, this.uid, this.runtime.GetTickCount());
-                return;
-            } 
-
-            const state = this.skeletonInfo.state;
-            if(!state || !state.tracks) return;
-
-            const track = state.tracks[trackIndex];
-            if(!track) return; 
-
-            if (units == 0)
-            // time in ms
-            {
-                if (time < track.animationStart || time > track.animationEnd)
-                {
-                    if (this.debug) console.warn('[Spine] SetAnimationTime time out of bounds:', units, time, trackIndex, this.uid, this.runtime.GetTickCount());
-                    return;
-                }
-                track.trackTime = time;
-            } else
-            // time in ratio
-            {
-                if (time < 0 || time > 1)
-                {
-                    if (this.debug) console.warn('[Spine] SetAnimationTime ratio out of bounds:', units, time, trackIndex, this.uid, this.runtime.GetTickCount());
-                    return;
-                }
-                track.trackTime = time * (track.animationEnd - track.animationStart);
-            }
-
-            this.SetRenderOnce(1.0, true, this.uid);
+            this._setAnimationTime(units, time, trackIndex);
         },
 
         UpdateBBoxes()
@@ -344,21 +250,7 @@
         
         SetAnimationMix(fromName, toName, duration)
         {
-            if (!this.skeletonInfo || !this.skeletonInfo.stateData)
-            {
-                if (this.debug) console.warn('[Spine] SetAnimationMix, no stateData.', fromName, toName, duration, this.uid, this.runtime.GetTickCount());
-                return;
-            } 
-
-            const stateData = this.skeletonInfo.stateData;
-            try
-            {
-                stateData.setMix(fromName, toName, duration);
-            }
-            catch (error)
-            {
-                console.error('[Spine] SetAnimationMix:', error);
-            }
+            this._setAnimationMix(fromName, toName, duration);
         },
 
         SetObjectRenderRate(renderRate)
@@ -409,6 +301,7 @@
 
         SetSkeletondataRenderQuality(renderQuality)
         {
+            this.sdkType._skeletonRenderQuality = renderQuality;
             const assetManager = this._sdkType._assetManager;
             const assetTag = this._sdkType._assetTag;
             this._sdkType._skeletonJson.scale = renderQuality;
@@ -491,6 +384,11 @@
             this.palette.setSlotPalette(slotName, paletteNumber);
         },
 
+        SetSlotPaletteOffset(slotName, paletteOffset)
+        {
+            this.palette.setSlotPaletteOffset(slotName, paletteOffset);
+        },
+
         SetPaletteDefaultColors(paletteNumber)
         {
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
@@ -500,6 +398,9 @@
             }
 
             this.palette.setDefaultColors(paletteNumber, 1.0, 1.0);
+
+            this.palette.entryUploadNeeded[paletteNumber] = true;
+            this.palette.uploadNeeded = true;
         },
 
         SetPaletteColor(paletteNumber, index, color)
@@ -512,6 +413,7 @@
 
             this.palette.setColor(paletteNumber, index, color)
 
+            this.palette.entryUploadNeeded[paletteNumber] = true;
             this.palette.uploadNeeded = true;
         },
 
@@ -526,6 +428,8 @@
             {
                 this.palette.palette[i/2] = parseInt(value.substring(i,i+2), 16);
             }
+
+            this.palette.entryUploadNeeded.fill(true);
             this.palette.uploadNeeded = true;
         },
 
@@ -541,7 +445,15 @@
             {
                 this.palette.palette[indexSize*paletteNumber*4+i/2] = parseInt(value.substring(i,i+2), 16);
             }
+ 
+            this.palette.entryUploadNeeded[paletteNumber] = true;
             this.palette.uploadNeeded = true;
+        },
+
+        // For ProUI scrollview control of object blend mode
+        SetEffect(effect) {
+            this.GetWorldInfo().SetBlendMode(effect);
+            this.runtime.UpdateRender()
         }
     }
 }

@@ -197,11 +197,13 @@ class SpineBatch {
             const skeletonInstance = skeletonInstances[uid];
             const palette = skeletonInstance.palette;
 
+            /*
             if (skeletonInstance.initialized && palette.uploadNeeded)
             {
                 palette.uploadNeeded = false;
                 palette.upload(gl.TEXTURE1, gl);
             }
+            */
 
             if (skeletonInstance.initialized 
                 && (tickCount%this._renderRate == index%this._renderRate)
@@ -256,6 +258,13 @@ class SpineBatch {
                 this.batcher.end();
                 this.shader.unbind();
             }
+
+            if (skeletonInstance.initialized && palette.uploadNeeded)
+            {
+                palette.uploadNeeded = false;
+                palette.upload(gl.TEXTURE1, gl);
+            }
+
             index++;
         }
 
@@ -334,6 +343,6 @@ class SpineBatch {
 
 if (!globalThis.spineBatcher)
 {
-    console.log('[Spine] SpineBatcher init, 1.41.1');
+    console.log('[Spine] SpineBatcher init, 1.48.0');
     globalThis.spineBatcher = new SpineBatch();
 }

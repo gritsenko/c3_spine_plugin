@@ -9,11 +9,14 @@ class SpinePalette {
         this._indexSize = indexSize;
         this._paletteNumber = paletteNumber;
         this._slotPalette = {};
+        this._slotPaletteOffset = {};
         this._paletteTexture = null;
         this._c3PaletteTexture = null;
         this._uploadNeeded = false;
+        this._entryUploadNeeded = new Array(paletteNumber);
 
         this._palette.fill(255);
+        this._entryUploadNeeded.fill(false);
     }
 
     get palette() { return this._palette;}
@@ -22,13 +25,15 @@ class SpinePalette {
     get paletteNumber() { return this._paletteNumber;}
     set enable(value) { this._enable = value;}
     get slotPalette() { return this._slotPalette;}
+    get slotPaletteOffset() { return this._slotPaletteOffset;}
     get paletteTexture() { return this._paletteTexture;}
     get uploadNeeded() { return this._uploadNeeded;}
     set uploadNeeded(value) { this._uploadNeeded = value;}
+    get entryUploadNeeded() { return this._entryUploadNeeded;}
 
     createPaletteTexture(renderer)
     {
-        let options =  { mipMap: false, sampling: 'nearest', pixelFormat:'rgba8' }
+        let options =  { mipMap: false, sampling: 'nearest', pixelFormat:'rgba8', wrapX: "repeat", wrapY: "repeat" }
         this._c3PaletteTexture = renderer.CreateDynamicTexture(this.indexSize, this.paletteNumber, options);
         this._paletteTexture = this._c3PaletteTexture._texture;      
     }
@@ -37,6 +42,11 @@ class SpinePalette {
     {
         if (paletteNumber < 0 || paletteNumber >= this.paletteNumber) paletteNumber = 0;
         this._slotPalette[slotName] = Math.floor(paletteNumber);
+    }
+
+    setSlotPaletteOffset(slotName, paletteOffset)
+    {
+        this._slotPaletteOffset[slotName] = Math.floor(paletteOffset);
     }
 
     getSlotPalette(slotName)
@@ -121,13 +131,49 @@ class SpinePalette {
 
     upload(textureUnit, gl)
     {
+        // Store C3 gl texture state, will be overwriting it
         let oldActive = gl.getParameter(gl.ACTIVE_TEXTURE);            
         let oldTex = gl.getParameter(gl.TEXTURE_BINDING_2D);  
+
         gl.activeTexture(textureUnit);
+        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
         gl.bindTexture(gl.TEXTURE_2D, this._paletteTexture);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.indexSize, this.paletteNumber, 0, gl.RGBA, gl.UNSIGNED_BYTE, this._palette);
+
+        if (this.countEntries() > this.indexSize/8)
+        // Upload entire palette if more updates needed
+        {
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.indexSize, this.paletteNumber, 0, gl.RGBA, gl.UNSIGNED_BYTE, this._palette);
+            this.entryUploadNeeded.fill(false);
+        } else
+        // Upload only dirty entries
+        {
+            // Create buffers per upload, so they do not block
+            let entryBuffers = [];
+            for(let i=0;i<this.entryUploadNeeded.length;i++)
+            {
+                if (this.entryUploadNeeded[i])
+                {
+                    entryBuffers.push(this.palette.slice(i*this.indexSize*4, i*this.indexSize*4+this.indexSize*4));
+                    gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, i, this.indexSize, 1, gl.RGBA, gl.UNSIGNED_BYTE, entryBuffers[entryBuffers.length-1]);
+                    this.entryUploadNeeded[i] = false;
+                }
+            }
+
+        }
+
+        // Restore gl texture state
         gl.activeTexture(oldActive);
         gl.bindTexture(gl.TEXTURE_2D, oldTex);
+    }
+
+    countEntries()
+    {
+        let count = 0;
+        for (const uploadNeed of this.entryUploadNeeded)
+        {
+            if (uploadNeed) count++;
+        }
+        return count;
     }
     
 }

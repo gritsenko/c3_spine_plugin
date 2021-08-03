@@ -7,7 +7,9 @@
 - Commisions for specific new features are also accepted, contact Mikal via Twitter @kindeyegames or the Construct Community Discord server (Mikal).
 
 ## Important notes for Spine export files:
-- Requires Spine version 3.8+ JSON files. See Spine Formatter below to upgrade older JSON files.
+- Requires Spine version 3.8.x JSON files.
+- Spine 4.0.x files and runtime are not yet supported, but will be done. No ETA yet.
+- See Spine Formatter below to upgrade older JSON files.
 - In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear or Nearest.
 - In the Packing settings, set Region Padding to 2 or higher (if you see lines around your images, it may be because padding is set to 0).
 - Max texture size, 4096x4096. multiple texture sheets supported (use comma separated list on C3 spine object's png path property).
@@ -17,7 +19,7 @@
 - Do not use worker mode for C3 (see below for details.)
 - For jumping or large movments, animate Spine character 'in place', don't do large translations in the Spine project.
 - Use C3 events and movement to do the large translations in the C3 project instead (e.g. a long jump.)
-- If animation is clipping against the bounds of the C3 object, you can use the scale property to make the Spine render smaller
+- If animation is clipping against the bounds of the C3 object, you can use the property bbox override and values to control the bounding box size and center offset. The values are based on Spine project coordinates.
 - Alternatively create a large transparent image in the Spine project behind your Spine character, this will can be used to set the bounding box size fot the C3 spine render.
 
 ## Multiple instances of a C3 Spine Object
@@ -120,6 +122,12 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 1.48.0 Scripting interface for Apply slot colors, scripting interface for addCustomSkinOutfit (quickly update custom skin from object)
+- 1.47.5 Make compatible with ProUI plugin for scroll lists
+- 1.47.3 Add bounding box override checkbox (can set bounding box in property, no need for transparent bounding box)
+- 1.46.0 More animation scripting interfaces
+- 1.45.0 Animation scripting interfaces
+- 1.44.0 Palette loading optimization (if only a few palette entries need update, just update those areas of the palette texture, otherwise update entire palette texture.)
 - 1.36.1 setTracksListner guard clause (do not crash if skeleton is not initialized or removed.)
 - 1.36.0 Init refactor (internal clean up)
 - 1.35.0 Fix current time event regression, no apply() in setAnimation (save some CPU)
@@ -167,3 +175,27 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - 1.8.0: Instances of a spine object will use the original objects skelton info, reducing texture requirements and faster creation of an instance. Add render quality property. Add TextureHeight and TextureWidth ACEs.
 - 1.7.0: Add event trigger ACE (trigger when animation event occurs.)
 - 1.6.0: Add Set region action (change region(texture) of an attachment in a slot on the current skin. Useful for character customization.
+
+## Scripting interface
+
+### currentAnimation(trackIndex)
+- returns the value of the currentAnimation on trackIndex
+- trackIndex: number (track index)
+### deleteAnimation(trackIndex, mixDuration)
+- trackIndex: number (track index)
+- mixDuration: number (mix duration in seconds)
+### setAnimation(animationName, loop, start, trackIndex)
+- animationName: string (animation name)
+- loop: boolean (loop animation)
+- start: number (0: beginning, 1: current-time, 2: current-ratio)
+- trackIndex: number (track index)
+### setAnimationMix(fromName, toName, duration)
+- fromName: string (animation name)
+- toName: string (animation name)
+- duration: number (mix duration in seconds)
+### setAnimationSpeed(speed)
+- speed: number (speed multiplier)
+### setAnimationTime(units, time, trackIndex)
+- units: number (0: time in ms, 1: ratio)
+- time: number (based on units)
+- trackIndex: number (track index)
