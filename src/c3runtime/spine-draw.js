@@ -30,6 +30,7 @@ class SpineBatch {
 
     init(canvas, runtime)
     {    
+        // @ts-ignore
         const spine = globalThis.spine;
     
         if (this._initialized) return 
@@ -163,6 +164,7 @@ class SpineBatch {
             return;
         }
 
+        // @ts-ignore
         const spine = globalThis.spine;
 
         const gl = this.gl;
@@ -341,8 +343,10 @@ class SpineBatch {
 
   }
 
+// @ts-ignore
 if (!globalThis.spineBatcher)
 {
-    console.log('[Spine] SpineBatcher init, 1.48.0');
+    console.log('[Spine] SpineBatcher init, 1.49.0');
+    // @ts-ignore
     globalThis.spineBatcher = new SpineBatch();
 }

@@ -1096,6 +1096,45 @@
 
             this.SetRenderOnce(1.0, true, this.uid);
         }
+
+        _animationEnd(trackIndex)
+        {
+
+            if (!this.isLoaded) return 0;
+
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return 0;
+            const track = state.tracks[trackIndex];
+            if(!track) return 0;
+
+            return track.animationEnd;
+        }
+
+        _animationStart(trackIndex)
+        {
+
+            if (!this.isLoaded) return 0;
+
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return 0;
+            const track = state.tracks[trackIndex];
+            if(!track) return 0;
+
+            return track.animationStart;
+        }
+
+        _animationLength(trackIndex)
+        {
+
+            if (!this.isLoaded) return 0;
+
+            const state = this.skeletonInfo.state;
+            if(!state || !state.tracks) return 0;
+            const track = state.tracks[trackIndex];
+            if(!track) return 0;
+
+            return (track.animationEnd-track.animationStart);
+        }
     };
 
 	// Script interface. Use a WeakMap to safely hide the internal implementation details from the
@@ -1155,6 +1194,21 @@
         applySlotColors()
         {
             map.get(this)._applySlotColors();
+        }
+
+        animationStart(trackIndex)
+        {
+            return map.get(this)._animationStart(trackIndex);
+        }
+
+        animationEnd(trackIndex)
+        {
+            return map.get(this)._animationEnd(trackIndex);
+        }
+
+        animationLength(trackIndex)
+        {
+            return map.get(this)._animationLength(trackIndex);
         }
 
 	};
