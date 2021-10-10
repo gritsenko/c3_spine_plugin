@@ -68,7 +68,7 @@
 Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Current Add-on, Release 1.36.1](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.36.1/Spine-v1.36.1.c3addon)
+[Current Add-on, Release 1.49.0](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.36.1/Spine-v1.49.0.c3addon)
 
 [Previous Add-on Releases](https://github.com/gritsenko/c3_spine_plugin/releases)
 
@@ -122,6 +122,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 1.49.0 Add scripting interface for animations.
 - 1.48.0 Scripting interface for Apply slot colors, scripting interface for addCustomSkinOutfit (quickly update custom skin from object)
 - 1.47.5 Make compatible with ProUI plugin for scroll lists
 - 1.47.3 Add bounding box override checkbox (can set bounding box in property, no need for transparent bounding box)
