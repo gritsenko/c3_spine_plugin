@@ -68,7 +68,7 @@
 Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Current Add-on, Release 1.49.0](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.36.1/Spine-v1.49.0.c3addon)
+[Current Add-on, Release 1.49.0](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.49.0/Spine-v1.49.0.c3addon)
 
 [Previous Add-on Releases](https://github.com/gritsenko/c3_spine_plugin/releases)
 
