@@ -78,26 +78,10 @@
             return this.textureWidth;
         },
         AnimationStart(trackIndex){
-
-            if (!this.isLoaded) return 0;
-
-            const state = this.skeletonInfo.state;
-            if(!state || !state.tracks) return 0;
-            const track = state.tracks[trackIndex];
-            if(!track) return 0;
-
-            return track.animationStart;
+            return this._animationStart(trackIndex);
         },
         AnimationEnd(trackIndex){
-
-            if (!this.isLoaded) return 0;
-
-            const state = this.skeletonInfo.state;
-            if(!state || !state.tracks) return 0;
-            const track = state.tracks[trackIndex];
-            if(!track) return 0;
-
-            return track.animationEnd;
+            return this._animationEnd(trackIndex);
         },
         AnimationLast(trackIndex){
 
