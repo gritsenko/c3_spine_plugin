@@ -16,7 +16,7 @@
 
 ## Additional Spine project guidelines:
 - Do not use minify on export of C3 project.
-- Do not use worker mode for C3 (see below for details.)
+- Do not use worker mode for C3.
 - For jumping or large movments, animate Spine character 'in place', don't do large translations in the Spine project.
 - Use C3 events and movement to do the large translations in the C3 project instead (e.g. a long jump.)
 - If animation is clipping against the bounds of the C3 object, you can use the property bbox override and values to control the bounding box size and center offset. The values are based on Spine project coordinates.
@@ -109,7 +109,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Batch render for improved performance with multiple Spine instances and objects.
 - Multiple atlas pages (multiple pngs).
 - Mix and Match skins, custom runtime skins.
-- C3 worker mode support.
+- (Regression, no longer supported, fix in progress) C3 worker mode support.
 - Color/Dark Color for Slot at runtime.
 - BoundingBoxAttachment center expressions.
 - Set Object Render Rate, controls number of ticks per render of the Spine object, distributed amongst the number of instances of the object. This can reduce the CPU performance and GPU performance vs the frame rate of the render.
