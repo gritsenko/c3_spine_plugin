@@ -9,6 +9,7 @@
 ## Important notes for Spine export files:
 - Requires Spine version 3.8.x JSON files.
 - Spine 4.0.x files and runtime are not yet supported, but will be done. No ETA yet.
+- When exporting from Spine 4.0, export using 3.8 JSON format and in Texture Packer Settings, check Options->Legacy output
 - See Spine Formatter below to upgrade older JSON files.
 - In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear or Nearest.
 - In the Packing settings, set Region Padding to 2 or higher (if you see lines around your images, it may be because padding is set to 0).
