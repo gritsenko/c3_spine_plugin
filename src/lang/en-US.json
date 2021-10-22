@@ -461,7 +461,7 @@
               },
               "color": {
                 "name": "Color",
-                "desc": "Color (use rgba())."
+                "desc": "Color (use rgba()) or # color."
               }
             }
           },
@@ -476,7 +476,7 @@
               },
               "dark-color": {
                 "name": "Dark color",
-                "desc": "Dark color (use rgba())."
+                "desc": "Dark color (use rgba()) or # color."
               }
             }
           },

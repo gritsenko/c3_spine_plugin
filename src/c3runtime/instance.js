@@ -1042,7 +1042,28 @@
             return (((val & 0xFF) << 24)
                    | ((val & 0xFF00) << 8)
                    | ((val >>> 8) & 0xFF00)
-                   | ((val >>> 24) & 0xFF)) >>> 0;
+                   | ((val >>> 24) & 0xFF));
+        }
+
+        _hexToC3RGBAColorValue(s) {
+            if (s.length == 7) s = s + 'ff'
+            const result = this._swap32(parseInt(s.substr(1), 16))
+            console.log(s,result)
+            return result;
+        }
+
+        _hexToRGBA(hex) {
+            var validHEXInput = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            if (!validHEXInput) {
+                return {r:0, g:0, b:0, a:0};
+            }
+            var output = {
+                r: parseInt(validHEXInput[1], 16)/255.0,
+                g: parseInt(validHEXInput[2], 16)/255.0,
+                b: parseInt(validHEXInput[3], 16)/255.0,
+                a: parseInt(validHEXInput[4], 16)/255.0
+            };
+            return output;
         }
 
         _applySlotColors()
@@ -1065,11 +1086,19 @@
                     continue;    
                 }             
                 let color = this.slotColors[slotName];
-                slot.color.set(
-                    spineBatcher.getRValue(color),
-                    spineBatcher.getGValue(color),
-                    spineBatcher.getBValue(color),
-                    spineBatcher.getAValue(color));               
+                if (typeof color == 'string')
+                {
+                    if (color.length == 7) color+='ff'
+                    const v = this._hexToRGBA(color);
+                    slot.color.set(v.r, v.g, v.b, v.a)
+                } else
+                {
+                    slot.color.set(
+                        spineBatcher.getRValue(color),
+                        spineBatcher.getGValue(color),
+                        spineBatcher.getBValue(color),
+                        spineBatcher.getAValue(color));                   
+                }
             }
 
             // Set dark colors to slots
@@ -1085,13 +1114,20 @@
                 if (slot.darkColor)
                 {
                     let color = this.slotDarkColors[slotName];
-                    slot.darkColor.set(
-                        spineBatcher.getRValue(color),
-                        spineBatcher.getGValue(color),
-                        spineBatcher.getBValue(color),
-                        spineBatcher.getAValue(color));
-                    console.log('darkColor, slotName', slotName, Number(this.slotDarkColors[slotName]).toString(16), spineBatcher.getRValue(color), spineBatcher.getAValue(color)) 
+                    if (typeof color == 'string')
+                    {
+                        if (color.length == 7) color+='ff'
+                        const v = this._hexToRGBA(color);
+                        slot.darkColor.set(v.r, v.g, v.b, v.a)
+                    } else
+                    {
+                        slot.darkColor.set(
+                            spineBatcher.getRValue(color),
+                            spineBatcher.getGValue(color),
+                            spineBatcher.getBValue(color),
+                            spineBatcher.getAValue(color));
                     }
+                }
             }
 
             this.SetRenderOnce(1.0, true, this.uid);
