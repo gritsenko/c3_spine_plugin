@@ -437,7 +437,7 @@
           },
           {
             "id": "color",
-            "type": "number"
+            "type": "any"
           }
         ]
       },
@@ -452,7 +452,7 @@
           },
           {
             "id": "dark-color",
-            "type": "number"
+            "type": "any"
           }
         ]
       },
