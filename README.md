@@ -17,7 +17,7 @@
 
 ## Additional Spine project guidelines:
 - Do not use minify on export of C3 project.
-- Do not use worker mode for C3.
+- Worker mode supported for C3.
 - For jumping or large movments, animate Spine character 'in place', don't do large translations in the Spine project.
 - Use C3 events and movement to do the large translations in the C3 project instead (e.g. a long jump.)
 - If animation is clipping against the bounds of the C3 object, you can use the property bbox override and values to control the bounding box size and center offset. The values are based on Spine project coordinates.
@@ -69,19 +69,23 @@
 Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Current Add-on, Release 1.50.0](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.50.0/Spine-v1.50.0.c3addon)
+[Current Add-on, Release 1.50.2](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.50.2/Spine-v1.50.2.c3addon)
 
 [Previous Add-on Releases](https://github.com/gritsenko/c3_spine_plugin/releases)
 
 [Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.5.0/SpinePluginTest.c3p)
 
 [MixAndMatch project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.13.0/SpineMixandMatch.c3p)
+- Mix and match skins (change skins at runtime.)
 
 [BoundingBox project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.17.0/SpineBBox.c3p)
+- Attach C3 sprite object to animated Spine bounding box center pount.
 
 [BoundingBoxMesh project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.18.0/SpineBBoxMesh.c3p)
+- Attach a C3 sprite mesh to animated Spine bounding box polygon points.
 
 [AimBoneControl project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.36.1/SpineboyAimBoneControl.c3p)
+- Control a Spine bone during runtime (for example aim a gun the rest of the body follow via constraints.)
 
 ## LIVE DEMO
 [Live Demo](https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html)
@@ -110,7 +114,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Batch render for improved performance with multiple Spine instances and objects.
 - Multiple atlas pages (multiple pngs).
 - Mix and Match skins, custom runtime skins.
-- (Regression, no longer supported, fix in progress) C3 worker mode support.
+- C3 worker mode support.
 - Color/Dark Color for Slot at runtime.
 - BoundingBoxAttachment center expressions.
 - Set Object Render Rate, controls number of ticks per render of the Spine object, distributed amongst the number of instances of the object. This can reduce the CPU performance and GPU performance vs the frame rate of the render.
@@ -123,6 +127,8 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 1.50.2 Fix worker mode support for C3
+- 1.50.1 Fix slot color related to script add customskinoutfit
 - 1.50.0 Add hex color support for set slot color and set slot dark color ACEs
 - 1.49.0 Add scripting interface for animations.
 - 1.48.0 Scripting interface for Apply slot colors, scripting interface for addCustomSkinOutfit (quickly update custom skin from object)
