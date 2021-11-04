@@ -1004,6 +1004,9 @@
 
             slots.forEach( slotName =>
             {
+                if (addOutfit[slotName].skinName == '') return
+                const slotRef = skeleton.findSlot(slotName)
+                if (!slotRef) return
                 let addSkinName = slotName+'/'+addOutfit[slotName].skinName;
                 let addSkin = skeleton.data.findSkin(addSkinName);
                 if (addSkin)
@@ -1019,7 +1022,6 @@
                     // Color
                     this.slotColors[slotName] = this._swap32(addOutfit[slotName].tintColor);
                     this.slotDarkColors[slotName] = this._swap32(addOutfit[slotName].tintDarkColor);
-                    const slotRef = skeleton.findSlot(slotName)
                     spine.Color.rgba8888ToColor(slotRef.color, addOutfit[slotName].tintColor);
                     spine.Color.rgba8888ToColor(slotRef.darkColor, addOutfit[slotName].tintDarkColor);
                     // Dependent slots color

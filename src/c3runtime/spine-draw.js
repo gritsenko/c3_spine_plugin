@@ -346,7 +346,7 @@ class SpineBatch {
 // @ts-ignore
 if (!globalThis.spineBatcher)
 {
-    console.log('[Spine] SpineBatcher init, 1.50.2');
+    console.log('[Spine] SpineBatcher init, 1.51.1');
     // @ts-ignore
     globalThis.spineBatcher = new SpineBatch();
 }
