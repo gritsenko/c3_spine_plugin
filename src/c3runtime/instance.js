@@ -1173,6 +1173,33 @@
 
             return (track.animationEnd-track.animationStart);
         }
+
+        _addCustomSkin(skinName,addSkinName)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine] AddCustomSkin, skeleton is not available',skinName,addSkinName, this.uid, this.runtime.GetTickCount());
+                return;
+            }
+
+            const skeleton = this.skeletonInfo.skeleton;
+
+            if (this.customSkins[skinName])
+            {
+                let addSkin = skeleton.data.findSkin(addSkinName);
+                if (addSkin)
+                {
+                    this.customSkins[skinName].addSkin(addSkin);
+                } else
+                {
+                    if (this.debug) console.warn('[Spine] AddCustomSkin, add skin does not exist',skinName,addSkinName, this.uid, this.runtime.GetTickCount());
+                }
+            } else
+            {
+                if (this.debug) console.warn('[Spine] AddCustomSkin, custom skin does not exist',skinName,addSkinName, this.uid, this.runtime.GetTickCount());
+            }
+            this.SetRenderOnce(1.0, true, this.uid);
+        }
     };
 
 	// Script interface. Use a WeakMap to safely hide the internal implementation details from the
@@ -1232,6 +1259,11 @@
         applySlotColors()
         {
             map.get(this)._applySlotColors();
+        }
+
+        addCustomSkin(skinName, addSkinName)
+        {
+            map.get(this)._addCustomSkin(skinName, addSkinName);
         }
 
         animationStart(trackIndex)

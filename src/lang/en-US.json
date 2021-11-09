@@ -1060,6 +1060,31 @@
             "translated-name": "CurrentKey",
             "params": {
             }
+          },
+          "bbox-offset-x": {
+            "description": "Bounding box offset x",
+            "translated-name": "BboxOffsetX",
+            "params": {}
+          },
+          "bbox-offset-y": {
+            "description": "Bounding box offset y",
+            "translated-name": "BboxOffsetY",
+            "params": {}
+          },
+          "bbox-size-x": {
+            "description": "Bounding box size x",
+            "translated-name": "BboxSizeX",
+            "params": {}
+          },
+          "bbox-size-y": {
+            "description": "Bounding box size y",
+            "translated-name": "BboxSizeY",
+            "params": {}
+          },
+          "skeleton-scale": {
+            "description": "Skeleton scale",
+            "translated-name": "SkeletonScale",
+            "params": {}
           }
         }
       }
