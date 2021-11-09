@@ -299,6 +299,21 @@
         },
         CurrentValue(){
             return this.currentValue;
+       },
+       BboxOffsetX(){
+           return this.bboxOffsetX;
+       },
+       BboxOffsetY(){
+        return this.bboxOffsetY;
+       },
+       BboxSizeX(){
+        return this.bboxSizeX;
+       },
+       BboxSizeY(){
+        return this.bboxSizeY;
+       },
+       SkeletonScale(){
+        return this.skeletonScale;   
        }
     };
 }

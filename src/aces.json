@@ -1090,6 +1090,46 @@
             "type": "number"
           }
         ]
+      },
+      {
+        "id": "bbox-offset-x",
+        "expressionName": "BboxOffsetX",
+        "scriptName": "BboxOffsetX",
+        "highlight": false,
+        "returnType": "number",
+        "params": []
+      },      
+      {
+        "id": "bbox-offset-y",
+        "expressionName": "BboxOffsetY",
+        "scriptName": "BboxOffsetY",
+        "highlight": false,
+        "returnType": "number",
+        "params": []
+      },      
+      {
+        "id": "bbox-size-x",
+        "expressionName": "BboxSizeX",
+        "scriptName": "BboxSizeX",
+        "highlight": false,
+        "returnType": "number",
+        "params": []
+      },      
+      {
+        "id": "bbox-size-y",
+        "expressionName": "BboxSizeY",
+        "scriptName": "BboxSizeY",
+        "highlight": false,
+        "returnType": "number",
+        "params": []
+      },      
+      {
+        "id": "skeleton-scale",
+        "expressionName": "SkeletonScale",
+        "scriptName": "SkeletonScale",
+        "highlight": false,
+        "returnType": "number",
+        "params": []
       }
     ]
   }
