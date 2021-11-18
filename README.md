@@ -69,7 +69,7 @@
 Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Current Add-on, Release 1.53.0](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.53.0/Spine-v1.53.0.c3addon)
+[Current Add-on, Release 1.55.0](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.55.0/Spine-v1.55.0.c3addon)
 
 [Previous Add-on Releases](https://github.com/gritsenko/c3_spine_plugin/releases)
 
@@ -127,6 +127,8 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 1.55.0 Add addCustomSkinOutfit skin tone
+- 1.54.0 Add addCustomSkinOutfit skin, color
 - 1.53.0 Add expressions for bbox and scale properties
 - 1.52.0 Add customSkinOutfit script interface
 - 1.51.1 Add icon, error handling for addCustomSkinOutfit
