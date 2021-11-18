@@ -983,7 +983,7 @@
             this.SetRenderOnce(1.0, true, this.uid);
         }
 
-        _addCustomSkinOutfit(skinName, addOutfit, slots, dependentSlots)
+        _addCustomSkinOutfit(skinName, addOutfit, slots, dependentSlotsSkin, dependentSlotsColor, dependentSlotsSkinColor)
         {
             const spine = globalThis.spine;
             if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
@@ -1013,11 +1013,20 @@
                 {
                     // Skin
                     this.customSkins[skinName].addSkin(addSkin);
-                    if (dependentSlots[slotName])
+                    if (dependentSlotsSkin[slotName])
                     {
-                        let addSkinName = dependentSlots[slotName]+'/'+addOutfit[slotName].skinName;
-                        let addSkin = skeleton.data.findSkin(addSkinName);
-                        this.customSkins[skinName].addSkin(addSkin);
+                        for(const dependentSlot of dependentSlotsSkin[slotName])
+                        {
+                            let addSkinName = dependentSlot+'/'+addOutfit[slotName].skinName;
+                            let addSkin = skeleton.data.findSkin(addSkinName);
+                            if (addSkin)
+                            {
+                                this.customSkins[skinName].addSkin(addSkin);
+                            } else
+                            {
+                                if (this.debug) console.warn('[Spine] AddCustomSkin, add skin does not exist',skinName,addSkinName, this.uid, this.runtime.GetTickCount());
+                            }
+                        }
                     }
                     // Color
                     this.slotColors[slotName] = this._swap32(addOutfit[slotName].tintColor);
@@ -1025,12 +1034,26 @@
                     spine.Color.rgba8888ToColor(slotRef.color, addOutfit[slotName].tintColor);
                     spine.Color.rgba8888ToColor(slotRef.darkColor, addOutfit[slotName].tintDarkColor);
                     // Dependent slots color
-                    if (dependentSlots[slotName])
+                    if (dependentSlotsColor[slotName])
                     {
-                        const slotRef = skeleton.findSlot(dependentSlots[slotName])
-                        spine.Color.rgba8888ToColor(slotRef.color, addOutfit[slotName].tintColor);
-                        spine.Color.rgba8888ToColor(slotRef.darkColor, addOutfit[slotName].tintDarkColor);                    
+                        for(const dependentSlot of dependentSlotsColor[slotName])
+                        {
+                            const slotRef = skeleton.findSlot(dependentSlot)
+                            spine.Color.rgba8888ToColor(slotRef.color, addOutfit[slotName].tintColor);
+                            spine.Color.rgba8888ToColor(slotRef.darkColor, addOutfit[slotName].tintDarkColor);
+                        }          
                     }
+                    // Dependent slots skin color
+                    if (dependentSlotsSkinColor[slotName])
+                    {
+                        for(const dependentSlot of dependentSlotsSkinColor[slotName])
+                        {
+                            if (addOutfit[dependentSlot] && addOutfit[dependentSlot].skinName !== '0') continue;
+                            const slotRef = skeleton.findSlot(dependentSlot)
+                            spine.Color.rgba8888ToColor(slotRef.color, addOutfit[slotName].tintColor);
+                            spine.Color.rgba8888ToColor(slotRef.darkColor, addOutfit[slotName].tintDarkColor);
+                        }          
+                    }                    
                 } else
                 {
                     if (this.debug) console.warn('[Spine] AddCustomSkin, add skin does not exist',skinName,addSkinName, this.uid, this.runtime.GetTickCount());
@@ -1050,7 +1073,6 @@
         _hexToC3RGBAColorValue(s) {
             if (s.length == 7) s = s + 'ff'
             const result = this._swap32(parseInt(s.substr(1), 16))
-            console.log(s,result)
             return result;
         }
 
@@ -1251,9 +1273,9 @@
             map.get(this)._deleteAnimation(trackIndex, mixDuration);
         }
 
-        addCustomSkinOutfit(skinName, addOutfit, slots, dependentSlots)
+        addCustomSkinOutfit(skinName, addOutfit, slots, dependentSlotsSkin, dependentSlotsColor, dependentSlotsSkinColor)
         {
-            map.get(this)._addCustomSkinOutfit(skinName, addOutfit, slots, dependentSlots);
+            map.get(this)._addCustomSkinOutfit(skinName, addOutfit, slots, dependentSlotsSkin, dependentSlotsColor, dependentSlotsSkinColor);
         }
 
         applySlotColors()
