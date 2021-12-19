@@ -1039,6 +1039,8 @@
                         for(const dependentSlot of dependentSlotsColor[slotName])
                         {
                             const slotRef = skeleton.findSlot(dependentSlot)
+                            this.slotColors[dependentSlot] = this._swap32(addOutfit[slotName].tintColor);
+                            this.slotDarkColors[dependentSlot] = this._swap32(addOutfit[slotName].tintDarkColor);
                             spine.Color.rgba8888ToColor(slotRef.color, addOutfit[slotName].tintColor);
                             spine.Color.rgba8888ToColor(slotRef.darkColor, addOutfit[slotName].tintDarkColor);
                         }          
@@ -1050,6 +1052,8 @@
                         {
                             if (addOutfit[dependentSlot] && addOutfit[dependentSlot].skinName !== '0') continue;
                             const slotRef = skeleton.findSlot(dependentSlot)
+                            this.slotColors[dependentSlot] = this._swap32(addOutfit[slotName].tintColor);
+                            this.slotDarkColors[dependentSlot] = this._swap32(addOutfit[slotName].tintDarkColor);
                             spine.Color.rgba8888ToColor(slotRef.color, addOutfit[slotName].tintColor);
                             spine.Color.rgba8888ToColor(slotRef.darkColor, addOutfit[slotName].tintDarkColor);
                         }          
