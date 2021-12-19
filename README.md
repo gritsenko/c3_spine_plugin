@@ -7,7 +7,8 @@
 - Commisions for specific new features are also accepted, contact Mikal via Twitter @kindeyegames or the Construct Community Discord server (Mikal).
 
 ## Important notes for Spine export files:
-- Requires Spine version 3.8.x JSON files.
+- Requires Spine version 3.8.x JSON files. 
+- Not compatible with 3.8.75 spine (due to spine-ts runtime issues), use a later 3.8.x version.
 - Spine 4.0.x files and runtime are not yet supported, but will be done. No ETA yet.
 - When exporting from Spine 4.0, export using 3.8 JSON format and in Texture Packer Settings, check Options->Legacy output
 - See Spine Formatter below to upgrade older JSON files.
