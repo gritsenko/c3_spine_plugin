@@ -134,7 +134,7 @@
             this.initSpineInProgress = true;
             // Init Spine elements
             // @ts-ignore
-            this.mvp = new spine.webgl.Matrix4();
+            this.mvp = new spine.Matrix4();
             this.mvp.ortho2d(0, 0, 0, 0); // Texture size unknown at this point
             this.gl = this.runtime.GetWebGLRenderer()._gl;
             this.canvas = this.gl._canvas;
@@ -172,24 +172,20 @@
 
         async loadSkeletonTextures()
         {
-            // @ts-ignore
-            this.sdkType._assetManager = new spine.SharedAssetManager();
-            this.sdkType._assetTag = this.uid;
-            const assetManager = this.sdkType._assetManager;
-            const assetTag = this.sdkType._assetTag;
             const gl = this.gl;
+            let context = new spine.ManagedWebGLRenderingContext(this.gl);
+            this.sdkType._assetManager = new spine.AssetManager(context);
+            const assetManager = this.sdkType._assetManager;
             
             // @ts-ignore
             if (this.debug) console.info(this.GetInstance().GetUID(),'[Spine] Loading skeleton, textures, json, atlas');
-            // Only load textures once for creation of skeletonData, not for each instance
-            // Disable PMA when loading Spine textures
             // @ts-ignore
-            spine.webgl.GLTexture.DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL = true;
+            spine.GLTexture.DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL = true;
             
-            // Path translation for json and atlast (1:1)
+            // Path translation for json and atlas (1:1)
             if (this.runtime.IsPreview() || this.runtime._assetManager._isCordova)
             {
-                this.atlasURI = '*await-atlas-path*'
+                this.atlasURI = '*await-atlas-path*' // For debug of not getting path
                 this.atlasURI = await this.runtime._assetManager.GetProjectFileUrl(this.atlasPath);
                 this.jsonURI = await this.runtime._assetManager.GetProjectFileUrl(this.jsonPath);
             } else
@@ -204,26 +200,21 @@
             this.sdkType._assetPaths[this.jsonURI] = this.jsonURI;
             this.sdkType._assetPaths[this.jsonPath] = this.jsonURI;
 
-            assetManager.loadJson(assetTag, this.jsonURI);
-            // @ts-ignore
-            let textureLoader = function(img) { return new spine.webgl.GLTexture(gl, img); };
-
-            // Load multiple textures and set up path translation (for C3 preview with 'blob' URIs)
+            assetManager.loadText(this.jsonURI);
+ 
+            // Create texture translation dictionary and set up path translation (for C3 preview with 'blob' URIs)
             let assetPaths = this.pngPath.split(",");
             for(let i=0;i<assetPaths.length;i++)
             {
-                if (this.runtime.IsPreview() || this.runtime._assetManager._isCordova)
-                {    
-                    this.pngURI = await this.runtime._assetManager.GetProjectFileUrl(assetPaths[i]);
-                } else
-                {
-                    this.pngURI = assetPaths[i];
-                }
+                this.pngURI = await this.runtime._assetManager.GetProjectFileUrl(assetPaths[i]);
+                if (!this.pngURI && this.debug) alert('[Spine] png path not found:'+assetPaths[i])
                 this.sdkType._assetPaths[assetPaths[i]] = this.pngURI;
-                assetManager.loadTexture(assetTag, textureLoader, this.pngURI);
             }
 
-            assetManager.loadText(assetTag, this.atlasURI);
+            assetManager.loadTextureAtlas(this.atlasURI,null,null,this.sdkType._assetPaths);
+          
+            // assetManager.loadText(assetTag, this.atlasURI);
+            assetManager.loadText(this.atlasURI);
 
             this.sdkType._texturesBatcherInitialized = true;
             this.sdkType._texturesBatcherInitializing = false;
@@ -235,15 +226,14 @@
             if (this.debug) console.info('[Spine] loadSkeletonData, atlasURI', this.atlasURI, this.atlasPath, this.uid, this.objectName, this.sdkType._texturesBatcherInitialized, this.runtime.GetTickCount());
 
             const assetManager = this.sdkType._assetManager;;
-            const assetTag = this.sdkType._assetTag;
             const self = this;
 
-            const atlasURI = assetManager.get(assetTag, this.atlasURI);
+            const atlasURI = assetManager.get(this.atlasURI);
 
             // Sentry error reported
             if (atlasURI === undefined || atlasURI === null)
             {
-                console.warn('[Spine] loadSkeletonData, atlasURI not set', atlasURI, assetTag, this.uid, this.atlasURI, assetManager.isLoadingComplete(assetTag), this.atlasPath, this.runtime.GetTickCount());
+                console.warn('[Spine] loadSkeletonData, atlasURI not set', atlasURI, this.uid, this.atlasURI, assetManager.isLoadingComplete(), this.atlasPath, this.runtime.GetTickCount());
                 console.warn('[Spine] objectclass',this.objectName, this.sdkType, this.uid, this.runtime.GetTickCount());
                 if (globalThis.Sentry)
                 {
@@ -253,26 +243,12 @@
                 return;
             }
 
-            // @ts-ignore
-            this.sdkType._atlas = new spine.TextureAtlas(atlasURI, function(path) {
-                return assetManager.get(self.sdkType._assetTag, self.sdkType._assetPaths[path]);
-            });
-            // @ts-ignore
-            this.sdkType._atlasLoader = new spine.AtlasAttachmentLoader(this.sdkType._atlas);
-
-            // @ts-ignore
-            this.sdkType._skeletonJson = new spine.SkeletonJson(this.sdkType._atlasLoader);
+            this.sdkType._atlas = assetManager.get(this.atlasURI);
+            this.sdkType._skeletonJson = new spine.SkeletonJson(new spine.AtlasAttachmentLoader(this.sdkType._atlas));
             this.sdkType._skeletonJson.scale = this.skeletonRenderQuality;
             this.sdkType._skeletonRenderQuality = this.skeletonRenderQuality;
-            // JSON file with one skeleton, no name
-            this.sdkType._jsonURI = this.jsonURI;
-            if (this.skeletonName == "")
-            {
-                this.sdkType._skeletonData = this.sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this.jsonURI));
-            } else
-            {
-                this.sdkType._skeletonData = this.sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this.jsonURI) [this.skeletonName] );
-            }
+            this.sdkType._skeletonData = this.sdkType._skeletonJson.readSkeletonData(assetManager.get(this.jsonURI));
+            
             this.sdkType._skeletonDataInitialized = true;
             this.sdkType._skeletonDataInitializing = false;
         }
@@ -535,6 +511,7 @@
         }
 
         async IsSpineReady() {
+            spine = globalThis.spine
             if (this.sdkType._initFailed) return false;
 
             // Guard for case where sdkType does not exist (deleted on release)
@@ -590,7 +567,7 @@
             const assetTag = this.sdkType._assetTag;
 
             // Once per object, wait for assets to complete loading
-            if (!assetManager.isLoadingComplete(assetTag) && this.sdkType._initOwner ==  this.initOwnerId)
+            if (!assetManager.isLoadingComplete() && this.sdkType._initOwner ==  this.initOwnerId)
             {
                 return false;
             }
