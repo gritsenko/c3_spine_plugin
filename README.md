@@ -59,8 +59,15 @@
 ## Share your C3 and Spine plugin work!
 - Tweet your work @kindeyegames , @pix2d and #construct3, we'd be happy to see your work!
 
+## Debugging issues
+- Make sure all file names are lowercase, including on export from Spine (the png file names are embedded into the atlas data also)
+- Check that file names in property match project file names
+- Check that animation names include animation 'folder' name also if you use folders for animations.
+- If only one skeleton, leave skeleton property blank.
+- Check the debug property, during runtime, open the dev console window and check for errors or warnings.
+
 ## Known issues / workarounds
-- Clipping on rendering, see above for one solution  (add transparent image of size of area to render.)
+- Clipping on rendering, consider using bbxo override to set the render area and centering.
 - Animation finished with animation mix causing another finished trigger see [issue](https://github.com/gritsenko/c3_spine_plugin/issues/44) for workaround.
 - No render of default skin w/ no bones assigned, instead assign default skin bones.
 
@@ -73,7 +80,15 @@ Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/
 [Current Add-on, Release 1.55.1](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.55.1/Spine-v1.55.1.c3addon)
 
 [Previous Add-on Releases](https://github.com/gritsenko/c3_spine_plugin/releases)
+### Spine 4.0.x compatible Addon (alpha version)
+#### New beta version plug-in with Spine 4.0 - there may be bugs, only suggested for experienced plug-in / Spine users. No 4.0 example projects yet.
+2.x versions of the addon will support Spine 4.x
+[Beta Add-on, Release 2.0.0](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.0.0/Spine-v2.0.0.c3addon)
+#### Please support development of the C3 Spine plugin for Spine 4.x
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T8VV6CJVP3X3S)
+#### Please report beta issues to: [Issues](https://github.com/gritsenko/c3_spine_plugin/issues)
 
+### Note sample projects are still Spine 3.8.x
 [Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.5.0/SpinePluginTest.c3p)
 
 [MixAndMatch project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.13.0/SpineMixandMatch.c3p)

@@ -71,11 +71,11 @@ class SpineBatch {
             this.myVAO = extOESVAO.createVertexArrayOES();
         }
 
-        this.mvp = new spine.webgl.Matrix4();
-        this.shader = spine.webgl.Shader.newTwoColoredTextured(gl);
-        this.batcher = new spine.webgl.PolygonBatcher(gl);
-        this.renderer = new spine.webgl.SkeletonRenderer(gl);
-        this.shapes = new spine.webgl.ShapeRenderer(gl);
+        this.mvp = new spine.Matrix4();
+        this.shader = spine.Shader.newTwoColoredTextured(gl);
+        this.batcher = new spine.PolygonBatcher(gl);
+        this.renderer = new spine.SkeletonRenderer(gl);
+        this.shapes = new spine.ShapeRenderer(gl);
 
         this._initialized = true;
 
@@ -238,12 +238,12 @@ class SpineBatch {
 
                 // Bind the shader and set the texture and model-view-projection matrix.
                 this.shader.bind();
-                this.shader.setUniformi(spine.webgl.Shader.SAMPLER, 0);
-                this.shader.setUniformi('u_palette', 1);
+                // YYY this.shader.setUniformi(spine.Shader.SAMPLER, 0);
+                // YYY this.shader.setUniformi('u_palette', 1);
 
                 // Resize 
                 this.resize(bounds, skeletonInstance.skeletonScale);
-                this.shader.setUniform4x4f(spine.webgl.Shader.MVP_MATRIX, this.mvp.values);
+                this.shader.setUniform4x4f(spine.Shader.MVP_MATRIX, this.mvp.values);
                 
                 // Start the batch and tell the SkeletonRenderer to render the active skeleton.
                 this.batcher.begin(this.shader);
@@ -256,7 +256,8 @@ class SpineBatch {
 
                 // Render
                 this.renderer.premultipliedAlpha = premultipliedAlpha;
-                this.renderer.draw(this.batcher, skeletonInstance.skeletonInfo.skeleton, -1, -1, skeletonInstance.palette);
+                // YYY this.renderer.draw(this.batcher, skeletonInstance.skeletonInfo.skeleton, -1, -1, skeletonInstance.palette);
+                this.renderer.draw(this.batcher, skeletonInstance.skeletonInfo.skeleton, -1, -1);
                 this.batcher.end();
                 this.shader.unbind();
             }
@@ -346,7 +347,7 @@ class SpineBatch {
 // @ts-ignore
 if (!globalThis.spineBatcher)
 {
-    console.log('[Spine] SpineBatcher init, 1.55.1');
+    console.log('[Spine] SpineBatcher init, 2.0.0, Spine 4.0.x compatible');
     // @ts-ignore
     globalThis.spineBatcher = new SpineBatch();
 }
