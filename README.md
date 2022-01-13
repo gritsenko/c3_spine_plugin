@@ -80,7 +80,7 @@ Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/
 [Current Add-on, Release 1.55.1](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.55.1/Spine-v1.55.1.c3addon)
 
 [Previous Add-on Releases](https://github.com/gritsenko/c3_spine_plugin/releases)
-### Spine 4.0.x compatible Addon (alpha version)
+### Spine 4.0.x compatible Addon (beta version)
 #### New beta version plug-in with Spine 4.0 - there may be bugs, only suggested for experienced plug-in / Spine users. No 4.0 example projects yet.
 2.x versions of the addon will support Spine 4.x
 [Beta Add-on, Release 2.0.0](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.0.0/Spine-v2.0.0.c3addon)
