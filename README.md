@@ -81,14 +81,14 @@ Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/
 
 [Previous Add-on Releases](https://github.com/gritsenko/c3_spine_plugin/releases)
 ### Spine 4.0.x compatible Addon (alpha version)
-#### New beta version plug-in with Spine 4.0 - there may be bugs, only suggested for experienced plug-in / Spine users. No 4.0 example projects yet.
+#### New beta version plug-in with Spine 4.0 - there may be bugs, only suggested for experienced plug-in / Spine users. Example project in release 2.0.0.
 2.x versions of the addon will support Spine 4.x
-[Beta Add-on, Release 2.0.0](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.0.0/Spine-v2.0.0.c3addon)
+[Beta Add-on, Release 2.0.1](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.0.1/Spine-v2.0.1.c3addon)
 #### Please support development of the C3 Spine plugin for Spine 4.x
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T8VV6CJVP3X3S)
 #### Please report beta issues to: [Issues](https://github.com/gritsenko/c3_spine_plugin/issues)
 
-### Note sample projects are still Spine 3.8.x
+### Note sample projects are still Spine 3.8.x, they are not plug-in 2.x.x / Spine 4.0.x compatiable
 [Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.5.0/SpinePluginTest.c3p)
 
 [MixAndMatch project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.13.0/SpineMixandMatch.c3p)
@@ -143,6 +143,8 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 2.0.1 Fix SpineBBoxCenterX to accept slot and name (previously was ignoring slot)
+- 2.0.0 4.0 spine-ts runtime, compatible with Spine 4.0.x export files
 - 1.55.1 Fix addCustomSkinOutfit update slot colors for dependent colors
 - 1.55.0 Add addCustomSkinOutfit skin tone
 - 1.54.0 Add addCustomSkinOutfit skin, color

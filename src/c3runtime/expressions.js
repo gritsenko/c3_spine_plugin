@@ -116,11 +116,11 @@
 
             return track.alpha;
         },
-        SpineBBoxCenterX(name){
+        SpineBBoxCenterX(slot, name){
 
             if (!this.isLoaded) return 0;
 
-            let bBox = this.skeletonInfo.skeleton.getAttachmentByName(name,name);
+            let bBox = this.skeletonInfo.skeleton.getAttachmentByName(slot,name);
             if (!bBox) return 0;
 
             let points = this.skeletonInfo.skeletonBounds.getPolygon(bBox);
