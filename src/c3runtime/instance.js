@@ -4,6 +4,7 @@
     // @ts-ignore
     const C3 = self.C3;
     const spineBatcher = globalThis.spineBatcher;
+    const spine = globalThis.spine
     
     C3.Plugins.Gritsenko_Spine.Instance = class SpineInstance extends C3.SDKWorldInstanceBase {
 
@@ -511,7 +512,7 @@
         }
 
         async IsSpineReady() {
-            spine = globalThis.spine
+            // spine = globalThis.spine
             if (this.sdkType._initFailed) return false;
 
             // Guard for case where sdkType does not exist (deleted on release)
