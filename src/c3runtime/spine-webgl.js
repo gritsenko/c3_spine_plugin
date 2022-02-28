@@ -8135,6 +8135,7 @@ var spine = (() => {
         linkedMesh.mesh.updateUVs();
       }
       this.linkedMeshes.length = 0;
+
       if (root.events) {
         for (let eventName in root.events) {
           let eventMap = root.events[eventName];
@@ -8699,6 +8700,7 @@ var spine = (() => {
           let eventMap = map.events[i];
           let eventData = skeletonData.findEvent(eventMap.name);
           let event = new Event(Utils.toSinglePrecision(getValue(eventMap, "time", 0)), eventData);
+          
           event.intValue = getValue(eventMap, "int", eventData.intValue);
           event.floatValue = getValue(eventMap, "float", eventData.floatValue);
           event.stringValue = getValue(eventMap, "string", eventData.stringValue);
@@ -8787,7 +8789,8 @@ var spine = (() => {
     return bezier + 1;
   }
   function getValue(map, property, defaultValue) {
-    return map[property] !== void 0 ? map[property] : defaultValue;
+    //return map[property] !== void 0 ? map[property] : defaultValue;
+    return (property in map) ? map[property] : defaultValue;
   }
 
   // spine-core/src/polyfills.ts
