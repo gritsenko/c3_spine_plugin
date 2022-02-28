@@ -87,6 +87,8 @@
             this.completeEventName = ""
             this.textureWidth = 0;
             this.textureHeight = 0;
+            this.completeEventData = { }
+
 
             // @ts-ignore
             const wi = this.GetWorldInfo();
@@ -290,6 +292,7 @@
             stateData.defaultMix = this.defaultMix;
             // @ts-ignore
             var state = new spine.AnimationState(stateData);
+
             state.setAnimation(0, animationName, true);
             // Record animation assigned for listener
             this.trackAnimations[0] = this.animationName;
@@ -304,9 +307,22 @@
                 },
                 event: (trackEntry, event) => {
                     this.completeEventName = event.data.name;
-                    this.completeEventTrackIndex = trackEntry.trackIndex;
+                    this.completeEventTrackIndex = trackEntry.trackIndex;                        
+                   
+                    this.completeEventData = {
+                        'float'     : event.floatValue,
+                        'int'       : event.intValue,
+                        'string'    : event.stringValue,
+                        'balance'   : event.balance,
+                        'volume'    : event.volume,
+                        'audiopath' : event.data.audioPath,
+                        'event'     : event.data.name,
+                        'track'     : trackEntry.trackIndex
+                    }
+
                     // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
+                    this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyEvent);
                 }
             };
 
@@ -496,9 +512,22 @@
                 },
                 event: (trackEntry, event) => {
                     this.completeEventName = event.data.name;
-                    this.completeEventTrackIndex = trackEntry.trackIndex;
+                    this.completeEventTrackIndex = trackEntry.trackIndex;                    
+
+                    this.completeEventData = {
+                        'float'     : event.floatValue,
+                        'int'       : event.intValue,
+                        'string'    : event.stringValue,
+                        'balance'   : event.balance,
+                        'volume'    : event.volume,
+                        'audiopath' : event.data.audioPath,
+                        'event'     : event.data.name,
+                        'track'     : trackEntry.trackIndex                        
+                    }
+
                     // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
+                    this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyEvent);
                 }
             };   
         }
@@ -648,6 +677,7 @@
             this.spineError = null
             this.animationSpeed = null;
             this.completeEventName = null;
+            this.completeEventData = null;
             this.skeletonRenderQuality = null;
             this.textureWidth = null;
             this.textureHeight = null;

@@ -44,7 +44,9 @@
         OnEvent(eventName, trackIndex) {
             return (this.completeEventName === eventName) && (this.completeEventTrackIndex === trackIndex);
         },
-
+        OnAnyEvent(trackIndex) {
+            return (this.completeEventTrackIndex === trackIndex);
+        },        
         IsBoneControlPropertyActive(bone, propertyIndex) {
             let properties=['x','y','rotation','scaleX','scaleY'];
             let property = properties[propertyIndex];
