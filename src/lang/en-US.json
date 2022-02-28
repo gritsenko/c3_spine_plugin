@@ -194,7 +194,7 @@
           },
           "on-any-event": {
             "list-name": "On any animation event",
-            "display-text": "On any event on track {0}",
+            "display-text": "On any animation event on track {0}",
             "description": "Triggered on any event on specified track.",
             "params": {
               "track-index": {
