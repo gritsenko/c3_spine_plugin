@@ -314,6 +314,17 @@
        },
        SkeletonScale(){
         return this.skeletonScale;   
+       },
+       GetEventData(field) {
+        const fieldList = ["float", "int", "string", "balance", "volume", "audiopath", "event", "track"]
+
+        if (!(fieldList.includes(field)))
+            return "";
+
+        if (!(field in this.completeEventData))
+            return "";
+        
+        return this.completeEventData[field];
        }
     };
 }

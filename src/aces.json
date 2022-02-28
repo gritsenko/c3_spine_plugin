@@ -224,6 +224,18 @@
         ]
       },
       {
+        "id": "on-any-event",
+        "scriptName": "OnAnyEvent",
+        "isTrigger": true,
+        "params": [
+          {
+            "id": "track-index",
+            "type": "number",
+            "initial-value": 0
+          }
+        ]
+      },      
+      {
         "id": "is-bone-control-property-active",
         "scriptName": "IsBoneControlPropertyActive",
         "isTrigger": false,
@@ -1130,7 +1142,20 @@
         "highlight": false,
         "returnType": "number",
         "params": []
-      }
+      },   
+      {
+        "id": "get-event-data",
+        "expressionName": "GetEventData",
+        "scriptName": "GetEventData",
+        "highlight": false,
+        "returnType": "any",
+        "params": [
+          {
+            "id": "field",
+            "type": "string"            
+          }
+        ]
+      }            
     ]
   }
 }

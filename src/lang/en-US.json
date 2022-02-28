@@ -192,6 +192,17 @@
               }
             }
           },
+          "on-any-event": {
+            "list-name": "On any animation event",
+            "display-text": "On any animation event on track {0}",
+            "description": "Triggered on any event on specified track.",
+            "params": {
+              "track-index": {
+                "name": "Track index",
+                "desc": "Track index"
+              }
+            }
+          },          
           "is-bone-control-property-active": {
             "list-name": "Is bone control property active",
             "display-text": "Is {0} {1} control active",
@@ -1085,7 +1096,17 @@
             "description": "Skeleton scale",
             "translated-name": "SkeletonScale",
             "params": {}
-          }
+          },        
+          "get-event-data": {
+            "description": "Get value field of the current event",
+            "translated-name": "GetEventData",          
+            "params": {
+              "field": {
+                "name": "Field",
+                "desc": "The field of the event data to read (float,int,string,balance,volume,audiopath,event,track)"
+              }
+            }
+          }             
         }
       }
     }
