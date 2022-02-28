@@ -1142,23 +1142,7 @@
         "highlight": false,
         "returnType": "number",
         "params": []
-      },
-      {
-        "id": "get-event-name",
-        "expressionName": "GetEventName",
-        "scriptName": "GetEventName",
-        "highlight": false,
-        "returnType": "string",
-        "params": []
-      },
-      {
-        "id": "get-event-track-index",
-        "expressionName": "GetEventTrackIndex",
-        "scriptName": "GetEventTrackIndex",
-        "highlight": false,
-        "returnType": "string",
-        "params": []
-      },      
+      },   
       {
         "id": "get-event-data",
         "expressionName": "GetEventData",

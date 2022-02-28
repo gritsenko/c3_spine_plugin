@@ -315,12 +315,6 @@
        SkeletonScale(){
         return this.skeletonScale;   
        },
-       GetEventName() {
-        return this.completeEventName;
-       },
-       GetEventTrackIndex() {
-        return this.completeEventTrackIndex;
-       },
        GetEventData(field) {
         const fieldList = ["float", "int", "string", "balance", "volume", "audiopath", "event", "track"]
 
