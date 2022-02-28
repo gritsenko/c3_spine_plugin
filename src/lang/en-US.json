@@ -1096,17 +1096,7 @@
             "description": "Skeleton scale",
             "translated-name": "SkeletonScale",
             "params": {}
-          },
-          "get-event-name": {
-            "description": "Get current event name on the current track",
-            "translated-name": "GetEventName",
-            "params": {}
-          },
-          "get-event-track-index": {
-            "description": "Get track index of the current event",
-            "translated-name": "GetEventTrackIndex",
-            "params": {}
-          },          
+          },        
           "get-event-data": {
             "description": "Get value field of the current event",
             "translated-name": "GetEventData",          
