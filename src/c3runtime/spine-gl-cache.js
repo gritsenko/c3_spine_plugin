@@ -15,6 +15,8 @@ class SpineGLCache {
         this._oldViewport = null;
         this._isWebGL2 = isWebGL2;
         this._gl = gl;
+        this._scissor = null;
+        this._scissorBox = null;
     }
 
     store() {
@@ -49,6 +51,8 @@ class SpineGLCache {
         this._oldElement = gl.getParameter(gl.ELEMENT_ARRAY_BUFFER_BINDING);
         this._oldClearColor = gl.getParameter(gl.COLOR_CLEAR_VALUE);
         this._oldViewport = gl.getParameter(gl.VIEWPORT);
+        this._scissor = gl.getParameter(gl.SCISSOR_TEST);
+        if (this._scissor) this._scissorBox = gl.getParameter(gl.SCISSOR_BOX);
     }
 
     restore() {
@@ -73,7 +77,9 @@ class SpineGLCache {
         gl.clearColor(this._oldClearColor[0],this._oldClearColor[1],this._oldClearColor[2],this._oldClearColor[3])
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-        gl.viewport(this._oldViewport[0],this._oldViewport[1],this._oldViewport[2],this._oldViewport[3]);        
+        gl.viewport(this._oldViewport[0],this._oldViewport[1],this._oldViewport[2],this._oldViewport[3]);
+        if (this._scissor) gl.enable(gl.SCISSOR_TEST);
+        if (this._scissor) gl.scissor(this._scissorBox[0],this._scissorBox[1],this._scissorBox[2],this._scissorBox[3]);
     }
 
         // Save C3 webgl context, may be able to reduce some
