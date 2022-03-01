@@ -11,7 +11,7 @@
 - Not compatible with 3.8.75 spine (due to spine-ts runtime issues), use a later 3.8.x version or 4.0 version.
 - Spine 4.0.x JSON files require beta 2.x.x C3 addon version.
 - Spine 3.8.x JSON files require 1.x.x C3 addon version.
-- When exporting from Spine 4.9 for beta 2.x.x  use 4.x.x export format.
+- When exporting from Spine 4.0 for beta 2.x.x  use 4.x.x export format.
 - When exporting from Spine 4.0 for 1.x.x C3 addon export using 3.8 JSON format and in Texture Packer Settings, check Options->Legacy output.
 - See Spine Formatter below to upgrade older JSON files.
 - In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear or Nearest.
@@ -69,7 +69,7 @@
 - Check the debug property, during runtime, open the dev console window and check for errors or warnings.
 
 ## Known issues / workarounds
-- Clipping on rendering, consider using bbxo override to set the render area and centering.
+- Clipping on rendering, consider using bbxo override to set the render area and centering, do not use keep aspect when this is used.
 - Animation finished with animation mix causing another finished trigger see [issue](https://github.com/gritsenko/c3_spine_plugin/issues/44) for workaround.
 - No render of default skin w/ no bones assigned, instead assign default skin bones.
 
@@ -82,10 +82,10 @@ Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/
 [Current Add-on, Release 1.55.1](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.55.1/Spine-v1.55.1.c3addon)
 
 [Previous Add-on Releases](https://github.com/gritsenko/c3_spine_plugin/releases)
-### Spine 4.0.x compatible Addon (alpha version)
-#### New beta version plug-in with Spine 4.0 - there may be bugs, only suggested for experienced plug-in / Spine users. Example project in release 2.0.0.
+### Spine 4.0.x compatible Addon (beta version)
+#### New beta version plug-in with Spine 4.0. Example project in release 2.0.0.
 2.x versions of the addon will support Spine 4.x
-[Beta Add-on, Release 2.1.0](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.1.0/Spine-v2.1.0.c3addon)
+[Beta Add-on, Release 2.2.0](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.2.0/Spine-v2.2.0.c3addon)
 #### Please support development of the C3 Spine plugin for Spine 4.x
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T8VV6CJVP3X3S)
 #### Please report beta issues to: [Issues](https://github.com/gritsenko/c3_spine_plugin/issues)
@@ -145,6 +145,7 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 2.2.0 Add color property and ACEs, webgl / C3 special case render bug fix
 - 2.1.0 Add GetEventData expression, On any animation event condition 
 - 2.0.1 Fix SpineBBoxCenterX to accept slot and name (previously was ignoring slot)
 - 2.0.0 4.0 spine-ts runtime, compatible with Spine 4.0.x export files
