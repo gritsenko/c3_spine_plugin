@@ -227,6 +227,9 @@ class SpineBatch {
                 gl.enable(gl.BLEND);
                 gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
+                // Disable scissor (may be set by C3 renderer)
+                gl.disable(gl.SCISSOR_TEST);
+
                 gl.bindTexture(gl.TEXTURE_2D, null);        
                 gl.bindBuffer(gl.ARRAY_BUFFER, null);
                 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
@@ -347,7 +350,7 @@ class SpineBatch {
 // @ts-ignore
 if (!globalThis.spineBatcher)
 {
-    console.log('[Spine] SpineBatcher init, 2.1.0, Spine 4.0.x compatible');
+    console.log('[Spine] SpineBatcher init, 2.2.0, Spine 4.0.x compatible');
     // @ts-ignore
     globalThis.spineBatcher = new SpineBatch();
 }
