@@ -809,6 +809,25 @@
                 "desc": "Hex array string, RGBA order (FF12AB34CD...)"
               }
             }
+          },
+          "load-spine-files": {
+            "list-name": "Load spine files",
+            "display-text": "Load spine files {0}, {1}, {2}",
+            "description": "Load spine files, if there were none specified, only can be done once.",
+            "params": {
+              "json-path": {
+                "name": "JSON path",
+                "desc": "JSON project file name or url."
+              },
+              "atlas-path": {
+                "name": "Atlas path",
+                "desc": "Atlas project file name or url."
+              },
+              "png-path": {
+                "name": "PNG path",
+                "desc": "PNG project file name or url."
+              }
+            }
           }
         },
         "expressions": {

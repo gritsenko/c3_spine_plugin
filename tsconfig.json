@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "allowJs": true,
+      "checkJs": true,
+      "moduleResolution": "node",
+      "alwaysStrict": true,
+      "strictNullChecks": false,
+      "emitDeclarationOnly": true,
+      "declaration": true,
+      "outDir": "types",
+      "removeComments": false
+    },
+    "files": [
+        "placeHolder.ts",
+        "src/c3runtime/instance.js",
+        "src/c3runtime/spine-draw.js"
+    ],
+    "exclude": [
+      "src/lang"
+    ]
+}

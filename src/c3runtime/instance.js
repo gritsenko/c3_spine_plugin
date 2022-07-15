@@ -6,6 +6,7 @@
     const spineBatcher = globalThis.spineBatcher;
     const spine = globalThis.spine
     
+    // @ts-ignore
     C3.Plugins.Gritsenko_Spine.Instance = class SpineInstance extends C3.SDKWorldInstanceBase {
 
         constructor(inst, properties) {
@@ -38,6 +39,8 @@
             // @ts-ignore
             this.sdkType = this.GetSdkType();
 
+            this.jsonPath = "";
+            this.pngPath = "";
             this.atlasPath = "";
             // @ts-ignore
             this.objectName = this.GetInstance().GetObjectClass().GetName();
@@ -322,6 +325,7 @@
 
                     // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
+                    // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyEvent);
                 }
             };
@@ -527,6 +531,7 @@
 
                     // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnEvent);
+                    // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnyEvent);
                 }
             };   
@@ -553,6 +558,10 @@
                     globalThis.Sentry.captureException('[Spine] IsSpineReady, sdkType not defined:'+this.sdkType);
                 }
                 this.sdkType._initFailed = true;
+                return false;
+            }
+
+            if (this.jsonPath === '') {
                 return false;
             }
 
@@ -1010,22 +1019,30 @@
                 this.customSkins[skinName].clear();
             }
 
+            let tempSlotSkinName = {}
+
             slots.forEach( slotName =>
             {
-                if (addOutfit[slotName].skinName == '') return
+                let outfit = addOutfit[slotName];
+                if (outfit?.override?.skinName) {
+                    outfit = outfit.override;
+                }
+                if (outfit.skinName == '') return
                 const slotRef = skeleton.findSlot(slotName)
                 if (!slotRef) return
-                let addSkinName = slotName+'/'+addOutfit[slotName].skinName;
+                let addSkinName = slotName+'/'+outfit.skinName;
                 let addSkin = skeleton.data.findSkin(addSkinName);
                 if (addSkin)
                 {
                     // Skin
+                    tempSlotSkinName[slotName] = outfit.skinName;
                     this.customSkins[skinName].addSkin(addSkin);
                     if (dependentSlotsSkin[slotName])
                     {
                         for(const dependentSlot of dependentSlotsSkin[slotName])
                         {
-                            let addSkinName = dependentSlot+'/'+addOutfit[slotName].skinName;
+                            tempSlotSkinName[dependentSlot] = outfit.skinName;
+                            let addSkinName = dependentSlot+'/'+outfit.skinName;
                             let addSkin = skeleton.data.findSkin(addSkinName);
                             if (addSkin)
                             {
@@ -1037,40 +1054,46 @@
                         }
                     }
                     // Color
-                    this.slotColors[slotName] = this._swap32(addOutfit[slotName].tintColor);
-                    this.slotDarkColors[slotName] = this._swap32(addOutfit[slotName].tintDarkColor);
-                    spine.Color.rgba8888ToColor(slotRef.color, addOutfit[slotName].tintColor);
-                    spine.Color.rgba8888ToColor(slotRef.darkColor, addOutfit[slotName].tintDarkColor);
+                    this.slotColors[slotName] = this._swap32(outfit.tintColor);
+                    this.slotDarkColors[slotName] = this._swap32(outfit.tintDarkColor);
+                    spine.Color.rgba8888ToColor(slotRef.color, outfit.tintColor);
+                    spine.Color.rgba8888ToColor(slotRef.darkColor, outfit.tintDarkColor);
                     // Dependent slots color
                     if (dependentSlotsColor[slotName])
                     {
                         for(const dependentSlot of dependentSlotsColor[slotName])
                         {
+                            tempSlotSkinName[dependentSlot] = outfit.skinName;
                             const slotRef = skeleton.findSlot(dependentSlot)
-                            this.slotColors[dependentSlot] = this._swap32(addOutfit[slotName].tintColor);
-                            this.slotDarkColors[dependentSlot] = this._swap32(addOutfit[slotName].tintDarkColor);
-                            spine.Color.rgba8888ToColor(slotRef.color, addOutfit[slotName].tintColor);
-                            spine.Color.rgba8888ToColor(slotRef.darkColor, addOutfit[slotName].tintDarkColor);
+                            this.slotColors[dependentSlot] = this._swap32(outfit.tintColor);
+                            this.slotDarkColors[dependentSlot] = this._swap32(outfit.tintDarkColor);
+                            spine.Color.rgba8888ToColor(slotRef.color, outfit.tintColor);
+                            spine.Color.rgba8888ToColor(slotRef.darkColor, outfit.tintDarkColor);
                         }          
-                    }
-                    // Dependent slots skin color
-                    if (dependentSlotsSkinColor[slotName])
-                    {
-                        for(const dependentSlot of dependentSlotsSkinColor[slotName])
-                        {
-                            if (addOutfit[dependentSlot] && addOutfit[dependentSlot].skinName !== '0') continue;
-                            const slotRef = skeleton.findSlot(dependentSlot)
-                            this.slotColors[dependentSlot] = this._swap32(addOutfit[slotName].tintColor);
-                            this.slotDarkColors[dependentSlot] = this._swap32(addOutfit[slotName].tintDarkColor);
-                            spine.Color.rgba8888ToColor(slotRef.color, addOutfit[slotName].tintColor);
-                            spine.Color.rgba8888ToColor(slotRef.darkColor, addOutfit[slotName].tintDarkColor);
-                        }          
-                    }                    
+                    }               
                 } else
                 {
                     if (this.debug) console.warn('[Spine] AddCustomSkin, add skin does not exist',skinName,addSkinName, this.uid, this.runtime.GetTickCount());
                 }
             })
+            slots.forEach( slotName =>
+                {
+                    // Dependent slots skin color
+                    if (dependentSlotsSkinColor[slotName])
+                    {
+                        let outfit = addOutfit[slotName];
+                        for(const dependentSlot of dependentSlotsSkinColor[slotName])
+                        {
+                            if (tempSlotSkinName[dependentSlot] && tempSlotSkinName[dependentSlot] !== '0') continue;
+                            const slotRef = skeleton.findSlot(dependentSlot)
+                            this.slotColors[dependentSlot] = this._swap32(outfit.tintColor);
+                            this.slotDarkColors[dependentSlot] = this._swap32(outfit.tintDarkColor);
+                            spine.Color.rgba8888ToColor(slotRef.color, outfit.tintColor);
+                            spine.Color.rgba8888ToColor(slotRef.darkColor, outfit.tintDarkColor);
+                        }          
+                    }
+                }
+            )
             this.SetRenderOnce(1.0, true, this.uid);
         }
 
