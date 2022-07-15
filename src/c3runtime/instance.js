@@ -561,7 +561,7 @@
                 return false;
             }
 
-            if (this.jsonPath === '') {
+            if (this.jsonPath === "") {
                 return false;
             }
 

@@ -433,7 +433,10 @@
             this.GetWorldInfo().SetBlendMode(effect);
             this.runtime.UpdateRender()
         },
+
         LoadSpineFiles(jsonPath, atlasPath, pngPath) {
+            if (this.debug) console.log('[Spine] LoadSpineFiles', this.uid, this.runtime.GetTickCount(), jsonPath, atlasPath, pngPath);
+            debugger
             if (this.jsonPath !== "") return
             this.jsonPath = jsonPath;
             this.atlasPath = atlasPath;

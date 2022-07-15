@@ -3503,7 +3503,8 @@ var spine = (() => {
       if (line.length == 0)
         return 0;
       let colon = line.indexOf(":");
-      if (colon == -1)
+      let https = line.indexOf("https:");
+      if ((colon == -1) || (https != -1))
         return 0;
       entry[0] = line.substr(0, colon).trim();
       for (let i = 1, lastMatch = colon + 1; ; i++) {
