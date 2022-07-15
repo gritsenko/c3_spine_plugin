@@ -432,6 +432,13 @@
         SetEffect(effect) {
             this.GetWorldInfo().SetBlendMode(effect);
             this.runtime.UpdateRender()
+        },
+        LoadSpineFiles(jsonPath, atlasPath, pngPath) {
+            if (this.jsonPath !== "") return
+            this.jsonPath = jsonPath;
+            this.atlasPath = atlasPath;
+            this.pngPath = pngPath;
+            this.runtime.UpdateRender()
         }
     }
 }

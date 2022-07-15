@@ -783,6 +783,25 @@
             "type": "string"
           }
         ]
+      },
+      {
+        "id": "load-spine-files",
+        "scriptName": "LoadSpineFiles",
+        "highlight": false,
+        "params": [
+          {
+            "id": "json-path",
+            "type": "string"
+          },
+          {
+            "id": "atlas-path",
+            "type": "string"
+          },
+          {
+            "id": "png-path",
+            "type": "string"
+          }
+        ]
       }
     ],
     "expressions": [
