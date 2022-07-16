@@ -7,13 +7,13 @@
 - Commisions for specific new features are also accepted, contact Mikal via Twitter @kindeyegames or the Construct Community Discord server (Mikal).
 
 ## Important notes for Spine export files:
-- Requires Spine version 3.8.x or 4.0.x Spine JSON files. 
-- Not compatible with 3.8.75 spine (due to spine-ts runtime issues), use a later 3.8.x version or 4.0 version.
-- Spine 4.0.x JSON files require beta 2.x.x C3 addon version.
+- Requires Spine version 3.8.x or 4.1.x Spine JSON files. 
+- Not compatible with 3.8.75 spine (due to spine-ts runtime issues), use a later 3.8.x version or 4.1 version.
+- Spine 4.1.x JSON files require 2.4+ C3 addon version.
 - Spine 3.8.x JSON files require 1.x.x C3 addon version.
-- When exporting from Spine 4.0 for beta 2.x.x  use 4.x.x export format.
-- When exporting from Spine 4.0 for 1.x.x C3 addon export using 3.8 JSON format and in Texture Packer Settings, check Options->Legacy output.
-- See Spine Formatter below to upgrade older JSON files.
+- When exporting from Spine 4.1 for 2.4+ C3 addon use 4.1 export format.
+- When exporting from Spine 4.1 for 1.x.x C3 addon export using 3.8 JSON format and in Texture Packer Settings, check Options->Legacy output.
+- See Spine Formatter below to upgrade older JSON files to Spine 3.8 format.
 - In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear or Nearest.
 - In the Packing settings, set Region Padding to 2 or higher (if you see lines around your images, it may be because padding is set to 0).
 - Max texture size, 4096x4096. multiple texture sheets supported (use comma separated list on C3 spine object's png path property).
@@ -58,6 +58,11 @@
 - Wait 0.1S after applying (caution for race condition, reviewing need.)
 - After done, destroy all Spine instance and then recreate as needed with the new render quality.
 
+## Load Files ACE
+- If no json path is defined on the Spine object, the files can be loaded during runtime (only once).
+- It is also possible to use URLs for paths besides local C3 files. One change required is to replace the atlas file's image file pointer(s), usually the first line in the file to their corresponding URLs (e.g. skeleton.png to https://cdn.mygame.com/spine/skeleton.png).
+- If using URLs, one thing to watch out for is cache behavior of browsers, in our game when we update our cdn hosted Spine files, we change their filenames to stop caching of old files (the new file names are fetched from another cdn config file, which is not cached.)
+
 ## Share your C3 and Spine plugin work!
 - Tweet your work @kindeyegames , @pix2d and #construct3, we'd be happy to see your work!
 
@@ -79,37 +84,19 @@
 Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Current Add-on, Release 1.55.1](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.55.1/Spine-v1.55.1.c3addon)
+[Current Add-on, Release 2.4.0, Spine 4.1 supported](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.4.0/Spine-v2.4.0.c3addon)
 
 [Previous Add-on Releases](https://github.com/gritsenko/c3_spine_plugin/releases)
-### Spine 4.0.x compatible Addon (beta version)
-#### New beta version plug-in with Spine 4.0. Example project in release 2.0.0.
-2.x versions of the addon will support Spine 4.x
-[Beta Add-on, Release 2.2.0](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.2.0/Spine-v2.2.0.c3addon)
 #### Please support development of the C3 Spine plugin for Spine 4.x
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T8VV6CJVP3X3S)
-#### Please report beta issues to: [Issues](https://github.com/gritsenko/c3_spine_plugin/issues)
-
-### Note sample projects are still Spine 3.8.x, they are not plug-in 2.x.x / Spine 4.0.x compatiable
-[Sample project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.5.0/SpinePluginTest.c3p)
-
-[MixAndMatch project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.13.0/SpineMixandMatch.c3p)
-- Mix and match skins (change skins at runtime.)
-
-[BoundingBox project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.17.0/SpineBBox.c3p)
-- Attach C3 sprite object to animated Spine bounding box center pount.
-
-[BoundingBoxMesh project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.18.0/SpineBBoxMesh.c3p)
-- Attach a C3 sprite mesh to animated Spine bounding box polygon points.
-
-[AimBoneControl project](https://github.com/gritsenko/c3_spine_plugin/releases/download/1.36.1/SpineboyAimBoneControl.c3p)
-- Control a Spine bone during runtime (for example aim a gun the rest of the body follow via constraints.)
+#### Please report issues to: [Issues](https://github.com/gritsenko/c3_spine_plugin/issues)
 
 ## LIVE DEMO
 [Live Demo](https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html)
 
 ## Spine Formatter (3.3+ to 3.8 JSON Format)
 Useful for Dragon Bones Spine JSON export and earlier Spine versions.
+Note that only addon version 1.x support 3.8 JSON Format
 
 [Spine Formatter](https://gritsenko.github.io/c3_spine_plugin/formatter/index.html)
 
@@ -140,11 +127,14 @@ Useful for Dragon Bones Spine JSON export and earlier Spine versions.
 - Animation track support.
 - Disable render to texture when offscreen or animation is complete/stopped (perf optimization)
 - Bone control.
+- Object C3 color control
+- Load Files at runtime (load json/atlas/png files once during runtime, watch for cache behavior if using URLs)
 
 ## Wishlist
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 2.4.0 4.1.19 spine-ts runtime, compatible with Spine 4.1.x export files (sequence animations), Load Files ACE
 - 2.2.0 Add color property and ACEs, webgl / C3 special case render bug fix
 - 2.1.0 Add GetEventData expression, On any animation event condition 
 - 2.0.1 Fix SpineBBoxCenterX to accept slot and name (previously was ignoring slot)
