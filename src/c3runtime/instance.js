@@ -205,6 +205,7 @@
             this.sdkType._assetPaths[this.atlasPath] = this.atlasURI;
             this.sdkType._assetPaths[this.jsonURI] = this.jsonURI;
             this.sdkType._assetPaths[this.jsonPath] = this.jsonURI;
+            this.sdkType._jsonURI = this.jsonURI;
 
             assetManager.loadText(this.jsonURI);
  
@@ -283,9 +284,12 @@
             // If skeletonData not initialized, create it and stop other instances from creating it
             // @ts-ignore
             let skeleton = new spine.Skeleton(this.sdkType._skeletonData);
-            let subskin = skeleton.data.findSkin(this.skinName);
-            if (subskin === undefined) {
-                subskin = skeleton.data.skins[0];
+            let subskin
+            if (this.skinName) {
+                subskin = skeleton.data.findSkin(this.skinName);
+                if (!subskin) subskin = skeleton.data.defaultSkin;
+            } else {
+                subskin = skeleton.data.defaultSkin;
             }
 
             skeleton.setSkin(subskin);
