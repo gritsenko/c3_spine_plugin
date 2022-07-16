@@ -287,10 +287,10 @@
             if (this.skeletonName == "")
             {
                 // this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(this.assetManager.get(this.DEMO_NAME, this.jsonURI));
-                this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this._sdkType._jsonURI));
+                this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(this._sdkType._jsonURI));
             } else
             {
-                this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(assetTag, this._sdkType._jsonURI) [this.skeletonName] );
+                this._sdkType._skeletonData = this._sdkType._skeletonJson.readSkeletonData(assetManager.get(this._sdkType._jsonURI) [this.skeletonName] );
             }            
         },
 
