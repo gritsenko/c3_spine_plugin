@@ -3,7 +3,7 @@
     const C3 = self.C3;
     
     const PLUGIN_ID = "Gritsenko_Spine";
-    const PLUGIN_VERSION = "2.4.0";
+    const PLUGIN_VERSION = "2.5.0";
     const PLUGIN_CATEGORY = "general";
 
     const PLUGIN_CLASS = SDK.Plugins.Gritsenko_Spine = class SpinePlugin extends SDK.IPluginBase {
@@ -35,7 +35,7 @@
             this._info.SetIsDeprecated(false);
             this._info.SetCanBeBundled(true);
             this._info.AddCommonSceneGraphACEs();
-
+            this._info.SetSupportsZElevation(true);
 
             this._info.AddFileDependency({
                  filename: "c3runtime/spine-webgl.js",
