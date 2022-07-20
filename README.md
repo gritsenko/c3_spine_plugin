@@ -84,7 +84,7 @@
 Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Current Add-on, Release 2.4.0, Spine 4.1 supported](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.4.0/Spine-v2.4.0.c3addon)
+[Current Add-on, Release 2.5.0, Spine 4.1 supported](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.5.0/Spine-v2.5.0.c3addon)
 
 [Previous Add-on Releases](https://github.com/gritsenko/c3_spine_plugin/releases)
 #### Please support development of the C3 Spine plugin for Spine 4.x
@@ -134,6 +134,7 @@ Note that only addon version 1.x support 3.8 JSON Format
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 2.5.0 Add standard zElevation property and ACEs
 - 2.4.0 4.1.19 spine-ts runtime, compatible with Spine 4.1.x export files (sequence animations), Load Files ACE
 - 2.2.0 Add color property and ACEs, webgl / C3 special case render bug fix
 - 2.1.0 Add GetEventData expression, On any animation event condition 
