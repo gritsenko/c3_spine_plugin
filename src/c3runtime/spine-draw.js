@@ -350,7 +350,7 @@ class SpineBatch {
 // @ts-ignore
 if (!globalThis.spineBatcher)
 {
-    console.info('[Spine] SpineBatcher init, 2.4.0, Spine 4.1.x compatible');
+    console.info('[Spine] SpineBatcher init, 2.5.0, Spine 4.1.x compatible');
     // @ts-ignore
     globalThis.spineBatcher = new SpineBatch();
 }
