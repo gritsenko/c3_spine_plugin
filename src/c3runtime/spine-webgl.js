@@ -11096,7 +11096,7 @@ var spine = (() => {
         this.vertexSize += 4;
       this.vertices = Utils.newFloatArray(this.vertexSize * 1024);
     }
-    draw(batcher, skeleton, slotRangeStart = -1, slotRangeEnd = -1) {
+    draw(batcher, skeleton, slotRangeStart = -1, slotRangeEnd = -1, sequenceAutoplay, sequenceFPS) {
       let clipper = this.clipper;
       let premultipliedAlpha = this.premultipliedAlpha;
       let twoColorTint = this.twoColorTint;
@@ -11113,6 +11113,10 @@ var spine = (() => {
       let skeletonColor = skeleton.color;
       let vertexSize = twoColorTint ? 12 : 8;
       let inRange = false;
+      let currentTime = Date.now();
+      let frameTime = 1/sequenceFPS * 1000;
+      skeleton.sequenceActive = false;
+
       if (slotRangeStart == -1)
         inRange = true;
       for (let i = 0, n = drawOrder.length; i < n; i++) {
@@ -11135,6 +11139,16 @@ var spine = (() => {
         let attachment = slot.getAttachment();
         let texture;
         if (attachment instanceof RegionAttachment) {
+          // Automatic sequence looping
+          if (sequenceAutoplay && attachment.sequence) {
+            // Length of animation in frames
+            let count = attachment.sequence.regions.length;
+            let index = Math.round(currentTime / frameTime);
+            index %= count;
+            slot.sequenceIndex = index;
+            skeleton.sequenceActive = true;
+          }
+
           let region = attachment;
           renderable.vertices = this.vertices;
           renderable.numVertices = 4;
@@ -11145,6 +11159,16 @@ var spine = (() => {
           texture = region.region.renderObject.page.texture;
           attachmentColor = region.color;
         } else if (attachment instanceof MeshAttachment) {
+
+          // Automatic sequence looping
+          if (sequenceAutoplay && attachment.sequence) {
+            // Length of animation in frames
+            let count = attachment.sequence.regions.length;
+            let index = Math.round(currentTime / frameTime);
+            index %= count;
+            slot.sequenceIndex = index;
+            skeleton.sequenceActive = true;
+          }
           let mesh = attachment;
           renderable.vertices = this.vertices;
           renderable.numVertices = mesh.worldVerticesLength >> 1;

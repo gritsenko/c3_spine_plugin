@@ -717,6 +717,9 @@
             var active = this.skeletonInfo;
             const state = this.skeletonInfo.state;
 
+            // If sequence is active, need to Draw, regardless of animation state
+            if (this.skeletonInfo.skeleton.sequenceActive) this.runtime.UpdateRender();
+
             // Check if onscreen
             // @ts-ignore
             let wi = this.GetWorldInfo();
