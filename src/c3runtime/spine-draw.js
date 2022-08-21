@@ -210,7 +210,6 @@ class SpineBatch {
             const sequenceActive = skeletonInstance.skeletonInfo.skeleton.sequenceActive;
             const sequenceAutoplay = skeletonInstance.skeletonInfo.sequenceAutoplay
             const sequenceFPS = skeletonInstance.skeletonInfo.sequenceFPS
-            debugger
 
             if (skeletonInstance.initialized 
                 && (tickCount%this._renderRate == index%this._renderRate)
@@ -355,7 +354,7 @@ class SpineBatch {
 // @ts-ignore
 if (!globalThis.spineBatcher)
 {
-    console.info('[Spine] SpineBatcher init, 2.7.0, Spine 4.1.x compatible');
+    console.info('[Spine] SpineBatcher init, 2.7.1, Spine 4.1.x compatible');
     // @ts-ignore
     globalThis.spineBatcher = new SpineBatch();
 }
