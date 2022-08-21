@@ -207,9 +207,14 @@ class SpineBatch {
             }
             */
 
+            const sequenceActive = skeletonInstance.skeletonInfo.skeleton.sequenceActive;
+            const sequenceAutoplay = skeletonInstance.skeletonInfo.sequenceAutoplay
+            const sequenceFPS = skeletonInstance.skeletonInfo.sequenceFPS
+            debugger
+
             if (skeletonInstance.initialized 
                 && (tickCount%this._renderRate == index%this._renderRate)
-                && (skeletonInstance.renderOnce ||
+                && (sequenceActive || skeletonInstance.renderOnce ||
                     (!skeletonInstance.tracksComplete
                     && skeletonInstance.onScreen)))            {
 
@@ -260,7 +265,7 @@ class SpineBatch {
                 // Render
                 this.renderer.premultipliedAlpha = premultipliedAlpha;
                 // YYY this.renderer.draw(this.batcher, skeletonInstance.skeletonInfo.skeleton, -1, -1, skeletonInstance.palette);
-                this.renderer.draw(this.batcher, skeletonInstance.skeletonInfo.skeleton, -1, -1);
+                this.renderer.draw(this.batcher, skeletonInstance.skeletonInfo.skeleton, -1, -1, sequenceAutoplay, sequenceFPS);
                 this.batcher.end();
                 this.shader.unbind();
             }
@@ -350,7 +355,7 @@ class SpineBatch {
 // @ts-ignore
 if (!globalThis.spineBatcher)
 {
-    console.info('[Spine] SpineBatcher init, 2.5.0, Spine 4.1.x compatible');
+    console.info('[Spine] SpineBatcher init, 2.7.0, Spine 4.1.x compatible');
     // @ts-ignore
     globalThis.spineBatcher = new SpineBatch();
 }

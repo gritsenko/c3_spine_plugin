@@ -828,6 +828,25 @@
                 "desc": "PNG project file name or url."
               }
             }
+          },
+          "enable-sequence-autoplay": {
+            "list-name": "Enable sequence autoplay",
+            "display-text": "Sequence autoplay {0}, fps: {1}",
+            "description": "Enable sequence autoplay.",
+            "params": {
+              "enable": {
+                "name": "Enable",
+                "desc": "Enable",
+                "items": {
+                  "enabled": "enable",
+                  "disabled": "disable"
+                }
+              },
+              "sequence-fps": {
+                "name": "FPS",
+                "desc": "Sequence FPS"
+              }
+            }
           }
         },
         "expressions": {

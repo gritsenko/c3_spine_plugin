@@ -441,6 +441,25 @@
             this.atlasPath = atlasPath;
             this.pngPath = pngPath;
             this.runtime.UpdateRender()
+        },
+
+        EnableSequenceAutoplay(enable, fps)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine] SetPaletteColor, no skeleton', this.uid, this.runtime.GetTickCount());
+                return;
+            }
+
+            if (enable === 0)
+            {
+                this.skeletonInfo.sequenceAutoplay = true;
+            } else
+            {
+                this.skeletonInfo.sequenceAutoplay = false;
+            }
+            this.skeletonInfo.sequenceFPS = fps;
         }
+
     }
 }

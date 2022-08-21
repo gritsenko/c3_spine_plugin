@@ -802,6 +802,26 @@
             "type": "string"
           }
         ]
+      },
+      {
+        "id": "enable-sequence-autoplay",
+        "scriptName": "EnableSequenceAutoplay",
+        "highlight": false,
+        "params": [
+          {
+            "id": "enable",
+            "type": "combo",
+            "items": [
+              "enabled",
+              "disabled"
+            ]
+          },
+          {
+            "id": "sequence-fps",
+            "type": "number",
+            "initialValue": 8
+          }
+        ]
       }
     ],
     "expressions": [
