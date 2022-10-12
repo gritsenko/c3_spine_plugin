@@ -1,4 +1,4 @@
-# Spine add-on for Construct 3
+# Spine 4.1 add-on for Construct 3
 
 ### Please support development of the C3 Spine plugin (thanks to all those kind folks who have donated so far!)
 
@@ -7,13 +7,9 @@
 - Commisions for specific new features are also accepted, contact Mikal via Twitter @kindeyegames or the Construct Community Discord server (Mikal).
 
 ## Important notes for Spine export files:
-- Requires Spine version 3.8.x or 4.1.x Spine JSON files. 
-- Not compatible with 3.8.75 spine (due to spine-ts runtime issues), use a later 3.8.x version or 4.1 version.
+- Requires Spine version 4.1.x Spine JSON files. 
 - Spine 4.1.x JSON files require 2.4+ C3 addon version.
-- Spine 3.8.x JSON files require 1.x.x C3 addon version.
-- When exporting from Spine 4.1 for 2.4+ C3 addon use 4.1 export format.
-- When exporting from Spine 4.1 for 1.x.x C3 addon export using 3.8 JSON format and in Texture Packer Settings, check Options->Legacy output.
-- See Spine Formatter below to upgrade older JSON files to Spine 3.8 format.
+- When exporting from Spine 4.1 use 4.1 export format.
 - In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear or Nearest.
 - In the Packing settings, set Region Padding to 2 or higher (if you see lines around your images, it may be because padding is set to 0).
 - Max texture size, 4096x4096. multiple texture sheets supported (use comma separated list on C3 spine object's png path property).
@@ -84,7 +80,7 @@
 Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Current Add-on, Release 2.5.0, Spine 4.1 supported](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.5.0/Spine-v2.5.0.c3addon)
+[Current Add-on, Release 2.8.0, Spine 4.1 supported](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.8.0/Spine-v2.8.0.c3addon)
 
 [Previous Add-on Releases](https://github.com/gritsenko/c3_spine_plugin/releases)
 #### Please support development of the C3 Spine plugin for Spine 4.x
@@ -129,11 +125,14 @@ Note that only addon version 1.x support 3.8 JSON Format
 - Bone control.
 - Object C3 color control
 - Load Files at runtime (load json/atlas/png files once during runtime, watch for cache behavior if using URLs)
+- Attachment sequence animation supported (spine-ts 4.1 runtime)
 
 ## Wishlist
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 2.8.0 Add script interface for setSkin, flip
+- 2.7.0 Add Enable Sequence Autoplay ACE to enable sequence autoplay (autoplay sequence animations and fps)
 - 2.5.0 Add standard zElevation property and ACEs
 - 2.4.0 4.1.19 spine-ts runtime, compatible with Spine 4.1.x export files (sequence animations), Load Files ACE
 - 2.2.0 Add color property and ACEs, webgl / C3 special case render bug fix
@@ -227,3 +226,7 @@ Note that only addon version 1.x support 3.8 JSON Format
 - units: number (0: time in ms, 1: ratio)
 - time: number (based on units)
 - trackIndex: number (track index)
+### setSkin(skinName)
+- skinName: string (skin name)
+### flip(flip)
+- flip: boolean (flip state)
