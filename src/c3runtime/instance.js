@@ -1264,6 +1264,26 @@
             }
             this.SetRenderOnce(1.0, true, this.uid);
         }
+
+        _setSkin(skinName)
+        {
+            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
+            {
+                if (this.debug) console.warn('[Spine] SetSkin, no skeleton.', skinName, this.uid, this.runtime.GetTickCount());
+                return;
+            }
+
+            this.skinName = skinName;
+
+            this.updateCurrentSkin();
+            this.SetRenderOnce(1.0, true, this.uid);
+        }
+
+        _flip(isFlipped)
+        {
+            this.isMirrored = isFlipped;
+            this.SetRenderOnce(1.0, true, this.uid);
+        }
     };
 
 	// Script interface. Use a WeakMap to safely hide the internal implementation details from the
@@ -1343,6 +1363,16 @@
         animationLength(trackIndex)
         {
             return map.get(this)._animationLength(trackIndex);
+        }
+
+        setSkin(skinName)
+        {
+            map.get(this)._setSkin(skinName)
+        }
+
+        flip(isFlipped)
+        {
+            map.get(this)._flip(isFlipped)
         }
 
 	};
