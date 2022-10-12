@@ -6,22 +6,11 @@
     C3.Plugins.Gritsenko_Spine.Acts = {
 
         SetSkin(skinName){
-
-            if (!this.skeletonInfo || !this.skeletonInfo.skeleton)
-            {
-                if (this.debug) console.warn('[Spine] SetSkin, no skeleton.', skinName, this.uid, this.runtime.GetTickCount());
-                return;
-            }
-
-            this.skinName = skinName;
-
-            this.updateCurrentSkin();
-            this.SetRenderOnce(1.0, true, this.uid);
+            this._setSkin(skinName);
         },
 
         Flip(isFlipped){
-            this.isMirrored = isFlipped;
-            this.SetRenderOnce(1.0, true, this.uid);
+            this._flip(isFlipped);
         },
 
         SetAnimation(animationName, loop, start, trackIndex){
