@@ -1064,7 +1064,7 @@
                     this.slotColors[slotName] = this._swap32(outfit.tintColor);
                     this.slotDarkColors[slotName] = this._swap32(outfit.tintDarkColor);
                     spine.Color.rgba8888ToColor(slotRef.color, outfit.tintColor);
-                    spine.Color.rgba8888ToColor(slotRef.darkColor, outfit.tintDarkColor);
+                    if (slotRef.darkColor) spine.Color.rgba8888ToColor(slotRef.darkColor, outfit.tintDarkColor);
                     // Dependent slots color
                     if (dependentSlotsColor[slotName])
                     {
@@ -1075,7 +1075,7 @@
                             this.slotColors[dependentSlot] = this._swap32(outfit.tintColor);
                             this.slotDarkColors[dependentSlot] = this._swap32(outfit.tintDarkColor);
                             spine.Color.rgba8888ToColor(slotRef.color, outfit.tintColor);
-                            spine.Color.rgba8888ToColor(slotRef.darkColor, outfit.tintDarkColor);
+                            if (slotRef.darkColor) spine.Color.rgba8888ToColor(slotRef.darkColor, outfit.tintDarkColor);
                         }          
                     }               
                 } else
@@ -1096,7 +1096,7 @@
                             this.slotColors[dependentSlot] = this._swap32(outfit.tintColor);
                             this.slotDarkColors[dependentSlot] = this._swap32(outfit.tintDarkColor);
                             spine.Color.rgba8888ToColor(slotRef.color, outfit.tintColor);
-                            spine.Color.rgba8888ToColor(slotRef.darkColor, outfit.tintDarkColor);
+                            if (slotRef.darkColor) spine.Color.rgba8888ToColor(slotRef.darkColor, outfit.tintDarkColor);
                         }          
                     }
                 }
