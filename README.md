@@ -48,6 +48,11 @@
 ## Bone control ACEs
 - ACEs to override properties of bones (x,y,rotation, scale x, scale y), these are applied prior to IK transformation, but are useful for controlling 'endpoints' of IK, for example with an aim / crosshair bone.
 
+## Bone position -> use Bounding Box attachments
+Current bone position values are not available, you can only 'force' their values.
+
+Instead if you want to use a Spine position to reference in C3, you should add a bounding box to the spine project attached to a bone where you want it (e.g. at the tip of a sword) and use the bounding box expressions to read the value of the bounding box (either the points of the box or the center.) The github site has a little more information on that (you also need to use the update bounding box ACE to get the latest values.) See above for more details.
+
 ## Render quality ACE
 - Controls Spine render resolution
 - Only apply to one Spine instance per Spine object (e.g. use pick top instance).
