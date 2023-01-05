@@ -81,11 +81,9 @@
             // Now do what AtlasAttachmentLoader does:
             // https://github.com/EsotericSoftware/spine-runtimes/blob/3.8/spine-ts/core/src/AtlasAttachmentLoader.ts#L42
             region.renderObject = region;
-            existing.setRegion(region);
-
-            // Need to do one last thing, which SkeletonJson/SkeletonBinary do last:
-            // https://github.com/EsotericSoftware/spine-runtimes/blob/3.8/spine-ts/core/src/SkeletonJson.ts#L326-L340
-            existing.updateOffset();
+            existing.region = region;
+            existing.updateRegion()
+            
             this.SetRenderOnce(1.0, true, this.uid);
         },
 
