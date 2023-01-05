@@ -103,7 +103,7 @@
 
             // Context loss/restore
             // @ts-ignore
-            this.HandleWebGLContextLoss();
+            // this.HandleWebGLContextLoss();
             // @ts-ignore
             this.OnWebGLContextRestored = function()
             {
