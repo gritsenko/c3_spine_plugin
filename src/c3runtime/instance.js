@@ -32,7 +32,7 @@
             this.slotColors = {};
             this.slotDarkColors = {};
             this.isLoaded = false;
-            this.animateOnce = 0;
+            this.animateOnce = 0.1;
             this.trackAnimations = {};
             this.skinNames = [];
             this.delayedTrackListeners = [];
@@ -728,6 +728,12 @@
             let onScreen = instanceRect.intersectsRect(layerRect);
             spineBatcher.setInstanceOnScreen(onScreen, this.uid);
 
+            // Check if animation is playing
+            if (this.isPlaying) {
+                spineBatcher.setInstanceAnimationStop(false, this.uid)
+            } else {
+                spineBatcher.setInstanceAnimationStop(true, this.uid)
+            }
             
             let tracksComplete = true;
             state.tracks.forEach((track) => {
