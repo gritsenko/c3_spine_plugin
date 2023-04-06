@@ -305,7 +305,7 @@
             this.trackAnimations[0] = this.animationName;
             state.tracks[0].listener = {
                 complete: (trackEntry, count) => {
-                    this.completeAnimationName = this.trackAnimations[0];
+                    this.completeAnimationName = trackEntry.animation.name;
                     this.completeTrackIndex = trackEntry.trackIndex;
                     // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);
@@ -511,7 +511,7 @@
 
             state.tracks[trackIndex].listener = {
                 complete: (trackEntry, count) => {
-                    this.completeAnimationName = this.trackAnimations[trackEntry.trackIndex];
+                    this.completeAnimationName = trackEntry.animation.name;
                     this.completeTrackIndex = trackEntry.trackIndex;
                     // @ts-ignore
                     this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnAnimationFinished);

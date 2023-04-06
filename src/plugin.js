@@ -3,7 +3,7 @@
     const C3 = self.C3;
     
     const PLUGIN_ID = "Gritsenko_Spine";
-    const PLUGIN_VERSION = "2.8.3";
+    const PLUGIN_VERSION = "2.8.4";
     const PLUGIN_CATEGORY = "general";
 
     const PLUGIN_CLASS = SDK.Plugins.Gritsenko_Spine = class SpinePlugin extends SDK.IPluginBase {
