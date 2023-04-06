@@ -143,6 +143,12 @@ class SpineBatch {
         this._skeletonInstances[uid].renderOnce = renderOnce;
     }
 
+    setInstanceAnimationStop(animationStop, uid)
+    {
+        if (!this._skeletonInstances[uid]) return
+        this._skeletonInstances[uid].animationStop = animationStop;
+    }
+
     resize(bounds, skeletonScale) {
         // magic
         var centerX = bounds.offset.x + (bounds.size.x) / 2;
@@ -215,8 +221,7 @@ class SpineBatch {
                 && (tickCount%this._renderRate == index%this._renderRate)
                 && (sequenceActive || skeletonInstance.renderOnce ||
                     (!skeletonInstance.tracksComplete
-                    && skeletonInstance.onScreen)))            {
-
+                    && skeletonInstance.onScreen && !skeletonInstance.animationStop))) {
                 count++;
                 const bounds = skeletonInstance.skeletonInfo.bounds;
                 const premultipliedAlpha = skeletonInstance.skeletonInfo.premultipliedAlpha;
@@ -354,7 +359,7 @@ class SpineBatch {
 // @ts-ignore
 if (!globalThis.spineBatcher)
 {
-    console.info('[Spine] SpineBatcher init, 2.8.2, Spine 4.1.x compatible');
+    console.info('[Spine] SpineBatcher init, 2.8.3, Spine 4.1.x compatible');
     // @ts-ignore
     globalThis.spineBatcher = new SpineBatch();
 }
