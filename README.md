@@ -95,6 +95,9 @@ Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T8VV6CJVP3X3S)
 #### Please report issues to: [Issues](https://github.com/gritsenko/c3_spine_plugin/issues)
 
+## Example project, simple load and multi-track animation and bone control
+https://github.com/gritsenko/c3_spine_plugin/releases/download/2.8.2/SpineboyAim.c3p
+
 ## LIVE DEMO
 [Live Demo](https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html)
 
