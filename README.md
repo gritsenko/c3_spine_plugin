@@ -96,7 +96,8 @@ Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/
 #### Please report issues to: [Issues](https://github.com/gritsenko/c3_spine_plugin/issues)
 
 ## Example project, simple load and multi-track animation and bone control
-https://github.com/gritsenko/c3_spine_plugin/releases/download/2.8.2/SpineboyAim.c3p
+[SpineboyAim.c3p](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.8.2/SpineboyAim.c3p)
+[SpineMixandMatch-4-1.c3p](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.8.2/SpineMixandMatch-4-1.c3p)
 
 ## LIVE DEMO
 [Live Demo](https://gritsenko.github.io/c3_spine_plugin/docs/LiveDemo/index.html)
