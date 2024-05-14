@@ -1,4 +1,4 @@
-# Spine 4.1 add-on for Construct 3
+# Spine 4.2 add-on for Construct 3 - Must use Spine 4.2 export format
 
 ### Please support development of the C3 Spine plugin (thanks to all those kind folks who have donated so far!)
 
@@ -10,9 +10,9 @@ If paypal does not work, you can try:
 - Commisions for specific new features are also accepted, contact Mikal via Twitter @kindeyegames or the Construct Community Discord server (Mikal).
 
 ## Important notes for Spine export files:
-- Requires Spine version 4.1.x Spine JSON files. 
-- Spine 4.1.x JSON files require 2.4+ C3 addon version.
-- When exporting from Spine 4.1 use 4.1 export format.
+- Requires Spine version 4.2.x Spine JSON files. 
+- Spine 4.2.x JSON files require 2.4+ C3 addon version.
+- When exporting from Spine 4.2 use 4.2 export format.
 - In the Spine export dialogue box, under Runtime, set both 'Filter min' and 'Filter mag' to Linear or Nearest.
 - In the Packing settings, set Region Padding to 2 or higher (if you see lines around your images, it may be because padding is set to 0).
 - Max texture size, 4096x4096. multiple texture sheets supported (use comma separated list on C3 spine object's png path property).
@@ -88,7 +88,7 @@ Instead if you want to use a Spine position to reference in C3, you should add a
 Add-on based on **Mikal's** sample from this [thread](https://www.construct.net/en/forum/construct-3/general-discussion-7/spine-animation-js-template-145940) 
 
 ## Downloads
-[Current Add-on, Release 2.8.2, Spine 4.1 supported](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.8.2/Spine-v2.8.2.c3addon)
+[Current Add-on, Release 2.8.2, Spine 4.2 supported](https://github.com/gritsenko/c3_spine_plugin/releases/download/2.9.0/Spine-v2.9.0.c3addon)
 
 [Previous Add-on Releases](https://github.com/gritsenko/c3_spine_plugin/releases)
 #### Please support development of the C3 Spine plugin for Spine 4.x
@@ -143,6 +143,7 @@ Note that only addon version 1.x support 3.8 JSON Format
 - Preview Spine render in editor (dependent on C3 editor SDK updates)
 
 ## Release notes
+- 2.9.0 Add 4.2 support (physics)
 - 2.8.2 Fix C3 r234 compatability, fix set region ACE for 4.1 Spine SDK
 - 2.8.0 Add script interface for setSkin, flip
 - 2.7.0 Add Enable Sequence Autoplay ACE to enable sequence autoplay (autoplay sequence animations and fps)
