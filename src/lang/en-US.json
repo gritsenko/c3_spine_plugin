@@ -277,6 +277,23 @@
               }
             }
           },
+          "set-physics-mode": {
+            "list-name": "Set physics mode",
+            "display-text": "Set physics mode to {0}",
+            "description": "Set physics mode.",
+            "params": {
+              "physics-mode": {
+                "name": "Physics mode",
+                "desc": "Set behavior of spine physics.",
+                "items": {
+                  "none": "none",
+                  "reset": "reset",
+                  "update": "update",
+                  "pose": "pose"
+                }
+              }
+            }
+          },
           "set-animation-time": {
             "list-name": "Set animation time",
             "display-text": "Set animation time in {0} to {1} on track {2}",

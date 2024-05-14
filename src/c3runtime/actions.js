@@ -446,6 +446,10 @@
                 this.skeletonInfo.sequenceAutoplay = false;
             }
             this.skeletonInfo.sequenceFPS = fps;
+        },
+
+        SetPhysicsMode(mode) {
+            this._setPhysicsMode(mode);
         }
 
     }
