@@ -313,6 +313,23 @@
         ]
       },
       {
+        "id": "set-physics-mode",
+        "scriptName": "SetPhysicsMode",
+        "highlight": false,
+        "params": [
+          {
+            "id": "physics-mode",
+            "type": "combo",
+            "items": [
+              "none",
+              "reset",
+              "update",
+              "pose"
+            ]
+          }
+        ]
+      },
+      {
         "id": "play",
         "scriptName": "Play",
         "highlight": false,

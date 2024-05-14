@@ -91,7 +91,11 @@
             this.textureWidth = 0;
             this.textureHeight = 0;
             this.completeEventData = { }
-
+            const spine = globalThis.spine;
+            // this.physicsMode = spine.Physics.none
+            this.physicsMode = spine.Physics.update
+            // this.physicsMode = spine.Physics.pose
+            // this.physicsMode = spine.Physics.reset
 
             // @ts-ignore
             const wi = this.GetWorldInfo();
@@ -335,7 +339,7 @@
             };
 
             state.apply(skeleton);
-            skeleton.updateWorldTransform();
+            skeleton.updateWorldTransform(this.physicsMode);
             // @ts-ignore
             var offset = new spine.Vector2();
             // @ts-ignore
@@ -429,7 +433,7 @@
             const state = this.skeletonInfo.state;
             const skeleton = this.skeletonInfo.skeleton;
             state.apply(skeleton);
-            skeleton.updateWorldTransform();
+            skeleton.updateWorldTransform(this.physicsMode);
             // @ts-ignore
             var offset = new spine.Vector2();
             // @ts-ignore
@@ -490,7 +494,7 @@
                 // If starting later, apply time, then enable listeners so they do not trigger on past events
                 {
                     // state.apply(skeleton);
-                    // skeleton.updateWorldTransform();
+                    // skeleton.updateWorldTransform(this.physicsMode);
                     this.delayedTrackListeners.push(trackIndex);
                     // this.setTrackListeners(state, trackIndex);
                 }
@@ -651,6 +655,7 @@
             this.Trigger(C3.Plugins.Gritsenko_Spine.Cnds.OnSkeletonLoaded);
         }
 
+
         Release() {
             this.currentKey = null;
             this.currentValue = null;
@@ -703,6 +708,7 @@
             this.indexSize = null;
             this.palette = null;
             this.sdkType = null;
+            this.physicsMode = null;
         }
 
         Tick() {
@@ -776,7 +782,7 @@
 
                 // Override bones under bone control
                 this.spineBoneControl.applyBoneControl(active.skeleton);
-                active.skeleton.updateWorldTransform();
+                active.skeleton.updateWorldTransform(this.physicsMode);
                 
                 this.runtime.UpdateRender();
                 if (this.animateOnce > 0)
@@ -960,6 +966,17 @@
             }
 
             this.SetRenderOnce(1.0, true, this.uid);
+        }
+
+        _setPhysicsMode(mode)
+        {
+            switch(mode) {
+                case 0: this.physicsMode = spine.Physics.none; break;
+                case 1: this.physicsMode = spine.Physics.reset; break;
+                case 2: this.physicsMode = spine.Physics.update; break;
+                case 3: this.physicsMode = spine.Physics.pose; break;
+                default: console.log("Invalid physics mode", mode);
+            }
         }
 
         _setAnimationSpeed(speed){
@@ -1379,6 +1396,11 @@
         flip(isFlipped)
         {
             map.get(this)._flip(isFlipped)
+        }
+
+        setPhysicsMode(mode)
+        {
+            map.get(this)._setPhysicsMode(mode);
         }
 
 	};
