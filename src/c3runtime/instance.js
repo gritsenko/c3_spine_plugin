@@ -765,8 +765,12 @@
                     while (active.playTime >= animationDuration)
                         active.playTime -= animationDuration;
                 }
+                const skeleton = active.skeleton;
                 state.update(delta);
-                state.apply(active.skeleton);
+                state.apply(skeleton);
+                if (this.physicsMode == spine.Physics.update) {
+                    skeleton.update(delta);
+                }
 
                 // Set track listeners if needed for set animation done w/ current time or current ratio
                 // Set after update/apply so earlier events do not trigger
