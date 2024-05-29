@@ -1,8 +1,11 @@
-# Main ropsitory of the Construct 3 Spine Plugin now lives on the new address: 
 
+> [!WARNING]
+> project repository moved to the adderss:
 # https://github.com/MikalDev/c3_spine_plugin
 
 and the current repo will be archived
+
+---
 
 ## Spine 4.2 add-on for Construct 3 - Must use Spine 4.2 export format
 
