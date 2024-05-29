@@ -1,4 +1,4 @@
-# main ropsitory of the Construct 3 Spine Plugin now lives on the new address: 
+# Main ropsitory of the Construct 3 Spine Plugin now lives on the new address: 
 
 # https://github.com/MikalDev/c3_spine_plugin
 
